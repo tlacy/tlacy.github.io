@@ -41,12 +41,26 @@
             ga('create','UA-XXXXX-X','auto');ga('send','pageview');
         
        </script>
-       <script type="application/javascript">
-         function getIP(json) {
-            document.write("Your public IP address is: ", json.ip);
-         }
-       </script>
+       <div id="mydiv"></div>
 
+       <script type="text/babel">
+         function Hello() {
+           return <h1>Hello World!</h1>;
+         }
+   
+         const container = document.getElementById('mydiv');
+         const root = ReactDOM.createRoot(container);
+         root.render(<Hello />)
+       </script>
+  
+  export default function MyApp() {
+    return (
+      <div>
+        <h1>Welcome to my app</h1>
+        <MyButton />
+      </div>
+    );
+  }
        <script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
        <script src="js/alert.js"></script>
     </body>
