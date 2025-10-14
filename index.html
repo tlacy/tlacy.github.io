@@ -32,17 +32,18 @@
         <script src="js/button.js"></script>
         <p>We are here line 42 now.  More to come. </p>
         <script>
-        async function getIP() {
-            try {
+            async function getIP() {
+               try {
                 const response = await fetch('https://ipinfo.io/json?token=YOUR_TOKEN_HERE');
                 const data = await response.json();
                 document.getElementById('ip').innerText = `Your IP Address: ${data.ip}`;
-            } catch (error) {
+                   } catch (error) {
                 console.error('Error fetching IP address:', error);
-            }
-        }
-    </script>
-
+                             }
+            }  
+        <p> Your IP is ${data.ip} </p>
+        </script>
+    
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
