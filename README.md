@@ -36,9 +36,13 @@ I initialized a local git repository, committed the site files, and pushed them 
 If you want automatic CI/CD instead of manual pushes, I can add a GitHub Actions workflow that builds and deploys to Pages on each push to `main`.
 
 ## Notes & next steps
-- Comments: a Giscus placeholder is included in `index.html`. To enable, create a GitHub Discussions category and update the Giscus attributes.
-- Chat/LLM: chat is currently a placeholder; to add a personal LLM you'd add a serverless backend to index `career.md` and `content.json` into embeddings and serve a chat UI.
-- Privacy: IP-collection was intentionally removed. No analytics are enabled by default.
 
 If you'd like, I can add a small GitHub Actions workflow to automatically publish the site or run HTML checks on PRs.
+## Enabling Giscus comments
+
+1. Create a GitHub Discussions category in this repository (Settings → Discussions → Categories). Note the category name.
+2. Install and authorize Giscus by visiting the Giscus site or follow the steps at https://giscus.app/ — it will generate the `data-repo`, `data-repo-id`, `data-category`, and `data-category-id` values for you.
+3. Replace the placeholder attributes in `index.html` in the Giscus `<div class="giscus">` block with the values returned by Giscus.
+
+If you'd like, I can set this for you if you provide the repository and category details (or allow me to create the discussion category).
 Just my initial website

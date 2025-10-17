@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Career — Thomas A. Lacy</title>
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body>
+    <main style="max-width:900px;margin:32px auto;padding:16px;">
+      <a href="/">← Home</a>
+      <h1>Career & Highlights</h1>
+      <div id="career-content">Loading career content…</div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.1/dist/markdown-it.min.js"></script>
+    <script>
+      async function loadCareer() {
+        try {
+          const r = await fetch('career.md');
+          const md = await r.text();
+          const mdIt = window.markdownit({html:true,linkify:true});
+          document.getElementById('career-content').innerHTML = mdIt.render(md);
+        } catch (e) {
+          document.getElementById('career-content').textContent = 'Failed to load career.md';
+        }
+      }
+      loadCareer();
+    </script>
+  </body>
+</html>
