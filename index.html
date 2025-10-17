@@ -11,6 +11,9 @@
         <!-- Place favicon.ico in the root directory -->
 
         <link rel="stylesheet" href="css/normalize.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="css/main.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
@@ -25,20 +28,22 @@
         <!-- Add your site or application content here -->
 
         <!-- BIO / HERO — editable via content.json -->
-        <header id="hero" style="max-width:900px;margin:24px auto;padding:16px;display:flex;gap:16px;align-items:center;">
-          <img id="profile-img" src="images/profile-placeholder.png" alt="Profile" style="width:120px;height:120px;border-radius:8px;object-fit:cover;border:1px solid #ddd">
-          <div>
-            <h1 id="hero-name">Your Name</h1>
-            <p id="hero-title" style="color:#555">Your title or short tagline</p>
-            <div id="hero-bio" style="margin-top:8px;color:#333">A short bio will appear here. Edit <code>content.json</code> to update this section via GitHub.</div>
-            <div id="social-links" style="margin-top:8px"></div>
-            <p style="margin-top:8px">
-              <a class="btn" id="resume-btn" href="#" download>Download Resume</a>
-              &nbsp;
-              <a href="chat.html">Open chat with my content</a>
-              &nbsp;•&nbsp;
-              <a href="career.html">Read my career highlights</a>
-            </p>
+        <header id="hero" class="container">
+          <div class="hero-inner">
+            <img id="profile-img" src="img/tomlacy - 2023.png" alt="Tom Lacy">
+            <div>
+              <h1 id="hero-name">Your Name</h1>
+              <p id="hero-title">Your title or short tagline</p>
+              <div id="hero-bio">A short bio will appear here. Edit <code>content.json</code> to update this section via GitHub.</div>
+              <div id="social-links" style="margin-top:8px"></div>
+              <p style="margin-top:12px">
+                <a class="btn" id="resume-btn" href="#" download>Download Resume</a>
+                &nbsp;
+                <a href="chat.html">Open chat with my content</a>
+                &nbsp;•&nbsp;
+                <a href="career.html">Read my career highlights</a>
+              </p>
+            </div>
           </div>
         </header>
 
