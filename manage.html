@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Manage content — tomlacy.net</title>
+  <style>
+    body{font-family: system-ui, sans-serif; margin:16px; max-width:1100px}
+    textarea{width:100%;height:320px;font-family:monospace;padding:12px}
+    label{font-weight:600}
+    .row{display:flex;gap:12px}
+    .col{flex:1}
+    button{padding:8px 12px;border-radius:6px}
+  </style>
+}</head>
+<body>
+  <h1>Manage site content (local only)</h1>
+  <p>This page lets you edit <code>career.md</code> and <code>content.json</code> in your browser and download updated files to commit to the repo. No server — edits stay local until you save/upload.</p>
+
+  <div>
+    <label for="career">career.md</label>
+    <textarea id="career" placeholder="career markdown"></textarea>
+    <p><button id="download-career">Download career.md</button></p>
+  </div>
+
+  <div>
+    <label for="contentjson">content.json</label>
+    <textarea id="contentjson" placeholder="content.json"></textarea>
+    <p><button id="download-content">Download content.json</button></p>
+  </div>
+
+  <script>
+    async function loadText(path){
+      try{const r=await fetch(path); if(!r.ok) throw new Error('fetch failed'); return await r.text()}catch(e){return ''}
+    }
+    (async ()=>{
+      document.getElementById('career').value = await loadText('career.md');
+      document.getElementById('contentjson').value = await loadText('content.json');
+    })();
+
+    function download(filename, text){
+      const blob = new Blob([text], {type: 'text/plain;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    }
+    document.getElementById('download-career').addEventListener('click', ()=> download('career.md', document.getElementById('career').value));
+    document.getElementById('download-content').addEventListener('click', ()=> download('content.json', document.getElementById('contentjson').value));
+  </script>
+</body>
+</html>

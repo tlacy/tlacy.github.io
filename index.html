@@ -23,15 +23,32 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <p>Hello world! This is HTML5 Boilerplate.  More to come - adding a bit more - . </p>
-        <p>update 1<br>Update 2</p>
-        <script type="application/javascript">
-            function getIP(json) {
-            document.write("My public IP address is: ", json.ip);
-            }
-        </script>
 
-<script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
+        <!-- BIO / HERO — editable via content.json -->
+        <header id="hero" style="max-width:900px;margin:24px auto;padding:16px;display:flex;gap:16px;align-items:center;">
+          <img id="profile-img" src="images/profile-placeholder.png" alt="Profile" style="width:120px;height:120px;border-radius:8px;object-fit:cover;border:1px solid #ddd">
+          <div>
+            <h1 id="hero-name">Your Name</h1>
+            <p id="hero-title" style="color:#555">Your title or short tagline</p>
+            <div id="hero-bio" style="margin-top:8px;color:#333">A short bio will appear here. Edit <code>content.json</code> to update this section via GitHub.</div>
+            <div id="social-links" style="margin-top:8px"></div>
+            <p style="margin-top:8px">
+              <a class="btn" id="resume-btn" href="#" download>Download Resume</a>
+              &nbsp;
+              <a href="chat.html">Open chat with my content</a>
+            </p>
+          </div>
+        </header>
+
+        <!-- PASSIONS & FEEDS -->
+        <section id="passions" style="max-width:900px;margin:8px auto 40px;padding:16px;">
+          <h2>What I'm passionate about</h2>
+          <div id="passions-list" style="display:flex;gap:12px;flex-wrap:wrap"></div>
+          <div id="feeds" style="margin-top:18px"></div>
+        </section>
+
+        <p>update 1<br>Update 2</p>
+    <!-- Removed IP collection script for visitor privacy -->
         <script src="https://code.jquery.com/jquery-{{JQUERY_VERSION}}.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-{{JQUERY_VERSION}}.min.js"><\/script>')</script>
         <script src="js/plugins.js"></script>
@@ -63,28 +80,154 @@
        </script>
       
        <script type="application/javascript">
-         function getIP(json) {
-            document.write("Your public IP address is: ", json.ip);
-         }
+         // UI placeholder scripts retained; removed any IP-collection behavior for privacy.
          function MyButton() {
-            return (
-         <button>
-        I'm a button
-         </button>
-         );
-      }
-  
-         export default function MyApp() {
-         return (
-      <div>
-        <h1>Welcome to my app</h1>
-        <MyButton />
-      </div>
-        );
-      }
+           return (
+             document.createElement('button')
+           );
+         }
        </script>
-
-       <script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
        <script src="js/alert.js"></script>
-    </body>
+    <!-- Comments placeholder / Giscus -->
+    <section id="comments" style="max-width:680px;margin:32px auto;padding:0 16px;">
+      <h2>Comments</h2>
+      <p><a href="chat.html">Chat with my content (placeholder)</a></p>
+      <!-- Giscus: replace data-repo and other values with your GitHub repo details. See README.md for setup steps. -->
+      <div class="giscus"
+        data-repo="USERNAME/REPO"
+        data-repo-id=""
+        data-category="General"
+        data-category-id=""
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="light"
+        data-lang="en"
+      ></div>
+      <script src="https://giscus.app/client.js" async crossorigin="anonymous"></script>
+      <p style="font-size:0.9rem;color:#666">To enable comments, replace the <code>data-repo</code> and other attributes above with your GitHub repository and category IDs (see README.md for the exact steps).</p>
+    </section>
+    <script>
+      // Load content.json and render hero, passions, and social feeds
+      async function loadContentAndFeeds() {
+        let data = {};
+        try {
+          const res = await fetch('content.json');
+          data = await res.json();
+        } catch (err) {
+          console.warn('Could not load content.json', err);
+          return;
+        }
+
+        // Hero
+        document.getElementById('hero-name').textContent = data.name || 'Your Name';
+        document.getElementById('hero-title').textContent = data.title || '';
+        document.getElementById('hero-bio').textContent = data.bio || '';
+        // Resolve profile image: prefer content.json.profileImage, otherwise try common paths in images/ and img/
+        const imgEl = document.getElementById('profile-img');
+        async function findProfileImage(provided) {
+          const candidates = [];
+          if (provided) candidates.push(provided);
+          candidates.push('images/profile.jpg','images/profile.png','images/profile.jpeg','img/profile.jpg','img/profile.png','img/profile.jpeg','img/profile-placeholder.png','images/profile-placeholder.png','profile.jpg');
+          for (const p of candidates) {
+            try {
+              const r = await fetch(p, { method: 'HEAD' });
+              if (r && r.ok) return p;
+            } catch (e) {
+              // ignore and try next
+            }
+          }
+          return imgEl.src;
+        }
+        try {
+          const resolved = await findProfileImage(data.profileImage);
+          imgEl.src = resolved;
+        } catch (e) {
+          // leave placeholder
+        }
+
+        // Passions buttons
+        const passionsEl = document.getElementById('passions-list');
+        passionsEl.innerHTML = '';
+        (data.passions || []).forEach(p => {
+          const btn = document.createElement('button');
+          btn.textContent = p.label;
+          btn.style.padding = '8px 12px';
+          btn.style.border = '1px solid #ddd';
+          btn.style.borderRadius = '6px';
+          btn.style.cursor = 'pointer';
+          btn.addEventListener('click', () => fetchAndRenderFeed(p.feed, p.label));
+          passionsEl.appendChild(btn);
+        });
+
+        // Social links
+        const sl = document.getElementById('social-links');
+        sl.innerHTML = '';
+        const social = data.social || {};
+        for (const key of ['linkedin','facebook','instagram']) {
+          const val = social[key];
+          if (!val) continue;
+          const a = document.createElement('a');
+          a.href = (typeof val === 'string') ? val : (val.url || '#');
+          a.textContent = key[0].toUpperCase() + key.slice(1);
+          a.target = '_blank';
+          a.style.marginRight = '8px';
+          sl.appendChild(a);
+          // If the social entry is an object with a feed property, also fetch recent posts
+          if (typeof val === 'object' && val.feed) {
+            await fetchAndRenderFeed(val.feed, `${key} feed`);
+          }
+        }
+
+        // Optionally fetch passions feeds immediately (first passion)
+        if (data.passions && data.passions.length > 0 && data.passions[0].feed) {
+          fetchAndRenderFeed(data.passions[0].feed, data.passions[0].label);
+        }
+        // Resume button
+        if (data.resume) {
+          const rb = document.getElementById('resume-btn');
+          rb.href = data.resume;
+          rb.download = '';
+        }
+      }
+
+      async function fetchAndRenderFeed(feedUrl, label) {
+        if (!feedUrl) return;
+        const container = document.getElementById('feeds');
+        const section = document.createElement('section');
+        section.innerHTML = `<h3>Latest — ${label}</h3><p>Loading...</p>`;
+        container.appendChild(section);
+        try {
+          const proxy = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`;
+          const res = await fetch(proxy);
+          const json = await res.json();
+          if (!json || !json.items) {
+            section.innerHTML = `<h3>${label}</h3><p>No feed items returned.</p>`;
+            return;
+          }
+          const cutoff = Date.now() - (30 * 24 * 60 * 60 * 1000);
+          const recent = json.items.filter(it => new Date(it.pubDate).getTime() >= cutoff).slice(0,6);
+          if (recent.length === 0) {
+            section.innerHTML = `<h3>${label}</h3><p>No recent posts in the last 30 days.</p>`;
+            return;
+          }
+          const ul = document.createElement('ul');
+          recent.forEach(it => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="${it.link}" target="_blank">${it.title}</a> <small style='color:#666'>${new Date(it.pubDate).toLocaleDateString()}</small>`;
+            ul.appendChild(li);
+          });
+          section.innerHTML = `<h3>${label} — recent (30d)</h3>`;
+          section.appendChild(ul);
+        } catch (err) {
+          console.warn('Failed to fetch feed', feedUrl, err);
+          section.innerHTML = `<h3>${label}</h3><p style="color:red">Failed to load feed.</p>`;
+        }
+      }
+
+      // Start
+      loadContentAndFeeds();
+    </script>
+  </body>
 </html>
