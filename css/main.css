@@ -10,17 +10,30 @@
 }
 *{box-sizing:border-box}
 body{
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
   margin:0; background:var(--bg); color:#0f172a; -webkit-font-smoothing:antialiased;
 }
 a{color:var(--blue); text-decoration:none}
 a:hover{text-decoration:underline}
 .container{max-width:var(--max-width); margin:0 auto; padding:20px}
 header#hero{background:linear-gradient(90deg, rgba(255,221,87,0.14), rgba(46,196,182,0.06)); border-radius:var(--radius); box-shadow:0 6px 18px rgba(11,22,39,0.04);}
-#hero{display:block}
-#hero img{width:120px;height:120px;border-radius:12px;border:2px solid rgba(11,22,39,0.06);}
-#hero h1{margin:0;font-size:1.6rem;color:#04233b}
+/* upgraded hero */
+#hero{display:block;position:relative;overflow:hidden}
+#hero .hero-inner{display:flex;gap:20px;align-items:center;padding:28px}
+#hero img{width:140px;height:140px;border-radius:14px;border:3px solid rgba(255,255,255,0.85);box-shadow:0 6px 20px rgba(11,22,39,0.08);object-fit:cover}
+#hero h1{margin:0;font-size:1.8rem;color:#04233b}
 #hero p{margin:6px 0;color:var(--muted)}
+
+header#hero::before{
+    content:'';position:absolute;inset:0;z-index:0;opacity:0.95;
+    background: linear-gradient(135deg, rgba(46,196,182,0.18) 0%, rgba(43,122,252,0.12) 50%, rgba(255,221,87,0.14) 100%);
+    mix-blend-mode: multiply;
+}
+/* subtle collage using the user's image on the right */
+#hero::after{
+    content:'';position:absolute;right:-60px;top:-20px;width:420px;height:420px;background-image: url('../img/tomlacy - 2023.png');background-size:cover;background-position:center;opacity:0.08;transform:rotate(8deg);z-index:0;filter:grayscale(20%);
+}
+#hero .hero-inner > *{position:relative;z-index:1}
 
 /* Passions */
 #passions{margin-top:20px}
