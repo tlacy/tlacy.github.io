@@ -1,0 +1,215 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Thomas A. Lacy's Site</title>
+        <meta name="description" content="Thomas A. Lacy's Web Site">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <!-- Place favicon.ico in the root directory -->
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="css/main.css">
+        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+        <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Add your site or application content here -->
+
+        <!-- BIO / HERO — editable via content.json -->
+        <header id="hero" class="container">
+          <div class="hero-inner">
+            <img id="profile-img" src="img/tomlacy - 2023.png" alt="Tom Lacy">
+            <div>
+              <h1 id="hero-name">Your Name</h1>
+              <p id="hero-title">Your title or short tagline</p>
+              <div id="hero-bio">A short bio will appear here. Edit <code>content.json</code> to update this section via GitHub.</div>
+              <div id="social-links" style="margin-top:8px"></div>
+              <p style="margin-top:12px">
+                <a class="btn" id="resume-btn" href="#" download>Download Resume</a>
+                &nbsp;
+                <a href="chat.html">Open chat with my content</a>
+                &nbsp;•&nbsp;
+                <a href="career.html">Read my career highlights</a>
+              </p>
+            </div>
+          </div>
+        </header>
+
+        <!-- PASSIONS & FEEDS -->
+        <section id="passions" style="max-width:900px;margin:8px auto 40px;padding:16px;">
+          <h2>What I'm passionate about</h2>
+          <div id="passions-list" style="display:flex;gap:12px;flex-wrap:wrap"></div>
+          <div id="feeds" style="margin-top:18px"></div>
+        </section>
+
+  <!-- Removed IP collection script for visitor privacy -->
+    <script src="js/plugins.js"></script>
+    <script src="js/main.js"></script>
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='https://www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+      ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+       </script>
+       
+      <!-- Demo React block removed: no client-side React demo on production site -->
+      
+       <script src="js/alert.js"></script>
+    <!-- Comments placeholder / Giscus -->
+    <section id="comments" style="max-width:680px;margin:32px auto;padding:0 16px;">
+      <h2>Comments</h2>
+      <p><a href="chat.html">Chat with my content (placeholder)</a></p>
+      <!-- Giscus: replace data-repo and other values with your GitHub repo details. See README.md for setup steps. -->
+      <div class="giscus"
+        data-repo="USERNAME/REPO"
+        data-repo-id=""
+        data-category="General"
+        data-category-id=""
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="light"
+        data-lang="en"
+      ></div>
+      <script src="https://giscus.app/client.js" async crossorigin="anonymous"></script>
+      <p style="font-size:0.9rem;color:#666">To enable comments, replace the <code>data-repo</code> and other attributes above with your GitHub repository and category IDs (see README.md for the exact steps).</p>
+    </section>
+    <script>
+      // Load content.json and render hero, passions, and social feeds
+      async function loadContentAndFeeds() {
+        let data = {};
+        try {
+          const res = await fetch('content.json');
+          data = await res.json();
+        } catch (err) {
+          console.warn('Could not load content.json', err);
+          return;
+        }
+
+        // Hero
+        document.getElementById('hero-name').textContent = data.name || 'Your Name';
+        document.getElementById('hero-title').textContent = data.title || '';
+        document.getElementById('hero-bio').textContent = data.bio || '';
+        // Resolve profile image: prefer content.json.profileImage, otherwise try common paths in images/ and img/
+        const imgEl = document.getElementById('profile-img');
+        async function findProfileImage(provided) {
+          const candidates = [];
+          if (provided) candidates.push(provided);
+          candidates.push('images/profile.jpg','images/profile.png','images/profile.jpeg','img/profile.jpg','img/profile.png','img/profile.jpeg','img/profile-placeholder.png','images/profile-placeholder.png','profile.jpg');
+          for (const p of candidates) {
+            try {
+              const r = await fetch(p, { method: 'HEAD' });
+              if (r && r.ok) return p;
+            } catch (e) {
+              // ignore and try next
+            }
+          }
+          return imgEl.src;
+        }
+        try {
+          const resolved = await findProfileImage(data.profileImage);
+          imgEl.src = resolved;
+        } catch (e) {
+          // leave placeholder
+        }
+
+        // Passions buttons
+        const passionsEl = document.getElementById('passions-list');
+        passionsEl.innerHTML = '';
+        (data.passions || []).forEach(p => {
+          const btn = document.createElement('button');
+          btn.textContent = p.label;
+          btn.style.padding = '8px 12px';
+          btn.style.border = '1px solid #ddd';
+          btn.style.borderRadius = '6px';
+          btn.style.cursor = 'pointer';
+          btn.addEventListener('click', () => fetchAndRenderFeed(p.feed, p.label));
+          passionsEl.appendChild(btn);
+        });
+
+        // Social links
+        const sl = document.getElementById('social-links');
+        sl.innerHTML = '';
+        const social = data.social || {};
+        for (const key of ['linkedin','facebook','instagram']) {
+          const val = social[key];
+          if (!val) continue;
+          const a = document.createElement('a');
+          a.href = (typeof val === 'string') ? val : (val.url || '#');
+          a.textContent = key[0].toUpperCase() + key.slice(1);
+          a.target = '_blank';
+          a.style.marginRight = '8px';
+          sl.appendChild(a);
+          // If the social entry is an object with a feed property, also fetch recent posts
+          if (typeof val === 'object' && val.feed) {
+            await fetchAndRenderFeed(val.feed, `${key} feed`);
+          }
+        }
+
+        // Optionally fetch passions feeds immediately (first passion)
+        if (data.passions && data.passions.length > 0 && data.passions[0].feed) {
+          fetchAndRenderFeed(data.passions[0].feed, data.passions[0].label);
+        }
+        // Resume button
+        if (data.resume) {
+          const rb = document.getElementById('resume-btn');
+          rb.href = data.resume;
+          rb.download = '';
+        }
+      }
+
+      async function fetchAndRenderFeed(feedUrl, label) {
+        if (!feedUrl) return;
+        const container = document.getElementById('feeds');
+        const section = document.createElement('section');
+        section.innerHTML = `<h3>Latest — ${label}</h3><p>Loading...</p>`;
+        container.appendChild(section);
+        try {
+          const proxy = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`;
+          const res = await fetch(proxy);
+          const json = await res.json();
+          if (!json || !json.items) {
+            section.innerHTML = `<h3>${label}</h3><p>No feed items returned.</p>`;
+            return;
+          }
+          const cutoff = Date.now() - (30 * 24 * 60 * 60 * 1000);
+          const recent = json.items.filter(it => new Date(it.pubDate).getTime() >= cutoff).slice(0,6);
+          if (recent.length === 0) {
+            section.innerHTML = `<h3>${label}</h3><p>No recent posts in the last 30 days.</p>`;
+            return;
+          }
+          const ul = document.createElement('ul');
+          recent.forEach(it => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="${it.link}" target="_blank">${it.title}</a> <small style='color:#666'>${new Date(it.pubDate).toLocaleDateString()}</small>`;
+            ul.appendChild(li);
+          });
+          section.innerHTML = `<h3>${label} — recent (30d)</h3>`;
+          section.appendChild(ul);
+        } catch (err) {
+          console.warn('Failed to fetch feed', feedUrl, err);
+          section.innerHTML = `<h3>${label}</h3><p style="color:red">Failed to load feed.</p>`;
+        }
+      }
+
+      // Start
+      loadContentAndFeeds();
+    </script>
+  </body>
+</html>

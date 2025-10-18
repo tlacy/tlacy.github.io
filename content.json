@@ -1,0 +1,18 @@
+{
+  "name": "Thomas A. Lacy",
+  "title": "Software, Photography, Sports",
+  "bio": "Hi — I'm Tom. I build things, take photos, and follow sports. This site is a place to share my work and let visitors chat about it.",
+  "profileImage": "img/tomlacy - 2023.png",
+  "resume": "TomALacy.pdf",
+  "passions": [
+    { "label": "Photography", "feed": "https://rss.nytimes.com/services/xml/rss/nyt/Photography.xml" },
+    { "label": "Sports", "feed": "https://www.espn.com/espn/rss/news" },
+    { "label": "Tech", "feed": "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml" }
+  ]
+  ,
+  "social": {
+    "linkedin": "", 
+    "facebook": "",
+    "instagram": ""
+  }
+}
