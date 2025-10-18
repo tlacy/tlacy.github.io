@@ -64,3 +64,62 @@ b) Add apex to GitHub Pages and use ALIAS/ANAME or A records:
 If you want I can also:
 - Draft the exact DNS UI steps for your registrar (name the registrar), or
 - Add a small script/CI check that verifies the domain resolves and TLS is valid after deploy.
+
+Squarespace (domains managed in Squarespace)
+-------------------------------------------
+
+If your domain is registered or managed in Squarespace, follow these steps to point `www.tomlacy.net` to GitHub Pages and optionally handle the apex domain (`tomlacy.net`):
+
+1. Open Squarespace and navigate to: Home Menu → Settings → Domains. Select the domain `tomlacy.net` from the list.
+
+2. Click DNS settings (or Advanced DNS). You will see existing records that Squarespace may have created.
+
+3. Add (or edit) a CNAME for the `www` host:
+
+  - Type: CNAME
+  - Host / Name: www
+  - Data / Points to: tlacy.github.io
+  - TTL: Automatic / default
+
+  Note: Do not point `www` to a Squarespace hostname if you intend to serve the site from GitHub Pages.
+
+4. Handle the apex (`tomlacy.net`) — choose one approach:
+
+  a) Recommended — Redirect apex to www (simpler):
+
+    - In Squarespace Domains settings look for a forwarding or domain mapping option and set the root/apex to redirect to `https://www.tomlacy.net` (301 permanent redirect). Squarespace provides a "Forwarding" option in the domain settings UI.
+    - This keeps traffic consolidated to `www` and avoids needing apex A/ALIAS records.
+
+  b) Serve apex directly via GitHub Pages (if you prefer):
+
+    - Add the following A records (in Squarespace DNS) for the root/apex host:
+
+      185.199.108.153
+      185.199.109.153
+      185.199.110.153
+      185.199.111.153
+
+    - Remove any conflicting A or CNAME records for the apex that point to Squarespace hosting.
+    - In your GitHub repository Pages settings, add `tomlacy.net` as an additional custom domain (GitHub will attempt TLS provisioning once DNS is correct).
+
+5. Save DNS changes. DNS propagation can take minutes to hours depending on TTL.
+
+6. Verification (run locally):
+
+```bash
+# check www
+curl -I -L -sS -o /dev/null -w "%{http_code} %{url_effective}\n" https://www.tomlacy.net
+
+# check apex (if redirecting, this should 301 -> https://www.tomlacy.net or show HTTPS)
+curl -I -L -sS -o /dev/null -w "%{http_code} %{url_effective}\n" https://tomlacy.net
+
+# inspect the TLS certificate for www
+echo | openssl s_client -servername www.tomlacy.net -connect www.tomlacy.net:443 2>/dev/null | sed -n '1,120p'
+```
+
+Troubleshooting notes specific to Squarespace:
+
+- If Squarespace shows that the domain is "connected to a Squarespace site", you may need to disconnect it from Squarespace hosting before adding A records to point to GitHub. Look for a "Disconnect" or "Use other provider" option in domain settings.
+- Squarespace may automatically add records; remove any records that conflict with the GitHub Pages setup (for example, CNAME for the root, or `www` pointing to Squarespace-specific hosts).
+- If you're unsure, use the redirect approach (apex -> www) since Squarespace supports forwarding and is least intrusive.
+
