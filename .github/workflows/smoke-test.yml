@@ -1,6 +1,7 @@
 name: Smoke tests (static site)
 
 on:
+  workflow_dispatch: {}
   push:
     branches: [ main ]
   pull_request:
