@@ -5,6 +5,7 @@
     --pastel-green: #DFF7EE;
     --pastel-blue:  #E8F2FF;
     --pastel-yellow:#FFF9D6;
+        --pastel-purple:#F1E8FF;
   --bg: #f7faf9;
   --muted: #6b7280;
   --card: #ffffff;
@@ -48,6 +49,7 @@ header#hero::before{
 .pastel-blue{background:linear-gradient(180deg, var(--pastel-blue), #ffffff);padding:18px;border-radius:10px}
 .pastel-green{background:linear-gradient(180deg, var(--pastel-green), #ffffff);padding:18px;border-radius:10px}
 .pastel-yellow{background:linear-gradient(180deg, var(--pastel-yellow), #fff);padding:18px;border-radius:10px}
+.pastel-purple{background:linear-gradient(180deg, var(--pastel-purple), #fff);padding:18px;border-radius:10px}
 
 /* Background decorative images */
 .site-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
@@ -58,6 +60,15 @@ header#hero::before{
 .bg-lead{right:18%;bottom:12%;transform:rotate(8deg)}
 
 #hero, section, #comments{position:relative;z-index:1}
+
+/* Tabs for passions */
+.tab-buttons{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.tab-buttons button{border:1px solid rgba(11,22,39,0.06);background:transparent;padding:8px 12px;border-radius:8px;cursor:pointer}
+.tab-buttons button[aria-selected="true"]{box-shadow:0 6px 18px rgba(11,22,39,0.06);transform:translateY(-2px);background:rgba(255,255,255,0.6)}
+.tab-panel{position:relative;padding:14px;border-radius:8px;margin-top:8px;min-height:120px}
+.tab-panel .tab-bg{position:absolute;inset:auto;right:12px;top:6px;width:220px;height:220px;opacity:0.12;filter:grayscale(100%);pointer-events:none}
+.tab-panel .feed-list{position:relative;z-index:1}
+.tab-panel .placeholder{color:var(--muted)}
 
 /* Feeds and cards */
 section{background:var(--card);padding:18px;border-radius:10px;margin:12px 0;box-shadow:0 6px 18px rgba(11,22,39,0.04)}
