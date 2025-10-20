@@ -8,6 +8,7 @@
     { "label": "Photography", "feed": "https://rss.nytimes.com/services/xml/rss/nyt/Photography.xml" },
     { "label": "Sports", "feed": "https://www.espn.com/espn/rss/news" },
     { "label": "Tech", "feed": "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml" }
+    ,{ "label": "People / Team Leadership", "feed": "" }
   ]
   ,
   "social": {

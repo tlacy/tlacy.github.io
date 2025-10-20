@@ -2,6 +2,9 @@
   --yellow: #FFDD57;
   --green:  #2EC4B6;
   --blue:   #2B7AFC;
+    --pastel-green: #DFF7EE;
+    --pastel-blue:  #E8F2FF;
+    --pastel-yellow:#FFF9D6;
   --bg: #f7faf9;
   --muted: #6b7280;
   --card: #ffffff;
@@ -40,6 +43,21 @@ header#hero::before{
 #passions h2{margin-bottom:12px;color:#073B4C}
 #passions-list button{background:transparent;border:1px solid rgba(11,22,39,0.06);padding:8px 12px;border-radius:8px;cursor:pointer}
 #passions-list button:hover{box-shadow:0 4px 14px rgba(43,122,252,0.08);transform:translateY(-2px)}
+
+/* Pastel section variants */
+.pastel-blue{background:linear-gradient(180deg, var(--pastel-blue), #ffffff);padding:18px;border-radius:10px}
+.pastel-green{background:linear-gradient(180deg, var(--pastel-green), #ffffff);padding:18px;border-radius:10px}
+.pastel-yellow{background:linear-gradient(180deg, var(--pastel-yellow), #fff);padding:18px;border-radius:10px}
+
+/* Background decorative images */
+.site-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-img{position:absolute;width:320px;height:320px;opacity:0.12;filter:grayscale(10%);}
+.bg-photo{left:8%;top:6%;transform:rotate(-6deg)}
+.bg-sports{right:6%;top:20%;transform:rotate(12deg)}
+.bg-tech{left:18%;bottom:6%;transform:rotate(-10deg)}
+.bg-lead{right:18%;bottom:12%;transform:rotate(8deg)}
+
+#hero, section, #comments{position:relative;z-index:1}
 
 /* Feeds and cards */
 section{background:var(--card);padding:18px;border-radius:10px;margin:12px 0;box-shadow:0 6px 18px rgba(11,22,39,0.04)}
