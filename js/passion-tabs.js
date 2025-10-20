@@ -37,6 +37,7 @@ async function initPassionTabs() {
       btn.id = `tab-${idx}`;
       btn.setAttribute('aria-selected', idx === 0 ? 'true' : 'false');
       btn.addEventListener('click', () => selectTab(idx));
+      btn.addEventListener('keydown', (ev) => onKeydown(ev, idx));
       tabsWrap.appendChild(btn);
 
       const panel = document.createElement('div');
@@ -77,8 +78,32 @@ async function initPassionTabs() {
           if (feedDiv && feedDiv.children.length === 0) {
             renderFeedInto(feedDiv, (data.passions || [])[i]);
           }
+          // move focus to the active panel for screen readers
+          p.focus && p.focus();
         }
       });
+    }
+
+    function onKeydown(ev, idx) {
+      const key = ev.key;
+      const max = (data.passions || []).length - 1;
+      if (key === 'ArrowRight') {
+        ev.preventDefault();
+        selectTab(Math.min(max, idx + 1));
+        tabsWrap.querySelectorAll('button')[Math.min(max, idx + 1)].focus();
+      } else if (key === 'ArrowLeft') {
+        ev.preventDefault();
+        selectTab(Math.max(0, idx - 1));
+        tabsWrap.querySelectorAll('button')[Math.max(0, idx - 1)].focus();
+      } else if (key === 'Home') {
+        ev.preventDefault();
+        selectTab(0);
+        tabsWrap.querySelectorAll('button')[0].focus();
+      } else if (key === 'End') {
+        ev.preventDefault();
+        selectTab(max);
+        tabsWrap.querySelectorAll('button')[max].focus();
+      }
     }
 
     async function renderFeedInto(container, passion) {
