@@ -44,6 +44,7 @@ jobs:
           exit 0
       - name: Checkout
         if: steps.check.outputs.should_deploy == 'true'
+        # pinned to actions/checkout@v4 for stability; update via Dependabot
         uses: actions/checkout@v4
 
       - name: Build (none)
@@ -52,7 +53,9 @@ jobs:
 
       - name: Deploy to GitHub Pages
         if: steps.check.outputs.should_deploy == 'true'
-        uses: peaceiris/actions-gh-pages@v3
+        # use peaceiris/actions-gh-pages@v4 (newer major release) to pick up upstream fixes
+        # and avoid indirect use of deprecated actions/upload-artifact@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
