@@ -8,7 +8,7 @@
   { "label": "Photography", "feed": "https://feeds.npr.org/1001/rss.xml" },
     { "label": "Sports", "feed": "https://www.espn.com/espn/rss/news" },
     { "label": "Tech", "feed": "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml" }
-    ,{ "label": "People / Team Leadership", "feed": "" }
+  ,{ "label": "People / Team Leadership" }
   ]
   ,
   "social": {
