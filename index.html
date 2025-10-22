@@ -56,13 +56,27 @@
         <!-- PASSIONS & FEEDS -->
         <section id="passions" class="pastel-blue" style="max-width:900px;margin:8px auto 40px;padding:16px;">
           <h2>What I'm passionate about</h2>
+          <p style="font-size:0.9rem;color:#444">Want to suggest or edit leadership content? <a href="manage.html#people-content" id="edit-lead-link">Edit Leadership content</a> (opens local editor).</p>
           <div id="passions-list" style="display:flex;gap:12px;flex-wrap:wrap"></div>
           <div id="feeds" style="margin-top:18px"></div>
         </section>
 
   <!-- Removed IP collection script for visitor privacy -->
   <script src="js/plugins.js"></script>
+  <!-- Prefer local vendor copy of DOMPurify; CDN used as fallback for freshness -->
+  <script src="js/vendor/dompurify.min.js"></script>
+  <script>
+    (function(){
+      if(!window.DOMPurify){
+        var s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js';
+        s.crossOrigin = 'anonymous';
+        document.head.appendChild(s);
+      }
+    })();
+  </script>
   <script src="js/passion-tabs.js"></script>
+  <script src="js/lightbox.js"></script>
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
