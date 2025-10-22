@@ -5,7 +5,7 @@
   "profileImage": "img/tomlacy - 2023.png",
   "resume": "TomALacy.pdf",
   "passions": [
-  { "label": "Photography", "feed": "https://feeds.npr.org/1001/rss.xml" },
+  { "label": "Photography", "album": { "url": "https://www.amazon.com/photos/shared/wvGn5xvwTIOYnWcfdM6j5w.2y4dIj1Dqxzf_fqVeFlV52", "images": [] } },
     { "label": "Sports", "feed": "https://www.espn.com/espn/rss/news" },
     { "label": "Tech", "feed": "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml" }
   ,{ "label": "People / Team Leadership" }
