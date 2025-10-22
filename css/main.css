@@ -379,3 +379,13 @@ textarea {
 /* Photography gallery styles */
 .photo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:12px}
 .photo-grid img{width:100%;height:100%;object-fit:cover;border-radius:8px;border:1px solid rgba(11,22,39,0.06)}
+
+/* Simple lightbox styles */
+#simple-lightbox{display:none}
+#simple-lightbox.open{display:block}
+#simple-lightbox .lb-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9998}
+#simple-lightbox .lb-content{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9999;max-width:90%;max-height:90%;display:flex;align-items:center;justify-content:center}
+#simple-lightbox .lb-image{max-width:100%;max-height:80vh;border-radius:8px;box-shadow:0 10px 30px rgba(2,6,23,0.6)}
+#simple-lightbox .lb-close{position:absolute;right:8px;top:8px;background:transparent;border:0;color:#fff;font-size:28px}
+#simple-lightbox .lb-controls{position:absolute;left:8px;right:8px;top:50%;display:flex;justify-content:space-between}
+#simple-lightbox .lb-prev,#simple-lightbox .lb-next{background:rgba(0,0,0,0.3);border:0;color:#fff;padding:8px 12px;border-radius:6px}

@@ -181,11 +181,14 @@ async function initPassionTabs() {
         if (Array.isArray(passion.album.images) && passion.album.images.length > 0) {
           const grid = document.createElement('div');
           grid.className = 'photo-grid';
-          passion.album.images.forEach(src => {
+          passion.album.images.forEach((src, si) => {
             const img = document.createElement('img');
             img.src = src;
             img.alt = '';
             img.loading = 'lazy';
+            img.className = 'photo-thumb';
+            img.setAttribute('data-src', src);
+            img.setAttribute('data-index', si);
             grid.appendChild(img);
           });
           section.appendChild(grid);
