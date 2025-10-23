@@ -380,6 +380,10 @@ textarea {
 .photo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:12px}
 .photo-grid img{width:100%;height:100%;object-fit:cover;border-radius:8px;border:1px solid rgba(11,22,39,0.06)}
 
+/* Placeholder card for non-image URLs (e.g., album page links) */
+.photo-card{display:flex;align-items:center;justify-content:center;height:120px;border-radius:8px;border:1px dashed rgba(11,22,39,0.06);background:linear-gradient(180deg,#fff,#fafafa);color:var(--muted);font-size:0.95rem}
+.photo-card a{color:var(--blue);padding:6px 10px}
+
 /* Simple lightbox styles */
 #simple-lightbox{display:none}
 #simple-lightbox.open{display:block}

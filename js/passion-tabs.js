@@ -181,15 +181,41 @@ async function initPassionTabs() {
         if (Array.isArray(passion.album.images) && passion.album.images.length > 0) {
           const grid = document.createElement('div');
           grid.className = 'photo-grid';
+          const imageRegex = /\.(jpe?g|png|webp)(?:\?|$)/i;
           passion.album.images.forEach((src, si) => {
-            const img = document.createElement('img');
-            img.src = src;
-            img.alt = '';
-            img.loading = 'lazy';
-            img.className = 'photo-thumb';
-            img.setAttribute('data-src', src);
-            img.setAttribute('data-index', si);
-            grid.appendChild(img);
+            // Only create an <img> for likely direct image-file URLs. Otherwise show a clickable placeholder.
+            if (imageRegex.test(src)) {
+              const img = document.createElement('img');
+              img.src = src;
+              img.alt = '';
+              img.loading = 'lazy';
+              img.className = 'photo-thumb';
+              img.setAttribute('data-src', src);
+              img.setAttribute('data-index', si);
+              // If the image fails to load, replace with a link placeholder
+              img.addEventListener('error', () => {
+                const placeholder = document.createElement('div');
+                placeholder.className = 'photo-card';
+                const a = document.createElement('a');
+                a.href = src;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                a.textContent = 'Open photo';
+                placeholder.appendChild(a);
+                img.replaceWith(placeholder);
+              });
+              grid.appendChild(img);
+            } else {
+              const card = document.createElement('div');
+              card.className = 'photo-card';
+              const a = document.createElement('a');
+              a.href = src;
+              a.target = '_blank';
+              a.rel = 'noopener noreferrer';
+              a.textContent = 'Open photo';
+              card.appendChild(a);
+              grid.appendChild(card);
+            }
           });
           section.appendChild(grid);
         } else {

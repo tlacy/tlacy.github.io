@@ -20,11 +20,20 @@
 
     if (heroName && name) heroName.textContent = name;
     if (heroTitle && title) heroTitle.textContent = title;
-    if (heroBio && bio) heroBio.textContent = bio;
+    if (heroBio && bio) {
+      // Allow simple HTML in bio but sanitize it first
+      if (window.DOMPurify && typeof DOMPurify.sanitize === 'function') {
+        heroBio.innerHTML = DOMPurify.sanitize(bio);
+      } else {
+        // fallback to textContent to avoid unsafe HTML
+        heroBio.textContent = bio;
+      }
+    }
     if (profileImg && profileImage) profileImg.src = profileImage;
     if (resumeBtn && resume) {
       resumeBtn.href = resume;
-      resumeBtn.removeAttribute('download');
+      // leave download attribute so it suggests downloading when available
+      resumeBtn.setAttribute('download', '');
     }
 
     if (socialLinks && data.social) {
