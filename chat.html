@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Chat — tomlacy.net</title>
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Chat with my content</h1>
+      <div id="chat" aria-live="polite"></div>
+      <form id="chat-form" action="#" method="post" onsubmit="return false;">
+        <label for="chat-input">Message</label>
+        <textarea id="chat-input" rows="3" placeholder="Type your message (text only)"></textarea>
+        <p>
+          <button id="send-btn" type="button">Send</button>
+        </p>
+      </form>
+    </div>
+    <script src="js/chat.js"></script>
+  </body>
+</html>

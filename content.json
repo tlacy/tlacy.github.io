@@ -1,0 +1,39 @@
+{
+  "name": "Tom Lacy",
+  "title": "Executive Engineering Leader",
+  "bio": "Hi — I'm Tom a CTO | Technology Executive | Scaling PE-Backed and Growth-Stage Companies. \nI build things, teams, take photos, and I love to play and follow sports. This site is a place to share my work and let visitors chat about it.",
+  "profileImage": "img/tomlacy - 2023.png",
+  "resume": "TomALacy.pdf",
+  "passions": [
+    {
+      "label": "Photography",
+      "album": {
+        "url": "https://www.amazon.com/photos/shared/wvGn5xvwTIOYnWcfdM6j5w.2y4dIj1Dqxzf_fqVeFlV52",
+        "images": [
+          "https://via.placeholder.com/800x600.jpg",
+          "https://via.placeholder.com/640x480.jpg"
+        ]
+      }
+    },
+    {
+      "label": "Sports",
+      "feed": "https://www.espn.com/espn/rss/news"
+    },
+    {
+      "label": "Tech",
+      "feed": "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml"
+    },
+    {
+      "label": "People / Team Leadership"
+    }
+  ],
+  "social": {
+    "linkedin": "",
+    "facebook": "",
+    "instagram": ""
+  },
+  "people": {
+    "contactEmail": "tomalacy@gmail.com",
+    "content": ""
+  }
+}

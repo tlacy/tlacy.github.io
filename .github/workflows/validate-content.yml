@@ -1,0 +1,18 @@
+name: Validate content.json
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  validate:
+    name: Validate content.json and referenced assets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        # pinned to actions/checkout@v4 for reproducible runs
+        uses: actions/checkout@v4
+
+      - name: Validate content.json and referenced files
+        run: python3 .github/scripts/validate_content.py
