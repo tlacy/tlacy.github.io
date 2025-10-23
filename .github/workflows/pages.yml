@@ -11,7 +11,7 @@ jobs:
       pages: write
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Build (none)
         run: echo 'No build step; site is static'
       - name: Deploy to GitHub Pages via peaceiris

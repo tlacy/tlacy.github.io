@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        # pinned to actions/checkout@v4 for reproducible runs
-        uses: actions/checkout@v4
+        # pinned to actions/checkout@v5 for reproducible runs
+        uses: actions/checkout@v5
 
       - name: Validate content.json and referenced files
         run: python3 .github/scripts/validate_content.py
