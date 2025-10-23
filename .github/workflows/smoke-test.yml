@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
+        # pinned to actions/checkout@v4 for reproducible runs
         uses: actions/checkout@v4
 
       - name: Start static server
