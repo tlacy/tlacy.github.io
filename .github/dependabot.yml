@@ -1,0 +1,9 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 5
+    # Keep an eye on new major versions for actions used in workflows
+    # Dependabot will propose updates to action versions (tags/sha) as PRs.
