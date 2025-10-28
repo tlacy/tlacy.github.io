@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1584" height="396" viewBox="0 0 1584 396" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="titleB">
+  <title id="titleB">Abstract growth / data banner</title>
+  <defs>
+    <linearGradient id="gradB" x1="0" x2="1">
+      <stop offset="0%" stop-color="#06283D"/>
+      <stop offset="100%" stop-color="#0EA5A1"/>
+    </linearGradient>
+  </defs>
+  <rect width="1584" height="396" fill="url(#gradB)"/>
+
+  <!-- soft upward curves / chart lines -->
+  <g fill="none" stroke="#ffffff" stroke-opacity="0.14" stroke-width="6" stroke-linecap="round">
+    <path d="M50 300 C200 250 300 220 450 210 C650 200 800 160 1000 140 C1250 120 1450 80 1550 60"/>
+    <path d="M50 330 C200 300 350 260 500 240 C700 220 900 200 1100 180 C1350 150 1500 120 1550 100" stroke-width="4" stroke-opacity="0.08"/>
+  </g>
+
+  <!-- small bar motifs on right -->
+  <g transform="translate(1100,160)" fill="#ffffff" opacity="0.12">
+    <rect x="0" y="40" width="18" height="120" rx="2"/>
+    <rect x="36" y="20" width="18" height="140" rx="2"/>
+    <rect x="72" y="0" width="18" height="160" rx="2"/>
+  </g>
+
+  <text x="1080" y="60" font-family="Segoe UI, Arial, sans-serif" font-size="22" fill="white" opacity="0.95">Scaling product organizations — growth &amp; M&amp;A</text>
+</svg>
