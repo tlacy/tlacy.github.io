@@ -1,0 +1,325 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Photo Gallery - Tom Lacy</title>
+        <meta name="description" content="Tom Lacy's Photography Gallery">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="css/main.css">
+        <style>
+            .gallery-header {
+                max-width: 1100px;
+                margin: 20px auto;
+                padding: 20px;
+                text-align: center;
+            }
+            .gallery-header h1 {
+                margin: 0 0 8px 0;
+                font-size: 2rem;
+                color: #04233b;
+            }
+            .gallery-header p {
+                margin: 0;
+                color: var(--muted);
+            }
+            .gallery-header a {
+                display: inline-block;
+                margin-top: 12px;
+                color: var(--blue);
+            }
+            .gallery-grid {
+                max-width: 1400px;
+                margin: 0 auto 40px;
+                padding: 20px;
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                gap: 16px;
+            }
+            .gallery-item {
+                position: relative;
+                overflow: hidden;
+                border-radius: 8px;
+                background: #f0f0f0;
+                aspect-ratio: 1;
+                cursor: pointer;
+                transition: transform 0.2s, box-shadow 0.2s;
+            }
+            .gallery-item:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 8px 24px rgba(11,22,39,0.12);
+            }
+            .gallery-item img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            /* Lightbox styles */
+            .lightbox {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.9);
+                z-index: 10000;
+                align-items: center;
+                justify-content: center;
+            }
+            .lightbox.active {
+                display: flex;
+            }
+            .lightbox img {
+                max-width: 90%;
+                max-height: 90vh;
+                border-radius: 4px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            }
+            .lightbox-close {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                background: rgba(255,255,255,0.2);
+                border: 0;
+                color: white;
+                font-size: 32px;
+                width: 50px;
+                height: 50px;
+                border-radius: 25px;
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+            .lightbox-close:hover {
+                background: rgba(255,255,255,0.3);
+            }
+            .lightbox-nav {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                background: rgba(255,255,255,0.2);
+                border: 0;
+                color: white;
+                font-size: 28px;
+                width: 50px;
+                height: 50px;
+                border-radius: 25px;
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+            .lightbox-nav:hover {
+                background: rgba(255,255,255,0.3);
+            }
+            .lightbox-prev {
+                left: 20px;
+            }
+            .lightbox-next {
+                right: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="gallery-header">
+            <h1>Photo Gallery</h1>
+            <p>A collection of my photography</p>
+            <a href="index.html">← Back to Home</a>
+        </div>
+
+        <div class="gallery-grid" id="gallery">
+            <!-- Photos will be loaded here by JavaScript -->
+        </div>
+
+        <div class="lightbox" id="lightbox">
+            <button class="lightbox-close" id="lightbox-close">&times;</button>
+            <button class="lightbox-nav lightbox-prev" id="lightbox-prev">&larr;</button>
+            <button class="lightbox-nav lightbox-next" id="lightbox-next">&rarr;</button>
+            <img id="lightbox-img" src="" alt="Gallery photo">
+        </div>
+
+        <script>
+            // Load and display all gallery photos
+            const galleryPhotos = [
+                // This will be populated by scanning img/gallery/ directory
+                // For now we'll use a script to auto-discover images
+            ];
+
+            const galleryContainer = document.getElementById('gallery');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxClose = document.getElementById('lightbox-close');
+            const lightboxPrev = document.getElementById('lightbox-prev');
+            const lightboxNext = document.getElementById('lightbox-next');
+
+            let currentIndex = 0;
+            let photos = [];
+
+            // Fetch list of photos from img/gallery/
+            fetch('img/gallery/')
+                .then(response => response.text())
+                .then(html => {
+                    // Parse directory listing (this works on some servers; fallback below)
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const links = Array.from(doc.querySelectorAll('a'))
+                        .map(a => a.getAttribute('href'))
+                        .filter(href => href && /\.(jpg|jpeg|png|gif|heic)$/i.test(href));
+                    
+                    if (links.length > 0) {
+                        photos = links.map(f => `img/gallery/${f}`);
+                        renderGallery();
+                    } else {
+                        // Fallback: use hardcoded list (will be generated by script)
+                        loadHardcodedPhotos();
+                    }
+                })
+                .catch(() => {
+                    // If directory listing fails, use hardcoded list
+                    loadHardcodedPhotos();
+                });
+
+            function loadHardcodedPhotos() {
+                photos = [
+                    "img/gallery/AddieandMe.jpg",
+                    "img/gallery/banner_DSC_0050.JPG",
+                    "img/gallery/banner_DSC_0432e.JPG",
+                    "img/gallery/banner_DSC_0752e.JPG",
+                    "img/gallery/banner_DSC_1623.JPG",
+                    "img/gallery/banner_DSC_5605.JPG",
+                    "img/gallery/CONVAR496.jpg",
+                    "img/gallery/Copy (2) of DSC_0089.JPG",
+                    "img/gallery/Copy (2) of DSC_0119.JPG",
+                    "img/gallery/Copy (2) of DSC_0150.JPG",
+                    "img/gallery/DSC_0004.JPG",
+                    "img/gallery/DSC_0009 (2).JPG",
+                    "img/gallery/DSC_0009 (3).JPG",
+                    "img/gallery/DSC_0011.JPG",
+                    "img/gallery/DSC_0043.JPG",
+                    "img/gallery/DSC_0049.JPG",
+                    "img/gallery/DSC_0050a.JPG",
+                    "img/gallery/DSC_0056.JPG",
+                    "img/gallery/DSC_0058.JPG",
+                    "img/gallery/DSC_0059.JPG",
+                    "img/gallery/DSC_0060.jpg",
+                    "img/gallery/DSC_0065a.JPG",
+                    "img/gallery/DSC_0065ab.JPG",
+                    "img/gallery/DSC_0069.JPG",
+                    "img/gallery/DSC_0076.jpg",
+                    "img/gallery/DSC_0080.JPG",
+                    "img/gallery/DSC_0086.JPG",
+                    "img/gallery/DSC_0126.JPG",
+                    "img/gallery/DSC_0153.JPG",
+                    "img/gallery/DSC_0209e.JPG",
+                    "img/gallery/DSC_0248e.JPG",
+                    "img/gallery/DSC_0318 copye.JPG",
+                    "img/gallery/DSC_0423e.JPG",
+                    "img/gallery/DSC_0500.JPG",
+                    "img/gallery/DSC_0504e.JPG",
+                    "img/gallery/DSC_0575.JPG",
+                    "img/gallery/DSC_0576.JPG",
+                    "img/gallery/DSC_0593.JPG",
+                    "img/gallery/DSC_0626.JPG",
+                    "img/gallery/DSC_0704e.JPG",
+                    "img/gallery/DSC_0927e.JPG",
+                    "img/gallery/DSC_0980e.JPG",
+                    "img/gallery/DSC_0989e.JPG",
+                    "img/gallery/DSC_1069e.JPG",
+                    "img/gallery/DSC_1132e.JPG",
+                    "img/gallery/DSC_1159e.JPG",
+                    "img/gallery/DSC_1245.JPG",
+                    "img/gallery/DSC_1315.JPG",
+                    "img/gallery/DSC_1330.JPG",
+                    "img/gallery/DSC_1423.JPG",
+                    "img/gallery/DSC_1443.JPG",
+                    "img/gallery/DSC_1453e.JPG",
+                    "img/gallery/DSC_1612e.JPG",
+                    "img/gallery/DSC_1617.JPG",
+                    "img/gallery/DSC_1665.JPG",
+                    "img/gallery/DSC_1678.JPG",
+                    "img/gallery/DSC_1683.JPG",
+                    "img/gallery/DSC_1749.JPG",
+                    "img/gallery/DSC_1752.JPG",
+                    "img/gallery/DSC_1891e.JPG",
+                    "img/gallery/DSC_1950.JPG",
+                    "img/gallery/DSC_2096.JPG",
+                    "img/gallery/DSC_2590.JPG",
+                    "img/gallery/DSC_3991.JPG",
+                    "img/gallery/DSC_6341.JPG",
+                    "img/gallery/DSC_6714.JPG",
+                    "img/gallery/DSC_8032.JPG",
+                    "img/gallery/IMG_0959.JPG",
+                    "img/gallery/IMG_1046.JPG",
+                    "img/gallery/IMG_1399.jpg",
+                    "img/gallery/IMG_1732 3.HEIC",
+                    "img/gallery/IMG_1750 3.HEIC",
+                    "img/gallery/IMG_1899.jpg",
+                    "img/gallery/IMG_2102.JPG",
+                    "img/gallery/IMG_2895.jpg",
+                    "img/gallery/IMG_2901.jpg",
+                    "img/gallery/IMG_3006.jpg",
+                    "img/gallery/IMG_3007.jpg",
+                    "img/gallery/IMG_3027.jpg",
+                    "img/gallery/JackSnow.JPG",
+                    "img/gallery/JacksonCopy.jpg",
+                    "img/gallery/s.jpg"
+                ];
+                renderGallery();
+            }
+
+            function renderGallery() {
+                galleryContainer.innerHTML = '';
+                photos.forEach((photo, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item';
+                    item.innerHTML = `<img src="${photo}" alt="Photo ${index + 1}" loading="lazy">`;
+                    item.addEventListener('click', () => openLightbox(index));
+                    galleryContainer.appendChild(item);
+                });
+            }
+
+            function openLightbox(index) {
+                currentIndex = index;
+                lightboxImg.src = photos[currentIndex];
+                lightbox.classList.add('active');
+            }
+
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+            }
+
+            function showPrev() {
+                currentIndex = (currentIndex - 1 + photos.length) % photos.length;
+                lightboxImg.src = photos[currentIndex];
+            }
+
+            function showNext() {
+                currentIndex = (currentIndex + 1) % photos.length;
+                lightboxImg.src = photos[currentIndex];
+            }
+
+            lightboxClose.addEventListener('click', closeLightbox);
+            lightboxPrev.addEventListener('click', showPrev);
+            lightboxNext.addEventListener('click', showNext);
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) closeLightbox();
+            });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (!lightbox.classList.contains('active')) return;
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowLeft') showPrev();
+                if (e.key === 'ArrowRight') showNext();
+            });
+
+            // Generate photo list from actual files
+            // This script will be run to populate the hardcoded list
+            (function generatePhotoList() {
+                // In production, run: ls -1 img/gallery/*.{jpg,JPG,jpeg,png,HEIC} | sed 's/^/"/' | sed 's/$/",/' 
+                // and paste the output into the loadHardcodedPhotos() photos array
+            })();
+        </script>
+    </body>
+</html>

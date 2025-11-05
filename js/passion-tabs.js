@@ -170,12 +170,15 @@ async function initPassionTabs() {
       if (passion.album && passion.album.url) {
         const section = document.createElement('section');
         section.innerHTML = `<h3>${passion.label}</h3>`;
+        // Check if galleryLink is present (local gallery page)
+        const galleryUrl = passion.galleryLink || passion.album.url;
         const link = document.createElement('a');
-        link.href = passion.album.url;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
+        link.href = galleryUrl;
+        link.target = passion.galleryLink ? '_self' : '_blank';
+        link.rel = passion.galleryLink ? '' : 'noopener noreferrer';
         link.className = 'album-link button';
-        link.textContent = 'Open photo album';
+        link.textContent = passion.galleryLink ? 'View Gallery →' : 'Open photo album';
+        link.style.cssText = 'display:inline-block;background:var(--blue);color:#fff;padding:10px 16px;border-radius:8px;margin:8px 0;text-decoration:none;';
         section.appendChild(link);
         // Optional inline images grid if image URLs are provided in content.json
         if (Array.isArray(passion.album.images) && passion.album.images.length > 0) {
