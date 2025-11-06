@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1584" height="396" viewBox="0 0 1584 396" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="titleC">
+  <title id="titleC">Team and strategy blurred meeting banner</title>
+  <defs>
+    <linearGradient id="gradC" x1="0" x2="1">
+      <stop offset="0%" stop-color="#3a3a3a"/>
+      <stop offset="100%" stop-color="#1f3b4d"/>
+    </linearGradient>
+    <filter id="blur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12"/>
+    </filter>
+  </defs>
+
+  <rect width="1584" height="396" fill="url(#gradC)"/>
+
+  <!-- layered blurred rectangles to suggest people around a table -->
+  <g transform="translate(120,60)" fill="#ffffff" opacity="0.06" filter="url(#blur)">
+    <rect x="0" y="40" width="320" height="160" rx="12"/>
+    <rect x="340" y="20" width="280" height="180" rx="12"/>
+    <rect x="640" y="10" width="420" height="200" rx="12"/>
+  </g>
+
+  <!-- faint strategy lines -->
+  <g stroke="#ffffff" stroke-opacity="0.06" stroke-width="2" fill="none">
+    <path d="M220 260 L420 200 L620 260 L820 190" stroke-linecap="round"/>
+  </g>
+
+  <text x="1080" y="60" font-family="Segoe UI, Arial, sans-serif" font-size="22" fill="white" opacity="0.95">Building engineering teams &amp; product-led growth</text>
+</svg>

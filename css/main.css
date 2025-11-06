@@ -380,6 +380,9 @@ textarea {
 .photo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:12px}
 .photo-grid img{width:100%;height:100%;object-fit:cover;border-radius:8px;border:1px solid rgba(11,22,39,0.06)}
 
+/* LinkedIn banner preview styles */
+.linkedin-banner img{width:100%;max-width:1584px;height:auto;border-radius:8px;display:block;margin:12px auto;box-shadow:0 6px 18px rgba(11,22,39,0.06)}
+
 /* Placeholder card for non-image URLs (e.g., album page links) */
 .photo-card{display:flex;align-items:center;justify-content:center;height:120px;border-radius:8px;border:1px dashed rgba(11,22,39,0.06);background:linear-gradient(180deg,#fff,#fafafa);color:var(--muted);font-size:0.95rem}
 .photo-card a{color:var(--blue);padding:6px 10px}

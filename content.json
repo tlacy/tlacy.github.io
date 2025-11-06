@@ -1,30 +1,41 @@
 {
   "name": "Tom Lacy",
   "title": "Executive Engineering Leader",
-  "bio": "Hi — I'm Tom. I build things, teams,take photos, and follow sports. This site is a place to share my work and let visitors chat about it.",
+  "bio": "Hi — I'm Tom a CTO | Technology Executive | Scaling PE-Backed and Growth-Stage Companies. \nI build things, teams, take photos, and I love to play and follow sports. This site is a place to share my work and let visitors chat about it.",
   "profileImage": "img/tomlacy - 2023.png",
   "resume": "TomALacy.pdf",
   "passions": [
-    { "label": "Photography", "album": { "url": "https://www.amazon.com/photos/shared/wvGn5xvwTIOYnWcfdM6j5w.2y4dIj1Dqxzf_fqVeFlV52", "images": [
-      "https://www.amazon.com/photos/shared/wvGn5xvwTIOYnWcfdM6j5w.2y4dIj1Dqxzf_fqVeFlV52/gallery/ar0SOZ5tTx2TJJxWQvYunA",
-      "https://www.amazon.com/photos/shared/wvGn5xvwTIOYnWcfdM6j5w.2y4dIj1Dqxzf_fqVeFlV52/gallery/utl25AhoRy-z83oMxMX_NA",
-      "https://www.amazon.com/photos/shared/wvGn5xvwTIOYnWcfdM6j5w.2y4dIj1Dqxzf_fqVeFlV52/gallery/TzVLP4IMRw2TAtUjiAiXqQ",
-      "https://www.amazon.com/photos/shared/wvGn5xvwTIOYnWcfdM6j5w.2y4dIj1Dqxzf_fqVeFlV52/gallery/HPRWkHO2R-65VRsCxNxT8Q?pageIndex=0",
-      "https://www.amazon.com/photos/shared/wvGn5xvwTIOYnWcfdM6j5w.2y4dIj1Dqxzf_fqVeFlV52/gallery/Bj5gYS93SMWI09x8C-yb_Q?pageIndex=0",
-      "https://www.amazon.com/photos/shared/wvGn5xvwTIOYnWcfdM6j5w.2y4dIj1Dqxzf_fqVeFlV52/gallery/I_RmM19kQo25o7z8PqUqSg?pageIndex=0",
-      "https://www.amazon.com/photos/shared/wvGn5xvwTIOYnWcfdM6j5w.2y4dIj1Dqxzf_fqVeFlV52/gallery/WOHDxKT5QNuk-HNimeqb5A?pageIndex=0"
-    ] } },
-    { "label": "Sports", "feed": "https://www.espn.com/espn/rss/news" },
-    { "label": "Tech", "feed": "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml" }
-  ,{ "label": "People / Team Leadership" }
-  ]
-  ,
+    {
+      "label": "Photography",
+      "galleryLink": "gallery.html",
+      "album": {
+        "url": "gallery.html",
+        "images": [
+          "img/gallery/banner_DSC_0050.JPG",
+          "img/gallery/banner_DSC_0432e.JPG",
+          "img/gallery/banner_DSC_0752e.JPG",
+          "img/gallery/banner_DSC_1623.JPG",
+          "img/gallery/banner_DSC_5605.JPG"
+        ]
+      }
+    },
+    {
+      "label": "Sports",
+      "feed": "https://www.espn.com/espn/rss/news"
+    },
+    {
+      "label": "Tech",
+      "feed": "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml"
+    },
+    {
+      "label": "People / Team Leadership"
+    }
+  ],
   "social": {
-    "linkedin": "", 
+    "linkedin": "",
     "facebook": "",
     "instagram": ""
-  }
-  ,
+  },
   "people": {
     "contactEmail": "tomalacy@gmail.com",
     "content": ""

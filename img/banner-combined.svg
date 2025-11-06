@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1584" height="396" viewBox="0 0 1584 396" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="titleCombined">
+  <title id="titleCombined">Combined banner - Austin skyline, growth motif, and team shapes</title>
+  <defs>
+    <linearGradient id="bgGrad" x1="0" x2="1">
+      <stop offset="0%" stop-color="#FFD69B"/>
+      <stop offset="45%" stop-color="#FF8A65"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="leftFade" x1="0" x2="1">
+      <stop offset="0%" stop-color="#000" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.00"/>
+    </linearGradient>
+    <filter id="softBlur"><feGaussianBlur stdDeviation="10"/></filter>
+  </defs>
+
+  <!-- Background gradient -->
+  <rect width="1584" height="396" fill="url(#bgGrad)"/>
+
+  <!-- stylized Austin skyline silhouette (left-mid) -->
+  <g transform="translate(40,110)" fill="#071029" opacity="0.96">
+    <rect x="0" y="140" width="70" height="120" rx="4"/>
+    <rect x="110" y="80" width="120" height="180" rx="4"/>
+    <rect x="260" y="100" width="200" height="160" rx="4"/>
+    <rect x="480" y="60" width="140" height="200" rx="4"/>
+    <rect x="640" y="20" width="240" height="240" rx="6"/>
+  </g>
+
+  <!-- growth lines (center-right) -->
+  <g fill="none" stroke="#ffffff" stroke-opacity="0.14" stroke-width="6" stroke-linecap="round" transform="translate(0,0)">
+    <path d="M420 300 C560 250 660 220 820 210 C1000 200 1120 170 1320 140"/>
+    <path d="M420 330 C560 300 700 260 860 240 C1080 220 1220 200 1400 170" stroke-width="4" stroke-opacity="0.08"/>
+  </g>
+
+  <!-- team / strategy blurred shapes behind center-left -->
+  <g transform="translate(220,40)" opacity="0.08" filter="url(#softBlur)">
+    <rect x="0" y="60" width="320" height="160" rx="12" fill="#ffffff"/>
+    <rect x="360" y="40" width="260" height="180" rx="12" fill="#ffffff"/>
+    <rect x="660" y="30" width="420" height="200" rx="12" fill="#ffffff"/>
+  </g>
+
+  <!-- left clear area hint (transparent) to avoid avatar overlap -->
+  <rect x="0" y="0" width="420" height="396" fill="url(#leftFade)"/>
+
+  <!-- subtle vignette overall -->
+  <rect width="1584" height="396" fill="black" opacity="0.06"/>
+
+  <!-- overlay headline (editable) -->
+  <text x="1080" y="64" font-family="Segoe UI, Arial, sans-serif" font-size="22" fill="white" opacity="0.98">Open to engineering leadership — Austin / Remote</text>
+
+  <!-- small caption under headline -->
+  <text x="1080" y="96" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="white" opacity="0.85">Scaling product organizations • M&amp;A • Team building</text>
+</svg>
