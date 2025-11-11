@@ -70,7 +70,25 @@ async function initPassionTabs() {
      * - All other tabs have tabindex="-1" (not in tab order, but can receive focus programmatically)
      */
     (data.passions || []).forEach((p, idx) => {
-      // Create tab button
+      // Check if this passion has a dedicated page
+      const dedicatedPageUrl = p.pageLink || p.galleryLink;
+      
+      if (dedicatedPageUrl) {
+        // Create a clickable link button that navigates to the dedicated page
+        const btn = document.createElement('a');
+        btn.href = dedicatedPageUrl;
+        btn.textContent = p.label;
+        btn.className = 'passion-link-button';
+        btn.setAttribute('role', 'button');
+        btn.id = `tab-${idx}`;
+        
+        tabsWrap.appendChild(btn);
+        
+        // Skip creating panels for passions with dedicated pages
+        return;
+      }
+      
+      // For passions without dedicated pages, create traditional tab buttons
       const btn = document.createElement('button');
       btn.textContent = p.label;
       btn.setAttribute('role', 'tab');
@@ -231,39 +249,52 @@ async function initPassionTabs() {
     async function renderFeedInto(container, passion) {
       container.innerHTML = '';
       if (!passion) {
-        // If this is the People / Team Leadership panel, render editable site content
-        if (passion && /People/i.test(passion.label)) {
-          try {
-            const people = (data && data.people) ? data.people : null;
-            const section = document.createElement('section');
-            section.innerHTML = `<h3>${passion.label}</h3>`;
-            if (people && (people.content || people.contactEmail)) {
-              // sanitize and render content
-              const contentHtml = sanitizeHtml(people.content || '');
-              const contentWrap = document.createElement('div');
-              contentWrap.className = 'people-content';
-              contentWrap.innerHTML = contentHtml || '<p>No leadership content has been added yet.</p>';
-              section.appendChild(contentWrap);
-              if (people.contactEmail) {
-                const contact = document.createElement('p');
-                contact.className = 'people-contact';
-                // Show mailto link; keep simple to allow copy/paste
-                contact.innerHTML = `Contact: <a href="mailto:${escapeHtml(people.contactEmail)}">${escapeHtml(people.contactEmail)}</a>`;
-                section.appendChild(contact);
-              }
-            } else {
-              section.innerHTML += '<p class="placeholder">No leadership content configured. Edit <code>content.json</code> or use manage.html to add content.</p>';
-            }
-            container.appendChild(section);
-            return;
-          } catch (e) {
-            container.innerHTML = `<p class="placeholder">No feed configured for ${passion.label}.</p>`;
-            return;
-          }
-        }
-        container.innerHTML = `<p class="placeholder">No feed configured for ${passion.label}.</p>`;
+        container.innerHTML = '<p class="placeholder">No content configured.</p>';
         return;
       }
+      
+      // If this is the People / Team Leadership panel, render custom content
+      if (passion && /People/i.test(passion.label)) {
+        try {
+          const people = (data && data.people) ? data.people : null;
+          const section = document.createElement('section');
+          section.innerHTML = `<h3>${passion.label}</h3>`;
+          if (people && (people.content || people.contactEmail)) {
+            // sanitize and render content
+            const contentHtml = sanitizeHtml(people.content || '');
+            const contentWrap = document.createElement('div');
+            contentWrap.className = 'people-content';
+            contentWrap.innerHTML = contentHtml || '<p>No leadership content has been added yet.</p>';
+            section.appendChild(contentWrap);
+            if (people.contactEmail) {
+              const contact = document.createElement('p');
+              contact.className = 'people-contact';
+              // Show mailto link; keep simple to allow copy/paste
+              contact.innerHTML = `Contact: <a href="mailto:${escapeHtml(people.contactEmail)}">${escapeHtml(people.contactEmail)}</a>`;
+              section.appendChild(contact);
+            }
+          } else {
+            section.innerHTML += '<p class="placeholder">No leadership content configured. Edit <code>content.json</code> or use manage.html to add content.</p>';
+          }
+          
+          // Add "View More" link if pageLink is defined
+          if (passion.pageLink) {
+            const moreLink = document.createElement('a');
+            moreLink.href = passion.pageLink;
+            moreLink.className = 'view-more-link button';
+            moreLink.textContent = `Explore ${passion.label} →`;
+            moreLink.style.cssText = 'display:inline-block;background:var(--blue);color:#fff;padding:10px 16px;border-radius:8px;margin:12px 0;text-decoration:none;';
+            section.appendChild(moreLink);
+          }
+          
+          container.appendChild(section);
+          return;
+        } catch (e) {
+          container.innerHTML = `<p class="placeholder">Error loading ${passion.label} content.</p>`;
+          return;
+        }
+      }
+      
       // If an album is provided, render album UI (link + optional images grid)
       if (passion.album && passion.album.url) {
         const section = document.createElement('section');
@@ -353,6 +384,16 @@ async function initPassionTabs() {
         });
         section.innerHTML = `<h3>${passion.label} — recent (30d)</h3>`;
         section.appendChild(ul);
+        
+        // Add "View More" link if pageLink is defined
+        if (passion.pageLink) {
+          const moreLink = document.createElement('a');
+          moreLink.href = passion.pageLink;
+          moreLink.className = 'view-more-link button';
+          moreLink.textContent = `Explore ${passion.label} →`;
+          moreLink.style.cssText = 'display:inline-block;background:var(--blue);color:#fff;padding:10px 16px;border-radius:8px;margin:12px 0;text-decoration:none;';
+          section.appendChild(moreLink);
+        }
       } catch (err) {
         section.innerHTML = `<h3>${passion.label}</h3><p style="color:red">Failed to load feed.</p>`;
       }

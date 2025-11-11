@@ -1,0 +1,120 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Technology | Tom Lacy</title>
+  <meta name="description" content="Tom Lacy's technology insights and leadership">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="css/main.css">
+  
+  <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="main-nav">
+      <a href="index.html" class="nav-link">← Back to Home</a>
+    </nav>
+  </header>
+
+  <main class="passion-page">
+    <section class="passion-hero">
+      <h1>Technology</h1>
+      <p class="tagline">Building the future, one line of code at a time</p>
+    </section>
+
+    <!-- Feed Content (automatically populated) -->
+    <section class="feed-section">
+      <h2>Latest Tech News</h2>
+      <div id="tech-feed" class="feed-container">
+        <p class="loading">Loading latest technology updates...</p>
+      </div>
+    </section>
+
+    <!-- Custom Content Section (editable in content.json or directly in HTML) -->
+    <section class="custom-content">
+      <h2>My Tech Philosophy</h2>
+      <div class="content-area" id="tech-custom-content">
+        <!-- 
+          Add your custom content here:
+          - Technology stack preferences
+          - Engineering leadership principles
+          - Scaling strategies
+          - Case studies or project highlights
+          - Thoughts on emerging technologies
+          - Architecture diagrams or technical deep-dives
+        -->
+        <p>More content coming soon...</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2025 Tom Lacy. All rights reserved.</p>
+  </footer>
+
+  <!-- Load DOMPurify for sanitization -->
+  <script src="js/vendor/purify.min.js"></script>
+  <script>
+    /**
+     * Technology page initialization
+     * Loads and displays NYT Technology RSS feed
+     */
+    (async function() {
+      const feedUrl = 'https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml';
+      const feedContainer = document.getElementById('tech-feed');
+      
+      try {
+        // Fetch RSS feed via rss2json proxy
+        const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`;
+        const response = await fetch(proxyUrl);
+        const data = await response.json();
+        
+        if (data.status === 'ok' && data.items && data.items.length > 0) {
+          // Filter recent items (last 30 days)
+          const now = Date.now();
+          const thirtyDaysAgo = now - (30 * 24 * 60 * 60 * 1000);
+          const recentItems = data.items
+            .filter(item => {
+              const pubDate = new Date(item.pubDate).getTime();
+              return pubDate > thirtyDaysAgo;
+            })
+            .slice(0, 10); // Show max 10 items
+          
+          if (recentItems.length > 0) {
+            const html = recentItems.map(item => {
+              const title = DOMPurify ? DOMPurify.sanitize(item.title) : item.title;
+              const description = DOMPurify ? DOMPurify.sanitize(item.description) : item.description;
+              const link = item.link;
+              const date = new Date(item.pubDate).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+              });
+              
+              return `
+                <article class="feed-item">
+                  <h3><a href="${link}" target="_blank" rel="noopener noreferrer">${title}</a></h3>
+                  <time datetime="${item.pubDate}">${date}</time>
+                  <div class="feed-description">${description}</div>
+                </article>
+              `;
+            }).join('');
+            
+            feedContainer.innerHTML = html;
+          } else {
+            feedContainer.innerHTML = '<p>No recent updates available.</p>';
+          }
+        } else {
+          feedContainer.innerHTML = '<p>Unable to load feed at this time.</p>';
+        }
+      } catch (error) {
+        console.warn('Failed to load technology feed:', error);
+        feedContainer.innerHTML = '<p>Unable to load feed at this time.</p>';
+      }
+    })();
+  </script>
+</body>
+</html>
