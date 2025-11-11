@@ -21,14 +21,17 @@
     },
     {
       "label": "Sports",
-      "feed": "https://www.espn.com/espn/rss/news"
+      "feed": "https://www.espn.com/espn/rss/news",
+      "pageLink": "sports.html"
     },
     {
       "label": "Tech",
-      "feed": "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml"
+      "feed": "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml",
+      "pageLink": "tech.html"
     },
     {
-      "label": "People / Team Leadership"
+      "label": "People / Team Leadership",
+      "pageLink": "leadership.html"
     }
   ],
   "social": {
