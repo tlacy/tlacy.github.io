@@ -1,21 +1,53 @@
-// passion-tabs.js
-// Renders passions as tabs and fetches feeds into each tab panel.
+/**
+ * passion-tabs.js — Tabbed interface for displaying user passions and content feeds
+ * 
+ * This script creates an accessible tabbed interface that displays different "passions"
+ * (interests/topics) with associated content. Each passion can have:
+ * - RSS feed (fetched via rss2json.com proxy)
+ * - Photo album (local gallery or external link)
+ * - Custom HTML content (People/Leadership section)
+ * 
+ * Features:
+ * - ARIA-compliant keyboard navigation (Arrow keys, Home, End, Enter/Space)
+ * - Roving tabindex pattern for accessibility
+ * - Lazy loading of feed content (only loads when tab is activated)
+ * - HTML sanitization using DOMPurify with fallback sanitizer
+ * - Responsive design with pastel color themes
+ * 
+ * Security:
+ * - All HTML content is sanitized before rendering
+ * - External links use rel="noopener noreferrer"
+ * - Feed content limited to recent items (30 days, max 6)
+ * 
+ * Keyboard Navigation:
+ * - Arrow Left/Right: Move between tabs
+ * - Home/End: Jump to first/last tab
+ * - Enter/Space: Activate focused tab and move focus to panel
+ */
 
 async function initPassionTabs() {
   try {
+    // Load site configuration containing passions array
     const res = await fetch('content.json');
     const data = await res.json();
+    
+    // Get container elements
     const container = document.getElementById('passions-list');
     const feedsContainer = document.getElementById('feeds');
+    
+    // Clear existing content
     container.innerHTML = '';
     feedsContainer.innerHTML = '';
 
+    // Create tab buttons container
     const tabsWrap = document.createElement('div');
     tabsWrap.className = 'tab-buttons';
 
+    // Create tab panels container
     const panelsWrap = document.createElement('div');
     panelsWrap.className = 'panels-wrap';
 
+    // Map passion labels to background images
     const images = {
       'Photography': 'img/bg-photography.svg',
       'Sports': 'img/bg-sports.svg',
@@ -23,6 +55,7 @@ async function initPassionTabs() {
       'People / Team Leadership': 'img/bg-leadership.svg'
     };
 
+    // Map passion labels to pastel color themes
     const pastelMap = {
       'Photography': 'pastel-blue',
       'Sports': 'pastel-blue',
@@ -30,8 +63,14 @@ async function initPassionTabs() {
       'People / Team Leadership': 'pastel-purple'
     };
 
-    // Roving tabindex pattern: only the active tab has tabindex=0, others -1
+    /**
+     * Build tab buttons and panels
+     * Uses the roving tabindex pattern for keyboard accessibility:
+     * - Only the selected tab has tabindex="0" (keyboard focusable)
+     * - All other tabs have tabindex="-1" (not in tab order, but can receive focus programmatically)
+     */
     (data.passions || []).forEach((p, idx) => {
+      // Create tab button
       const btn = document.createElement('button');
       btn.textContent = p.label;
       btn.setAttribute('role', 'tab');
@@ -39,13 +78,20 @@ async function initPassionTabs() {
       btn.setAttribute('aria-selected', idx === 0 ? 'true' : 'false');
       btn.setAttribute('tabindex', idx === 0 ? '0' : '-1');
       btn.setAttribute('aria-controls', `panel-${idx}`);
+      
+      // Click handler - activate this tab
       btn.addEventListener('click', () => selectTab(idx));
+      
+      // Keyboard navigation handler
       btn.addEventListener('keydown', (ev) => onKeydown(ev, idx));
-      // Allow focus styling via keyboard
+      
+      // Visual focus indicators for keyboard users
       btn.addEventListener('focus', () => btn.classList.add('focus'));
       btn.addEventListener('blur', () => btn.classList.remove('focus'));
+      
       tabsWrap.appendChild(btn);
 
+      // Create corresponding panel
       const panel = document.createElement('div');
       panel.className = `tab-panel ${pastelMap[p.label] || ''}`;
       panel.id = `panel-${idx}`;
@@ -67,33 +113,60 @@ async function initPassionTabs() {
 
       panelsWrap.appendChild(panel);
 
-      // Preload first tab content
+      // Preload content for the first (default) tab
+      // Other tabs lazy-load when activated to improve performance
       if (idx === 0) {
         renderFeedInto(feedWrap, p);
       }
     });
 
+    // Add tab buttons and panels to page
     container.appendChild(tabsWrap);
     feedsContainer.appendChild(panelsWrap);
 
+    /**
+     * Activates a specific tab and shows its panel
+     * Implements the roving tabindex pattern and lazy-loads content
+     * 
+     * @param {number} i - Index of tab to select
+     * @param {boolean} moveFocusToPanel - Whether to move keyboard focus into the panel
+     *                                     (true for Enter/Space, false for arrow navigation)
+     */
     function selectTab(i, moveFocusToPanel = true) {
       const buttons = Array.from(tabsWrap.querySelectorAll('button'));
       const panels = Array.from(panelsWrap.querySelectorAll('.tab-panel'));
+      
+      // Update button states
       buttons.forEach((b, bi) => {
         const selected = bi === i;
+        
+        // Update ARIA attributes for screen readers
         b.setAttribute('aria-selected', selected ? 'true' : 'false');
+        
+        // Update tabindex for roving tabindex pattern
         b.setAttribute('tabindex', selected ? '0' : '-1');
+        
+        // Move focus to selected button
         if (selected) b.focus && b.focus();
       });
+      
+      // Update panel visibility
       panels.forEach((p, pi) => {
         const active = pi === i;
+        
+        // Show/hide panel using the hidden attribute
         p.hidden = !active;
+        
         if (active) {
           const feedDiv = p.querySelector('.feed-list');
+          
+          // Lazy load: only fetch content if panel is empty
           if (feedDiv && feedDiv.children.length === 0) {
             renderFeedInto(feedDiv, (data.passions || [])[i]);
           }
+          
           // Move focus into the panel only when explicitly requested (keyboard activation)
+          // This improves keyboard navigation UX
           if (moveFocusToPanel) {
             // Delay focus to ensure browsers have revealed the panel
             setTimeout(() => p.focus && p.focus(), 0);
@@ -102,20 +175,45 @@ async function initPassionTabs() {
       });
     }
 
+    /**
+     * Handles keyboard navigation between tabs
+     * Implements ARIA authoring practices for tab patterns
+     * 
+     * Supported keys:
+     * - ArrowRight: Move to next tab (wrap to same if at end)
+     * - ArrowLeft: Move to previous tab (wrap to same if at beginning)
+     * - Home: Jump to first tab
+     * - End: Jump to last tab
+     * - Enter/Space: Activate current tab and move focus to panel
+     * 
+     * @param {KeyboardEvent} ev - The keyboard event
+     * @param {number} idx - Current tab index
+     */
     function onKeydown(ev, idx) {
       const key = ev.key;
       const max = (data.passions || []).length - 1;
+      
       if (key === 'ArrowRight') {
+        // Prevent default scrolling behavior
         ev.preventDefault();
+        
+        // Move to next tab (stay on current if already at last)
         const next = Math.min(max, idx + 1);
         selectTab(next, false);
+        
+        // Explicitly focus the next button
         tabsWrap.querySelectorAll('button')[next].focus();
+        
       } else if (key === 'ArrowLeft') {
         ev.preventDefault();
+        
+        // Move to previous tab (stay on current if already at first)
         const prev = Math.max(0, idx - 1);
         selectTab(prev, false);
         tabsWrap.querySelectorAll('button')[prev].focus();
+        
       } else if (key === 'Home') {
+        // Jump to first tab
         ev.preventDefault();
         selectTab(0, false);
         tabsWrap.querySelectorAll('button')[0].focus();
@@ -260,7 +358,14 @@ async function initPassionTabs() {
       }
     }
 
-    // Small HTML sanitizer - whitelist tags and safe attributes
+    /**
+     * HTML Entity Escaping
+     * Converts special characters to HTML entities to prevent them from being interpreted as HTML
+     * Used before inserting user content into innerHTML
+     * 
+     * @param {string} s - String potentially containing special characters
+     * @returns {string} HTML-safe string with entities escaped
+     */
     function escapeHtml(s){
       if(!s) return '';
       return String(s).replace(/[&<>"]/g, function(c){
@@ -268,51 +373,94 @@ async function initPassionTabs() {
       });
     }
 
+    /**
+     * HTML Sanitization with Tag Whitelisting
+     * Removes dangerous HTML while preserving safe formatting tags
+     * 
+     * This function provides two-tier sanitization:
+     * 1. Prefer DOMPurify library (robust, battle-tested)
+     * 2. Fallback to custom whitelist-based sanitizer
+     * 
+     * Custom sanitizer allows only: P, BR, STRONG, EM, UL, OL, LI, A, H3, H4, B, I
+     * For <a> tags, only allows http(s): and mailto: hrefs
+     * All other attributes are stripped
+     * 
+     * @param {string} input - Raw HTML string (potentially dangerous)
+     * @returns {string} Sanitized HTML safe for innerHTML
+     */
     function sanitizeHtml(input){
       if(!input) return '';
-      // If DOMPurify is available, prefer it
+      
+      // Tier 1: Use DOMPurify if available (recommended)
       if(window.DOMPurify && typeof DOMPurify.sanitize === 'function'){
         return DOMPurify.sanitize(input);
       }
-      // Fallback: very small sanitizer
+      
+      // Tier 2: Fallback whitelist-based sanitizer
       const wrapper = document.createElement('div');
       wrapper.innerHTML = input;
+      
+      // Whitelist of allowed HTML tags (all uppercase for comparison)
       const ALLOWED_TAGS = new Set(['P','BR','STRONG','EM','UL','OL','LI','A','H3','H4','B','I']);
 
+      /**
+       * Recursively cleans a DOM node and its children
+       * - Removes disallowed tags (replaces with text content)
+       * - Strips all attributes except safe href on <a> tags
+       * 
+       * @param {Node} node - DOM node to clean
+       */
       function clean(node){
         const nodeName = node.nodeName;
+        
+        // Skip text nodes (they're safe)
         if(node.nodeType === Node.TEXT_NODE) return;
+        
+        // Remove disallowed tags by replacing with text content
         if(!ALLOWED_TAGS.has(nodeName)){
           const txt = document.createTextNode(node.textContent || '');
           node.parentNode.replaceChild(txt, node);
           return;
         }
+        
+        // Strip attributes (except safe hrefs on links)
         for(let i = node.attributes.length - 1; i >= 0; i--) {
           const attr = node.attributes[i].name;
           const val = node.getAttribute(attr);
+          
+          // Allow href on <a> tags, but only http(s): and mailto: protocols
           if(nodeName === 'A' && attr === 'href'){
+            // Remove javascript:, data:, and other dangerous protocols
             if(!/^https?:|^mailto:/i.test(val)){
               node.removeAttribute(attr);
             }
-            continue;
+            continue; // Keep the href if it passed validation
           }
+          
+          // Remove all other attributes (class, style, onclick, etc.)
           node.removeAttribute(attr);
         }
+        
+        // Recursively clean child nodes
         const children = Array.from(node.childNodes);
         children.forEach(clean);
       }
 
+      // Clean all top-level children
       const children = Array.from(wrapper.childNodes);
       children.forEach(child => {
         if(child.nodeType === Node.TEXT_NODE) return;
         clean(child);
       });
+      
       return wrapper.innerHTML;
     }
 
   } catch (err) {
+    // Log initialization failure but don't break the page
     console.warn('Failed to initialize passion tabs', err);
   }
 }
 
+// Initialize tabs when DOM is ready
 document.addEventListener('DOMContentLoaded', initPassionTabs);

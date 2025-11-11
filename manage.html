@@ -1,5 +1,31 @@
 <!doctype html>
 <html lang="en">
+<!--
+  ⚠️  CRITICAL SECURITY WARNING  ⚠️
+  
+  This file contains a HARDCODED PASSWORD visible in the page source.
+  
+  ** DO NOT DEPLOY THIS FILE TO PRODUCTION **
+  
+  Security Issues:
+  - Client-side password authentication (line ~170: const DEFAULT_PASSWORD = 'tomalacy')
+  - Password is visible to anyone who views page source or DevTools
+  - Can be bypassed by disabling JavaScript or manipulating the DOM
+  - Provides NO real security, only a convenience gate
+  
+  Safe Usage:
+  - Keep this file LOCAL ONLY for development/testing
+  - This file is in .gitignore to prevent accidental deployment
+  - For production use, implement proper server-side authentication
+  - Consider using GitHub OAuth flow (requires Netlify Functions backend)
+  
+  Alternative Solutions:
+  1. Host behind HTTP Basic Auth (.htaccess or server config)
+  2. Use the included GitHub OAuth workflow with Netlify Functions
+  3. Delete this file and edit content.json/career.md directly in your editor
+  
+  See SECURITY_REVIEW.md for detailed recommendations.
+-->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
