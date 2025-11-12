@@ -44,8 +44,8 @@ jobs:
           exit 0
       - name: Checkout
         if: steps.check.outputs.should_deploy == 'true'
-        # pinned to actions/checkout@v4 for stability; update via Dependabot
-        uses: actions/checkout@v4
+        # pinned to actions/checkout@v5 for stability; update via Dependabot
+        uses: actions/checkout@v5
 
       - name: Build (none)
         if: steps.check.outputs.should_deploy == 'true'
