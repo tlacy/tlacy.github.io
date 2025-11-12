@@ -23,7 +23,7 @@
     // Extract content fields with empty string defaults
     // This prevents 'undefined' from appearing in the UI
     const name = data.name || '';
-    const title = data.title || '';
+    const title = data.title || '';23-
     const bio = data.bio || '';
     const profileImage = data.profileImage || '';
     const resume = data.resume || '';
