@@ -1,0 +1,598 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>MCP + AI Agent Demo | Tom Lacy</title>
+  <meta name="description" content="Interactive demo showing Model Context Protocol with AI agents">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="css/main.css">
+  
+  <style>
+    .demo-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .demo-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 12px;
+    }
+
+    .demo-header h1 {
+      margin: 0 0 1rem 0;
+      font-size: 2.5rem;
+    }
+
+    .demo-header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      margin: 0;
+    }
+
+    .comparison-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .comparison-card {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .comparison-card.without-mcp {
+      border: 3px solid #ff6b6b;
+    }
+
+    .comparison-card.with-mcp {
+      border: 3px solid #51cf66;
+    }
+
+    .comparison-card h2 {
+      margin-top: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .comparison-card.without-mcp h2 {
+      color: #ff6b6b;
+    }
+
+    .comparison-card.with-mcp h2 {
+      color: #51cf66;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .badge.bad {
+      background: #ff6b6b;
+      color: white;
+    }
+
+    .badge.good {
+      background: #51cf66;
+      color: white;
+    }
+
+    .interactive-demo {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .interactive-demo h2 {
+      text-align: center;
+      color: #073B4C;
+      margin-bottom: 2rem;
+    }
+
+    .demo-controls {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .demo-button {
+      flex: 1;
+      min-width: 200px;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .demo-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .demo-output {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      min-height: 200px;
+      border: 2px solid #e9ecef;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .demo-output.loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6c757d;
+      font-style: italic;
+    }
+
+    .demo-output .resource-header {
+      color: #667eea;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .demo-output .metric {
+      background: #e7f5ff;
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      border-left: 3px solid #51cf66;
+    }
+
+    .benefits-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .benefit-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+
+    .benefit-card .icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .benefit-card h3 {
+      color: #073B4C;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .benefit-card p {
+      color: #6c757d;
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    .code-example {
+      background: #2d2d2d;
+      color: #f8f8f2;
+      padding: 1.5rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    .code-example code {
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .keyword { color: #ff79c6; }
+    .string { color: #50fa7b; }
+    .function { color: #8be9fd; }
+    .comment { color: #6272a4; }
+
+    @media (max-width: 768px) {
+      .comparison-section {
+        grid-template-columns: 1fr;
+      }
+
+      .demo-controls {
+        flex-direction: column;
+      }
+
+      .demo-button {
+        width: 100%;
+      }
+    }
+  </style>
+  
+  <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="main-nav">
+      <a href="index.html" class="nav-link">← Back to Home</a>
+    </nav>
+  </header>
+
+  <main class="demo-container">
+    <div class="demo-header">
+      <h1>🤖 MCP + AI Agents: A Live Demo</h1>
+      <p>See how Model Context Protocol transforms AI interactions with structured context</p>
+    </div>
+
+    <!-- Comparison Section -->
+    <section class="comparison-section">
+      <div class="comparison-card without-mcp">
+        <h2>
+          <span>❌ Without MCP</span>
+          <span class="badge bad">Limited</span>
+        </h2>
+        <ul>
+          <li><strong>Manual copy-paste:</strong> You have to copy career data, metrics, and achievements into every conversation</li>
+          <li><strong>Context loss:</strong> AI forgets previous conversations, you repeat yourself constantly</li>
+          <li><strong>Inconsistent data:</strong> Different answers because you paste different info each time</li>
+          <li><strong>Time-consuming:</strong> Every query requires finding and formatting data manually</li>
+          <li><strong>Error-prone:</strong> Easy to miss important details or provide outdated information</li>
+        </ul>
+      </div>
+
+      <div class="comparison-card with-mcp">
+        <h2>
+          <span>✅ With MCP</span>
+          <span class="badge good">Powerful</span>
+        </h2>
+        <ul>
+          <li><strong>Automatic context:</strong> AI instantly accesses your complete career history, metrics, and expertise</li>
+          <li><strong>Structured data:</strong> Career achievements, quantifiable metrics, and timeline always available</li>
+          <li><strong>Consistent answers:</strong> Same source of truth every time, no data drift</li>
+          <li><strong>Smart queries:</strong> AI can search, filter, and extract specific information on demand</li>
+          <li><strong>Always current:</strong> Update once in your files, AI sees changes immediately</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Interactive Demo -->
+    <section class="interactive-demo">
+      <h2>🎮 Try It Live: Simulated MCP Queries</h2>
+      <p style="text-align: center; color: #6c757d; margin-bottom: 2rem;">
+        Click the buttons below to see what an AI agent can retrieve through MCP
+      </p>
+
+      <div class="demo-controls">
+        <button class="demo-button" onclick="demoQuery('summary')">
+          📊 Get Career Summary
+        </button>
+        <button class="demo-button" onclick="demoQuery('metrics')">
+          📈 Extract Team Growth Metrics
+        </button>
+        <button class="demo-button" onclick="demoQuery('bio')">
+          ✍️ Generate LinkedIn Bio
+        </button>
+        <button class="demo-button" onclick="demoQuery('search')">
+          🔍 Search for "AI" Achievements
+        </button>
+      </div>
+
+      <div id="demo-output" class="demo-output">
+        <div style="text-align: center; color: #6c757d; padding: 3rem;">
+          👆 Click a button above to see MCP in action
+        </div>
+      </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section>
+      <h2 style="text-align: center; color: #073B4C; margin-bottom: 2rem;">Why MCP + AI Agents Matter</h2>
+      <div class="benefits-section">
+        <div class="benefit-card">
+          <div class="icon">⚡</div>
+          <h3>Speed</h3>
+          <p>AI accesses your complete context in milliseconds, not minutes of manual prep</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="icon">🎯</div>
+          <h3>Accuracy</h3>
+          <p>Structured data means consistent, factual answers based on your actual achievements</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="icon">🔄</div>
+          <h3>Reusability</h3>
+          <p>Define your context once, use it across unlimited conversations and tools</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="icon">🛡️</div>
+          <h3>Control</h3>
+          <p>You own and control exactly what data the AI can access through MCP</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="icon">📚</div>
+          <h3>Scalability</h3>
+          <p>Works with any MCP-compatible AI client: Claude, custom tools, future apps</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="icon">🔐</div>
+          <h3>Privacy</h3>
+          <p>Runs locally on your machine via stdio—no external servers or data leaks</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Real World Use Cases -->
+    <section style="background: white; padding: 2rem; border-radius: 12px; margin-bottom: 3rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+      <h2 style="text-align: center; color: #073B4C; margin-bottom: 2rem;">Real-World Use Cases</h2>
+      
+      <div style="display: grid; gap: 2rem;">
+        <div>
+          <h3 style="color: #667eea;">💼 Executive Resume Generation</h3>
+          <p><strong>Scenario:</strong> You need to apply for a board position and want a tailored executive summary.</p>
+          <p><strong>With MCP:</strong> Ask AI "Generate a board-focused executive summary emphasizing M&A and EBITDA impact" — it pulls your 7 acquisitions, OPEX reduction from 20% to <15%, and PE success story automatically.</p>
+          <p><strong>Without MCP:</strong> You manually dig through old resumes, LinkedIn, and notes to find metrics, then copy-paste everything into the AI prompt.</p>
+        </div>
+
+        <div>
+          <h3 style="color: #667eea;">🎤 Presentation Prep</h3>
+          <p><strong>Scenario:</strong> Speaking at a conference about scaling engineering teams.</p>
+          <p><strong>With MCP:</strong> "Create talk outline highlighting team growth, engagement improvements, and retention" — AI instantly retrieves: 160→400+ scaling, 56%→75% engagement, >90% retention.</p>
+          <p><strong>Without MCP:</strong> You search emails, old decks, and spreadsheets to reconstruct your achievements.</p>
+        </div>
+
+        <div>
+          <h3 style="color: #667eea;">📝 Performance Review</h3>
+          <p><strong>Scenario:</strong> Writing annual self-assessment for your CEO and board.</p>
+          <p><strong>With MCP:</strong> "Summarize my 2024 achievements with quantifiable metrics" — AI extracts all relevant data: cloud cost savings, NPS improvements, AI product launches, team growth.</p>
+          <p><strong>Without MCP:</strong> You piece together achievements from Slack messages, Jira, and quarterly reports over several hours.</p>
+        </div>
+
+        <div>
+          <h3 style="color: #667eea;">🤝 Networking & Introductions</h3>
+          <p><strong>Scenario:</strong> Investor asks for a quick bio before intro call.</p>
+          <p><strong>With MCP:</strong> "Generate 3 bio variations: results-focused, leadership-focused, business-impact" — Done in 5 seconds with accurate metrics.</p>
+          <p><strong>Without MCP:</strong> You write from scratch or repurpose old content that's potentially outdated.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section style="background: #f8f9fa; padding: 2rem; border-radius: 12px; margin-bottom: 3rem;">
+      <h2 style="text-align: center; color: #073B4C; margin-bottom: 2rem;">How It Works (Technical Overview)</h2>
+      
+      <div style="max-width: 800px; margin: 0 auto;">
+        <div style="margin-bottom: 2rem;">
+          <h3 style="color: #073B4C;">1. Define Your Context (One Time)</h3>
+          <div class="code-example">
+            <code>
+<span class="comment">// career.md - Your structured career data</span>
+<span class="keyword">## Quorum Software - CTO</span>
+- Scaled engineering from <span class="string">160 to 400+</span>
+- Improved engagement: <span class="string">56% → 75%</span>
+- Led <span class="string">7 acquisitions</span>
+- Reduced OPEX: <span class="string">~20% → <15%</span>
+            </code>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+          <h3 style="color: #073B4C;">2. Expose via MCP Server</h3>
+          <div class="code-example">
+            <code>
+<span class="comment">// MCP server exposes resources and tools</span>
+<span class="keyword">resources</span>: [
+  <span class="string">"tomlacy://career/summary"</span>,
+  <span class="string">"tomlacy://metrics/all"</span>,
+  <span class="string">"tomlacy://expertise/areas"</span>
+]
+
+<span class="keyword">tools</span>: [
+  <span class="function">query-career</span>(keyword),
+  <span class="function">generate-bio</span>(context),
+  <span class="function">extract-metrics</span>(category)
+]
+            </code>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+          <h3 style="color: #073B4C;">3. AI Agent Accesses Context</h3>
+          <div class="code-example">
+            <code>
+<span class="comment">// User asks Claude:</span>
+<span class="string">"Show me my team growth metrics"</span>
+
+<span class="comment">// Claude uses MCP to call:</span>
+<span class="function">extract-metrics</span>({ category: <span class="string">"Team Growth"</span> })
+
+<span class="comment">// Returns instantly:</span>
+{
+  metric: <span class="string">"Team size"</span>,
+  value: <span class="string">"160 → 400+"</span>,
+  context: <span class="string">"Quorum Software"</span>
+}
+            </code>
+          </div>
+        </div>
+
+        <div>
+          <h3 style="color: #073B4C;">4. Get Instant, Accurate Results</h3>
+          <p>AI generates responses using your exact data—no hallucinations, no outdated info, no manual copy-paste.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 3rem 2rem; border-radius: 12px; text-align: center;">
+      <h2 style="margin-top: 0; color: white;">Ready to Try the Real Thing?</h2>
+      <p style="font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.9;">
+        Tom's actual MCP server is open source and ready to use with Claude Desktop or any MCP client.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://github.com/tlacy/tlacy.github.io/tree/master/mcp-server" 
+           target="_blank" 
+           rel="noopener noreferrer"
+           style="background: white; color: #667eea; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block;">
+          📦 View MCP Server on GitHub
+        </a>
+        <a href="mcp-server/README.md" 
+           style="background: rgba(255,255,255,0.2); color: white; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block; border: 2px solid white;">
+          📖 Read Setup Guide
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2025 Tom Lacy. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Simulated MCP responses (in real implementation, these come from the MCP server)
+    const mockResponses = {
+      summary: {
+        title: "Career Summary Resource",
+        type: "tomlacy://career/summary",
+        data: `Technology executive and proven CTO with 20+ years of leadership experience scaling engineering organizations, driving product innovation, and delivering measurable business outcomes across IPOs, PE acquisitions, and high-growth environments.
+
+Core Expertise:
+• Scaling Organizations: Grew engineering teams from 160 to 400+ while improving engagement (56% → 75%) and retention (>90%)
+• M&A & Integration: Led technical diligence and integration for 7 acquisitions
+• Operational Excellence: Reduced engineering OPEX from ~20% to <15% of revenue
+• Product Leadership: Transformed services-led business into product-led organization`
+      },
+      
+      metrics: {
+        title: "Extract Metrics Tool",
+        type: "extract-metrics({ category: 'Team Growth' })",
+        data: `Extracted 4 metrics in Team Growth category:
+
+┌─────────────────────────────────────────────────────────────┐
+│ Team Size                                                   │
+│ Value: 160 → 400+                                          │
+│ Context: Quorum Software                                   │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ Employee Engagement                                         │
+│ Value: 56% → 75%                                           │
+│ Context: Quorum Software                                   │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ Employee Retention                                          │
+│ Value: >90%                                                │
+│ Context: Quorum Software                                   │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ Regrettable Attrition                                       │
+│ Value: ~7%                                                 │
+│ Context: Quorum Software                                   │
+└─────────────────────────────────────────────────────────────┘`
+      },
+      
+      bio: {
+        title: "Generate Bio Tool",
+        type: "generate-bio({ context: 'linkedin-headline' })",
+        data: `Generated LinkedIn Headline:
+
+"Chief Technology Officer | Scaling Engineering Organizations for Growth, EBITDA Expansion, and Successful Exits"
+
+Alternative variations available:
+
+Results-Focused:
+"CTO and technology executive with proven track record scaling engineering organizations through IPOs and PE acquisitions. Led 7 M&A integrations, transformed services-led business to product-led growth."
+
+Leadership-Focused:
+"Engineering leader who builds high-performance teams and drives product innovation at scale. Grew engineering from 160 to 400+ with 75% engagement, launched AI-enabled SaaS suite with 20% ARR growth."
+
+Business Impact:
+"Technology executive transforming engineering into competitive advantage. Reduced OPEX from 20% to <15% of revenue while scaling teams 2.5x, led technical diligence for 7 acquisitions."`
+      },
+      
+      search: {
+        title: "Query Career Tool",
+        type: "query-career({ query: 'AI' })",
+        data: `Found 8 matches for "AI" in career history:
+
+📍 Quorum Software - Chief Technology Officer
+   "Introduced AI adoption across engineering, launching company's first AI-enabled products"
+
+📍 Quorum Software - Chief Technology Officer
+   "Improved productivity through AI use in software development lifecycle"
+
+📍 Quorum Software - Chief Technology Officer
+   "Established center of excellence for AI/ML capabilities"
+
+📍 Technology Transformation
+   "AI Enablement: First production AI features, reusable AI services, productivity gains"
+
+📍 Signature Achievements
+   "Launched high-growth On Demand suite with ~20% ARR growth (includes AI features)"
+
+Also found in:
+• Engineering Productivity improvements
+• Innovation initiatives
+• Product differentiation strategies`
+      }
+    };
+
+    function demoQuery(type) {
+      const output = document.getElementById('demo-output');
+      const response = mockResponses[type];
+      
+      // Show loading state
+      output.innerHTML = '<div style="text-align: center; color: #6c757d; padding: 3rem;">🔄 Querying MCP server...</div>';
+      
+      // Simulate network delay
+      setTimeout(() => {
+        output.innerHTML = `
+          <div class="resource-header">📡 MCP Resource: ${response.type}</div>
+          <div style="margin-top: 1rem; color: #2d2d2d;">${response.data.replace(/\n/g, '<br>').replace(/•/g, '  •')}</div>
+          <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e9ecef; color: #6c757d; font-size: 0.85rem;">
+            ⚡ Response time: ${Math.floor(Math.random() * 50 + 10)}ms | 
+            📊 Data source: career.md, content.json | 
+            🔒 Privacy: Local only
+          </div>
+        `;
+      }, 400);
+    }
+
+    // Auto-run first demo on page load
+    setTimeout(() => {
+      const buttons = document.querySelectorAll('.demo-button');
+      if (buttons.length > 0) {
+        // Highlight the first button briefly
+        buttons[0].style.animation = 'pulse 1s ease-in-out 2';
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
