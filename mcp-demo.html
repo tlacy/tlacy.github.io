@@ -215,6 +215,76 @@
     .function { color: #8be9fd; }
     .comment { color: #6272a4; }
 
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+      }
+      50% {
+        transform: scale(1.05);
+        box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .walkthrough-step {
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .demo-output {
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .benefit-card {
+      animation: fadeIn 0.6s ease-out;
+      animation-fill-mode: both;
+    }
+
+    .benefit-card:nth-child(1) { animation-delay: 0.1s; }
+    .benefit-card:nth-child(2) { animation-delay: 0.2s; }
+    .benefit-card:nth-child(3) { animation-delay: 0.3s; }
+    .benefit-card:nth-child(4) { animation-delay: 0.4s; }
+    .benefit-card:nth-child(5) { animation-delay: 0.5s; }
+    .benefit-card:nth-child(6) { animation-delay: 0.6s; }
+
+    .comparison-card {
+      animation: slideIn 0.6s ease-out;
+      animation-fill-mode: both;
+    }
+
+    .comparison-card.without-mcp { animation-delay: 0.1s; }
+    .comparison-card.with-mcp { animation-delay: 0.3s; }
+
+    .demo-button {
+      transition: all 0.3s ease;
+    }
+
+    .demo-button:active {
+      transform: translateY(0) scale(0.98);
+    }
+
     @media (max-width: 768px) {
       .comparison-section {
         grid-template-columns: 1fr;
@@ -295,6 +365,18 @@
         </button>
         <button class="demo-button" onclick="demoQuery('search')">
           🔍 Search for "AI" Achievements
+        </button>
+        <button class="demo-button" onclick="demoQuery('timeline')">
+          📅 Build Career Timeline
+        </button>
+        <button class="demo-button" onclick="demoQuery('expertise')">
+          🎯 Map Expertise Areas
+        </button>
+        <button class="demo-button" onclick="demoQuery('impact')">
+          💰 Calculate Business Impact
+        </button>
+        <button class="demo-button" onclick="demoQuery('comparison')">
+          ⚖️ Compare Metrics Across Roles
         </button>
       </div>
 
@@ -379,6 +461,162 @@
           <p><strong>With MCP:</strong> "Generate 3 bio variations: results-focused, leadership-focused, business-impact" — Done in 5 seconds with accurate metrics.</p>
           <p><strong>Without MCP:</strong> You write from scratch or repurpose old content that's potentially outdated.</p>
         </div>
+
+        <div>
+          <h3 style="color: #667eea;">🎓 Teaching & Mentoring</h3>
+          <p><strong>Scenario:</strong> Mentoring a new CTO on scaling engineering organizations.</p>
+          <p><strong>With MCP:</strong> "Show me progression of team scaling decisions and outcomes across my career" — AI maps out your journey from 100-person to 400+ person org with lessons learned.</p>
+          <p><strong>Without MCP:</strong> You try to remember which decisions happened at which company, missing context and timelines.</p>
+        </div>
+
+        <div>
+          <h3 style="color: #667eea;">📊 M&A Due Diligence</h3>
+          <p><strong>Scenario:</strong> PE firm asks about your M&A integration experience.</p>
+          <p><strong>With MCP:</strong> "Detail my 7 acquisitions with integration strategies and outcomes" — AI surfaces platform consolidation approaches, team integration, and ARR growth results.</p>
+          <p><strong>Without MCP:</strong> You hunt through old PowerPoints and try to recall which metrics went with which acquisition.</p>
+        </div>
+
+        <div>
+          <h3 style="color: #667eea;">🎯 Job Interview Prep</h3>
+          <p><strong>Scenario:</strong> Preparing for CTO interview at high-growth SaaS company.</p>
+          <p><strong>With MCP:</strong> "Create STAR-format answers for scaling teams, cloud cost optimization, and AI adoption" — AI generates complete, metric-backed responses.</p>
+          <p><strong>Without MCP:</strong> You create a prep doc manually, miss key metrics, and lack specific examples.</p>
+        </div>
+
+        <div>
+          <h3 style="color: #667eea;">📰 Press & Media</h3>
+          <p><strong>Scenario:</strong> Journalist writing article about AI in enterprise engineering.</p>
+          <p><strong>With MCP:</strong> "Generate talking points about AI adoption with concrete examples" — AI pulls your AI product launches, productivity gains, and center of excellence work.</p>
+          <p><strong>Without MCP:</strong> You scramble to recall achievements and hope you don't misstate a metric in the interview.</p>
+        </div>
+
+        <div>
+          <h3 style="color: #667eea;">💡 Strategic Planning</h3>
+          <p><strong>Scenario:</strong> Building 3-year technology roadmap for new role.</p>
+          <p><strong>With MCP:</strong> "What were my biggest wins in platform modernization and cloud migration?" — AI shows you what worked: cost savings, performance improvements, customer impact.</p>
+          <p><strong>Without MCP:</strong> You rely on memory of what worked vs what didn't, potentially repeating mistakes.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Animated Walkthrough -->
+    <section style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 3rem 2rem; border-radius: 12px; margin-bottom: 3rem;">
+      <h2 style="text-align: center; color: white; margin-bottom: 2rem;">🎬 See MCP in Action: Visual Walkthrough</h2>
+      <p style="text-align: center; font-size: 1.1rem; opacity: 0.9; margin-bottom: 3rem;">
+        Watch how an AI agent uses MCP to answer questions in real-time
+      </p>
+      
+      <div style="max-width: 900px; margin: 0 auto; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 12px; padding: 2rem;">
+        <div id="walkthrough-container" style="min-height: 400px;">
+          <!-- Step 1 -->
+          <div class="walkthrough-step" id="step-1" style="display: block;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+              <div style="font-size: 3rem; margin-bottom: 1rem;">👤</div>
+              <h3 style="color: white; margin: 0;">Step 1: User Asks Question</h3>
+            </div>
+            <div style="background: rgba(255,255,255,0.95); color: #2d2d2d; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+              <div style="font-weight: bold; color: #667eea; margin-bottom: 0.5rem;">User:</div>
+              <div style="font-size: 1.1rem;">"What were my biggest team scaling achievements at Quorum?"</div>
+            </div>
+            <button class="demo-button" onclick="nextStep(2)" style="width: 100%; background: white; color: #667eea;">
+              Next: AI Agent Receives Question →
+            </button>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="walkthrough-step" id="step-2" style="display: none;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+              <div style="font-size: 3rem; margin-bottom: 1rem;">🤖</div>
+              <h3 style="color: white; margin: 0;">Step 2: AI Analyzes Request</h3>
+            </div>
+            <div style="background: rgba(255,255,255,0.95); color: #2d2d2d; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+              <div style="font-weight: bold; color: #667eea; margin-bottom: 0.5rem;">AI Agent thinks:</div>
+              <div style="font-family: monospace; font-size: 0.9rem; line-height: 1.6;">
+                → Question about team scaling<br>
+                → Needs metrics from Quorum Software<br>
+                → Will use MCP to access career data<br>
+                → Identifies relevant tool: <span style="color: #51cf66;">query-career()</span>
+              </div>
+            </div>
+            <button class="demo-button" onclick="nextStep(3)" style="width: 100%; background: white; color: #667eea;">
+              Next: Query MCP Server →
+            </button>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="walkthrough-step" id="step-3" style="display: none;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+              <div style="font-size: 3rem; margin-bottom: 1rem;">🔌</div>
+              <h3 style="color: white; margin: 0;">Step 3: MCP Server Processes Request</h3>
+            </div>
+            <div style="background: rgba(255,255,255,0.95); color: #2d2d2d; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+              <div style="font-weight: bold; color: #667eea; margin-bottom: 0.5rem;">MCP Server:</div>
+              <div style="font-family: monospace; font-size: 0.9rem; line-height: 1.6;">
+                <span style="color: #8be9fd;">query-career</span>({ query: <span style="color: #50fa7b;">"Quorum team scaling"</span> })<br><br>
+                → Searching career.md...<br>
+                → Found section: "Quorum Software - CTO"<br>
+                → Extracting relevant metrics...<br>
+                → <span style="color: #51cf66;">✓ Data retrieved in 23ms</span>
+              </div>
+            </div>
+            <button class="demo-button" onclick="nextStep(4)" style="width: 100%; background: white; color: #667eea;">
+              Next: Return Structured Data →
+            </button>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="walkthrough-step" id="step-4" style="display: none;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+              <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+              <h3 style="color: white; margin: 0;">Step 4: MCP Returns Structured Data</h3>
+            </div>
+            <div style="background: rgba(255,255,255,0.95); color: #2d2d2d; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+              <div style="font-weight: bold; color: #667eea; margin-bottom: 0.5rem;">Returned Data:</div>
+              <div style="font-family: monospace; font-size: 0.85rem; line-height: 1.6; background: #2d2d2d; color: #f8f8f2; padding: 1rem; border-radius: 4px; overflow-x: auto;">
+{<br>
+  <span style="color: #ff79c6;">"team_growth"</span>: <span style="color: #50fa7b;">"160 → 400+"</span>,<br>
+  <span style="color: #ff79c6;">"engagement"</span>: <span style="color: #50fa7b;">"56% → 75%"</span>,<br>
+  <span style="color: #ff79c6;">"retention"</span>: <span style="color: #50fa7b;">">90%"</span>,<br>
+  <span style="color: #ff79c6;">"attrition"</span>: <span style="color: #50fa7b;">"~7%"</span>,<br>
+  <span style="color: #ff79c6;">"context"</span>: <span style="color: #50fa7b;">"Quorum Software (2019-Present)"</span><br>
+}
+              </div>
+            </div>
+            <button class="demo-button" onclick="nextStep(5)" style="width: 100%; background: white; color: #667eea;">
+              Next: AI Generates Response →
+            </button>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="walkthrough-step" id="step-5" style="display: none;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+              <div style="font-size: 3rem; margin-bottom: 1rem;">✨</div>
+              <h3 style="color: white; margin: 0;">Step 5: AI Generates Natural Response</h3>
+            </div>
+            <div style="background: rgba(255,255,255,0.95); color: #2d2d2d; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+              <div style="font-weight: bold; color: #667eea; margin-bottom: 0.5rem;">AI Response:</div>
+              <div style="line-height: 1.7;">
+                At Quorum Software, your biggest team scaling achievements include:<br><br>
+                <strong>📈 Team Growth:</strong> Scaled the engineering organization from 160 to over 400 people while maintaining quality and velocity.<br><br>
+                <strong>💪 Engagement:</strong> Dramatically improved employee engagement from 56% to 75%, showing strong culture during rapid growth.<br><br>
+                <strong>🎯 Retention:</strong> Achieved >90% retention rate with only ~7% regrettable attrition, demonstrating effective leadership and team satisfaction.<br><br>
+                This 2.5x team scaling while simultaneously improving engagement metrics is a rare achievement in high-growth environments.
+              </div>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+              <button class="demo-button" onclick="nextStep(1)" style="flex: 1; background: rgba(255,255,255,0.2); border: 2px solid white;">
+                ↻ Restart Walkthrough
+              </button>
+              <button class="demo-button" onclick="document.getElementById('step-5').style.display='none'; document.querySelector('.interactive-demo').scrollIntoView({behavior: 'smooth'});" style="flex: 1; background: white; color: #667eea;">
+                Try Live Demo Below ↓
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 2rem; opacity: 0.8; font-size: 0.9rem;">
+        <p>⏱️ Total time: ~100ms | 🔒 All data stays local | 🎯 100% accurate metrics</p>
       </div>
     </section>
 
@@ -444,6 +682,246 @@
         <div>
           <h3 style="color: #073B4C;">4. Get Instant, Accurate Results</h3>
           <p>AI generates responses using your exact data—no hallucinations, no outdated info, no manual copy-paste.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Build Your Own MCP Server -->
+    <section style="background: white; padding: 3rem 2rem; border-radius: 12px; margin-bottom: 3rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+      <h2 style="text-align: center; color: #073B4C; margin-bottom: 1rem;">🛠️ Build Your Own MCP Server</h2>
+      <p style="text-align: center; color: #6c757d; max-width: 700px; margin: 0 auto 3rem;">
+        Creating an MCP server for your own data is easier than you think. Here's a step-by-step guide.
+      </p>
+
+      <div style="max-width: 900px; margin: 0 auto;">
+        <!-- Architecture Diagram -->
+        <div style="background: #f8f9fa; padding: 2rem; border-radius: 8px; margin-bottom: 3rem;">
+          <h3 style="color: #073B4C; text-align: center; margin-bottom: 2rem;">MCP Server Architecture</h3>
+          <div style="font-family: monospace; font-size: 0.9rem; line-height: 2; text-align: center;">
+            <div style="background: #667eea; color: white; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+              📱 <strong>AI Client</strong> (Claude Desktop, Custom Apps)
+            </div>
+            <div style="font-size: 1.5rem; color: #6c757d;">↕️</div>
+            <div style="background: #e7f5ff; padding: 0.5rem; border-radius: 4px; margin-bottom: 1rem;">
+              <strong>MCP Protocol</strong> (stdio / HTTP)
+            </div>
+            <div style="font-size: 1.5rem; color: #6c757d;">↕️</div>
+            <div style="background: #51cf66; color: white; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+              🔌 <strong>Your MCP Server</strong> (Node.js / Python)
+            </div>
+            <div style="font-size: 1.5rem; color: #6c757d;">↕️</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem;">
+              <div style="background: #fff3bf; padding: 0.75rem; border-radius: 4px;">
+                📄 <strong>Resources</strong><br>(career.md)
+              </div>
+              <div style="background: #fff3bf; padding: 0.75rem; border-radius: 4px;">
+                🔧 <strong>Tools</strong><br>(search, extract)
+              </div>
+              <div style="background: #fff3bf; padding: 0.75rem; border-radius: 4px;">
+                💡 <strong>Prompts</strong><br>(templates)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step-by-Step Guide -->
+        <div style="display: grid; gap: 2rem;">
+          <div style="border-left: 4px solid #667eea; padding-left: 1.5rem;">
+            <h3 style="color: #667eea; margin-top: 0;">Step 1: Install MCP SDK</h3>
+            <div class="code-example">
+              <code>
+<span class="comment"># For Node.js</span>
+npm install @modelcontextprotocol/sdk
+
+<span class="comment"># For Python</span>
+pip install mcp
+              </code>
+            </div>
+          </div>
+
+          <div style="border-left: 4px solid #667eea; padding-left: 1.5rem;">
+            <h3 style="color: #667eea; margin-top: 0;">Step 2: Define Your Resources</h3>
+            <p style="color: #6c757d;">Resources are read-only data sources (files, databases, APIs).</p>
+            <div class="code-example">
+              <code>
+<span class="comment">// Define what data you want to expose</span>
+<span class="keyword">const</span> resources = [
+  {
+    uri: <span class="string">"mydata://resume"</span>,
+    name: <span class="string">"My Resume"</span>,
+    description: <span class="string">"Complete professional resume"</span>,
+    mimeType: <span class="string">"text/markdown"</span>
+  },
+  {
+    uri: <span class="string">"mydata://projects"</span>,
+    name: <span class="string">"Project Portfolio"</span>,
+    description: <span class="string">"All completed projects with outcomes"</span>,
+    mimeType: <span class="string">"application/json"</span>
+  }
+];
+              </code>
+            </div>
+          </div>
+
+          <div style="border-left: 4px solid #667eea; padding-left: 1.5rem;">
+            <h3 style="color: #667eea; margin-top: 0;">Step 3: Create Tools for Queries</h3>
+            <p style="color: #6c757d;">Tools allow AI to search, filter, and transform your data.</p>
+            <div class="code-example">
+              <code>
+<span class="comment">// Define tools the AI can use</span>
+<span class="keyword">const</span> tools = [
+  {
+    name: <span class="string">"search-projects"</span>,
+    description: <span class="string">"Search projects by technology or outcome"</span>,
+    inputSchema: {
+      type: <span class="string">"object"</span>,
+      properties: {
+        query: { type: <span class="string">"string"</span> },
+        technology: { type: <span class="string">"string"</span> }
+      }
+    }
+  }
+];
+              </code>
+            </div>
+          </div>
+
+          <div style="border-left: 4px solid #667eea; padding-left: 1.5rem;">
+            <h3 style="color: #667eea; margin-top: 0;">Step 4: Implement Tool Handlers</h3>
+            <p style="color: #6c757d;">Write the logic that executes when AI calls your tools.</p>
+            <div class="code-example">
+              <code>
+<span class="keyword">async function</span> <span class="function">handleToolCall</span>(toolName, args) {
+  <span class="keyword">if</span> (toolName === <span class="string">"search-projects"</span>) {
+    <span class="comment">// Load your data</span>
+    <span class="keyword">const</span> projects = <span class="keyword">await</span> <span class="function">loadProjects</span>();
+    
+    <span class="comment">// Filter by query</span>
+    <span class="keyword">const</span> results = projects.<span class="function">filter</span>(p => 
+      p.description.<span class="function">includes</span>(args.query)
+    );
+    
+    <span class="keyword">return</span> { results };
+  }
+}
+              </code>
+            </div>
+          </div>
+
+          <div style="border-left: 4px solid #667eea; padding-left: 1.5rem;">
+            <h3 style="color: #667eea; margin-top: 0;">Step 5: Start the MCP Server</h3>
+            <p style="color: #6c757d;">Connect via stdio for local use or HTTP for remote access.</p>
+            <div class="code-example">
+              <code>
+<span class="keyword">import</span> { Server } <span class="keyword">from</span> <span class="string">'@modelcontextprotocol/sdk/server/index.js'</span>;
+<span class="keyword">import</span> { StdioServerTransport } <span class="keyword">from</span> <span class="string">'@modelcontextprotocol/sdk/server/stdio.js'</span>;
+
+<span class="keyword">const</span> server = <span class="keyword">new</span> <span class="function">Server</span>({ name: <span class="string">"my-mcp-server"</span> });
+<span class="keyword">const</span> transport = <span class="keyword">new</span> <span class="function">StdioServerTransport</span>();
+
+<span class="keyword">await</span> server.<span class="function">connect</span>(transport);
+console.<span class="function">log</span>(<span class="string">"MCP Server running!"</span>);
+              </code>
+            </div>
+          </div>
+
+          <div style="border-left: 4px solid #667eea; padding-left: 1.5rem;">
+            <h3 style="color: #667eea; margin-top: 0;">Step 6: Connect to Claude Desktop</h3>
+            <p style="color: #6c757d;">Add your server to Claude's configuration file.</p>
+            <div class="code-example">
+              <code>
+<span class="comment">// ~/Library/Application Support/Claude/claude_desktop_config.json</span>
+{
+  <span class="string">"mcpServers"</span>: {
+    <span class="string">"my-server"</span>: {
+      <span class="string">"command"</span>: <span class="string">"node"</span>,
+      <span class="string">"args"</span>: [<span class="string">"/path/to/your/server.js"</span>]
+    }
+  }
+}
+              </code>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tips & Best Practices -->
+        <div style="background: #e7f5ff; padding: 2rem; border-radius: 8px; margin-top: 3rem; border-left: 4px solid #51cf66;">
+          <h3 style="color: #073B4C; margin-top: 0;">💡 Tips & Best Practices</h3>
+          <ul style="margin: 0; padding-left: 1.5rem; line-height: 1.8;">
+            <li><strong>Start simple:</strong> Begin with one resource (like your resume) before adding tools</li>
+            <li><strong>Use structured data:</strong> JSON and Markdown are easier for AI to parse than PDFs</li>
+            <li><strong>Add descriptions:</strong> Clear descriptions help AI know when to use each resource/tool</li>
+            <li><strong>Test locally first:</strong> Use stdio transport for local testing before deploying</li>
+            <li><strong>Version your data:</strong> Keep career data in Git so you can track changes</li>
+            <li><strong>Consider privacy:</strong> Only expose data you're comfortable with AI accessing</li>
+            <li><strong>Monitor usage:</strong> Log which resources and tools get called to optimize</li>
+          </ul>
+        </div>
+
+        <!-- Example Use Cases for Different Professions -->
+        <div style="margin-top: 3rem;">
+          <h3 style="color: #073B4C; text-align: center; margin-bottom: 2rem;">MCP Server Ideas by Profession</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+            <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+              <h4 style="color: #667eea; margin-top: 0;">👨‍💼 Executives</h4>
+              <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.9rem; line-height: 1.6;">
+                <li>Board presentations library</li>
+                <li>Quarterly metrics and KPIs</li>
+                <li>M&A transaction history</li>
+                <li>Strategic initiatives tracker</li>
+              </ul>
+            </div>
+
+            <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+              <h4 style="color: #667eea; margin-top: 0;">👨‍💻 Developers</h4>
+              <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.9rem; line-height: 1.6;">
+                <li>GitHub repos and contributions</li>
+                <li>Technical blog posts</li>
+                <li>Stack Overflow answers</li>
+                <li>Project architecture docs</li>
+              </ul>
+            </div>
+
+            <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+              <h4 style="color: #667eea; margin-top: 0;">📊 Analysts</h4>
+              <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.9rem; line-height: 1.6;">
+                <li>Analysis methodologies</li>
+                <li>Data models and schemas</li>
+                <li>Insight repository</li>
+                <li>Tool and technique catalog</li>
+              </ul>
+            </div>
+
+            <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+              <h4 style="color: #667eea; margin-top: 0;">🎨 Designers</h4>
+              <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.9rem; line-height: 1.6;">
+                <li>Portfolio case studies</li>
+                <li>Design system guidelines</li>
+                <li>User research findings</li>
+                <li>A/B test results</li>
+              </ul>
+            </div>
+
+            <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+              <h4 style="color: #667eea; margin-top: 0;">📝 Writers</h4>
+              <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.9rem; line-height: 1.6;">
+                <li>Published articles</li>
+                <li>Writing style guide</li>
+                <li>Research notes</li>
+                <li>Interview transcripts</li>
+              </ul>
+            </div>
+
+            <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+              <h4 style="color: #667eea; margin-top: 0;">🔬 Researchers</h4>
+              <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.9rem; line-height: 1.6;">
+                <li>Publication database</li>
+                <li>Experiment protocols</li>
+                <li>Dataset catalog</li>
+                <li>Citations and references</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -561,8 +1039,177 @@ Also found in:
 • Engineering Productivity improvements
 • Innovation initiatives
 • Product differentiation strategies`
+      },
+      
+      timeline: {
+        title: "Build Career Timeline Tool",
+        type: "generate-timeline({ format: 'visual' })",
+        data: `Career Timeline with Key Milestones:
+
+2019-Present → Quorum Software (CTO)
+├─ 2024: Launched AI-enabled products, 7th acquisition integrated
+├─ 2023: Scaled to 400+ engineers, 75% engagement achieved
+├─ 2022: Reduced OPEX to <15%, >90% retention
+├─ 2021: On Demand suite launch (~20% ARR growth)
+└─ 2019: Joined as CTO, team of 160
+
+2014-2019 → Bazaarvoice (VP Engineering)
+├─ 2018: PE acquisition by Marlin Equity Partners
+├─ 2017: $2M hosting cost savings, 30% platform usage increase
+├─ 2016: 20% platform performance improvement
+└─ 2014: Joined post-IPO, led Platform & API teams
+
+2007-2014 → Blackbaud / Convio (VP QA, Director QA)
+├─ 2013: Promoted to VP QA following acquisition
+├─ 2012: Acquisition by Blackbaud
+├─ 2010: Doubled product adoption while reducing defects
+└─ 2007: Joined Convio as Director of QA
+
+Early Career:
+• RenewData Corporation - Director of Engineering
+• Pervasive Software - Director of Development & QA (through IPO)
+• Mirage Networks - Director of QA & Support
+• Schlumberger - Commercialization Manager`
+      },
+      
+      expertise: {
+        title: "Map Expertise Areas Tool",
+        type: "map-expertise({ includeMetrics: true })",
+        data: `Expertise Map with Achievements:
+
+╔═══════════════════════════════════════════════════════════╗
+║ SCALING ORGANIZATIONS                                     ║
+╠═══════════════════════════════════════════════════════════╣
+║ • Team Growth: 160 → 400+ engineers                      ║
+║ • Engagement: 56% → 75% (Culture Amp)                    ║
+║ • Retention: >90% with ~7% regrettable attrition         ║
+║ • Global Operations: Multiple locations & time zones     ║
+╚═══════════════════════════════════════════════════════════╝
+
+╔═══════════════════════════════════════════════════════════╗
+║ M&A & INTEGRATION                                         ║
+╠═══════════════════════════════════════════════════════════╣
+║ • Acquisitions: 7 technical integrations completed       ║
+║ • Platform Consolidation: Unified SaaS suite             ║
+║ • ARR Growth: ~20% post-integration                      ║
+║ • Due Diligence: Technical assessment & valuation        ║
+╚═══════════════════════════════════════════════════════════╝
+
+╔═══════════════════════════════════════════════════════════╗
+║ OPERATIONAL EXCELLENCE                                    ║
+╠═══════════════════════════════════════════════════════════╣
+║ • Cost Optimization: OPEX 20% → <15% of revenue          ║
+║ • Customer Satisfaction: 10+ point NPS improvement       ║
+║ • Hosting Savings: $2M annually at Bazaarvoice           ║
+║ • Performance: 20% platform improvement                  ║
+╚═══════════════════════════════════════════════════════════╝
+
+╔═══════════════════════════════════════════════════════════╗
+║ PRODUCT & INNOVATION                                      ║
+╠═══════════════════════════════════════════════════════════╣
+║ • AI Products: First AI-enabled SaaS features launched   ║
+║ • Product Transformation: Services → Product-led         ║
+║ • Platform Modernization: Cloud-native architecture      ║
+║ • On Demand Suite: New product line with 20% ARR growth  ║
+╚═══════════════════════════════════════════════════════════╝`
+      },
+      
+      impact: {
+        title: "Calculate Business Impact Tool",
+        type: "calculate-impact({ focus: 'financial' })",
+        data: `Business Impact Analysis:
+
+💰 DIRECT FINANCIAL IMPACT
+
+Revenue Growth:
+• On Demand suite contribution: ~20% ARR growth
+• Platform usage increase: 30% at Bazaarvoice
+• Hosting revenue growth: 10% at Quorum
+
+Cost Reduction:
+• Engineering OPEX: Reduced from ~20% to <15% of revenue
+• Hosting costs: $2M annual savings at Bazaarvoice
+• Platform efficiency: 20% performance improvement
+
+📊 VALUATION DRIVERS
+
+M&A Value Creation:
+• 7 acquisitions integrated successfully
+• Platform consolidation → unified SaaS offering
+• Technical due diligence expertise
+
+PE Success Factors:
+• Quorum: Led through PE acquisition, value creation
+• Bazaarvoice: Contributed to Marlin Equity acquisition (2018)
+
+🎯 OPERATIONAL METRICS
+
+Customer Impact:
+• NPS improvement: 10+ points
+• Retention: 96% (hosting customers)
+• Platform reliability: Improved uptime & SLA compliance
+
+Team Performance:
+• Engagement: 56% → 75%
+• Retention: >90%
+• Productivity: AI-enabled SDLC improvements
+
+ESTIMATED TOTAL IMPACT: $50M+ in combined revenue growth, 
+cost savings, and valuation improvements across career`
+      },
+      
+      comparison: {
+        title: "Compare Metrics Tool",
+        type: "compare-metrics({ dimension: 'by-company' })",
+        data: `Metrics Comparison Across Roles:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                    QUORUM    BAZAARVOICE    BLACKBAUD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Team Size          400+         100          Global QA
+Growth Factor      2.5x         Built        Scaled
+Engagement         75%          N/A          N/A
+Retention          >90%         N/A          N/A
+
+Cost Impact        -5% OPEX     $2M/yr       Defect ↓
+Revenue Impact     +20% ARR     +30% usage   2x adoption
+NPS/CSAT          +10 pts      Improved     Enhanced
+
+M&A Activity       7 acq.       PE exit      Acquired
+Exit Type          PE acq.      2018         2012
+Platform Work      SaaS suite   API/Platform Quality
+
+Innovation         AI-enabled   Performance  Agile/Lean
+                   products     20% ↑        CI/CD
+
+Career Stage       CTO          VP Eng       VP/Dir QA
+Years              2019-Pres    2014-2019    2007-2014
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PROGRESSION INSIGHT:
+• Consistent upward trajectory in scope and impact
+• Each role built on previous experience (QA → Platform → Full Tech)
+• Increasing business impact: Quality → Cost → Revenue → Valuation
+• Pattern: Operational excellence + innovation + team building`
       }
     };
+
+    // Walkthrough step navigation
+    function nextStep(stepNumber) {
+      // Hide all steps
+      const steps = document.querySelectorAll('.walkthrough-step');
+      steps.forEach(step => step.style.display = 'none');
+      
+      // Show target step
+      const targetStep = document.getElementById(`step-${stepNumber}`);
+      if (targetStep) {
+        targetStep.style.display = 'block';
+        
+        // Smooth scroll to keep it in view
+        targetStep.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
 
     function demoQuery(type) {
       const output = document.getElementById('demo-output');
