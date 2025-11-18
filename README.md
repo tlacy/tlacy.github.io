@@ -8,8 +8,9 @@ This repository contains the static website for tomlacy.net.
 - `content.json` — Editable JSON used by `index.html` for hero, profile image, resume link, and passions.
 - `css/main.css` — Site styles.
 - `manage.html` — Local browser-based editor to edit `career.md` and `content.json` and download updated copies for manual commit.
-- `TomALacy.pdf` — Resume referenced from the hero section.
+- `TomALacy Resume.pdf` — Resume referenced from the hero section.
 - `img/` — Profile images and site images.
+- `mcp-server/` — **Model Context Protocol server** exposing career data and site content to AI assistants.
 
 ## How to edit
 1. Locally edit `content.json` and `career.md` using your editor, or open `manage.html` in a browser for a simple in-browser editor.
@@ -38,6 +39,30 @@ If you want automatic CI/CD instead of manual pushes, I can add a GitHub Actions
 ## Notes & next steps
 
 If you'd like, I can add a small GitHub Actions workflow to automatically publish the site or run HTML checks on PRs.
+
+## MCP Server
+
+The `mcp-server/` directory contains a Model Context Protocol server that exposes your professional context to AI assistants like Claude Desktop. See `mcp-server/README.md` for setup and usage.
+
+**Quick start:**
+```bash
+cd mcp-server
+npm install
+npm start
+```
+
+Connect from Claude Desktop by adding to `~/Library/Application Support/Claude/claude_desktop_config.json`:
+```json
+{
+  "mcpServers": {
+    "tomlacy": {
+      "command": "node",
+      "args": ["/Users/tom.lacy/Desktop/VS Code Projects/tomlacy.net/tlacy.github.io/mcp-server/index.js"]
+    }
+  }
+}
+```
+
 ## Enabling Giscus comments
 
 1. Create a GitHub Discussions category in this repository (Settings → Discussions → Categories). Note the category name.
