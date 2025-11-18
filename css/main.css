@@ -482,6 +482,13 @@ textarea {
   padding-bottom: 8px;
 }
 
+/* Exception for AI section */
+.ai-section h2,
+.ai-section h3 {
+  border-bottom: none !important;
+  color: white !important;
+}
+
 .feed-container {
   background: var(--card);
   border-radius: var(--radius);
@@ -600,6 +607,12 @@ textarea {
   border-radius: 12px;
   padding: 3rem 2rem;
   margin-top: 3rem;
+}
+
+.ai-section .content-area {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
 }
 
 .ai-section h2 {
