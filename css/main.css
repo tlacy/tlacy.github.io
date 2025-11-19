@@ -20,13 +20,28 @@ body{
 a{color:var(--blue); text-decoration:none}
 a:hover{text-decoration:underline}
 .container{max-width:var(--max-width); margin:0 auto; padding:20px}
-header#hero{background:linear-gradient(90deg, rgba(255,221,87,0.14), rgba(46,196,182,0.06)); border-radius:var(--radius); box-shadow:0 6px 18px rgba(11,22,39,0.04);}
+header#hero{
+  background:linear-gradient(135deg, rgba(255,221,87,0.22) 0%, rgba(46,196,182,0.14) 100%); 
+  border-radius:var(--radius); 
+  box-shadow:0 8px 24px rgba(11,22,39,0.06);
+  transition: box-shadow 0.3s ease;
+}
+header#hero:hover{box-shadow:0 12px 32px rgba(11,22,39,0.08);}
+
 /* upgraded hero */
 #hero{display:block;position:relative;overflow:hidden}
-#hero .hero-inner{display:flex;gap:20px;align-items:center;padding:28px}
-#hero img{width:140px;height:140px;border-radius:14px;border:3px solid rgba(255,255,255,0.85);box-shadow:0 6px 20px rgba(11,22,39,0.08);object-fit:cover}
-#hero h1{margin:0;font-size:1.8rem;color:#04233b}
-#hero p{margin:6px 0;color:var(--muted)}
+#hero .hero-inner{display:flex;gap:28px;align-items:center;padding:42px 36px}
+#hero img{
+  width:160px;height:160px;
+  border-radius:16px;
+  border:4px solid rgba(255,255,255,0.9);
+  box-shadow:0 8px 28px rgba(11,22,39,0.12);
+  object-fit:cover;
+  transition: transform 0.3s ease;
+}
+#hero img:hover{transform: scale(1.05);}
+#hero h1{margin:0 0 8px 0;font-size:2.2rem;font-weight:700;color:#04233b;line-height:1.2}
+#hero p{margin:8px 0;color:var(--muted);font-size:1.05rem;line-height:1.6}
 
 header#hero::before{
     content:'';position:absolute;inset:0;z-index:0;opacity:0.95;
@@ -40,27 +55,64 @@ header#hero::before{
 #hero .hero-inner > *{position:relative;z-index:1}
 
 /* Passions */
-#passions{margin-top:20px}
-#passions h2{margin-bottom:12px;color:#073B4C}
-#passions-list button{background:transparent;border:1px solid rgba(11,22,39,0.06);padding:8px 12px;border-radius:8px;cursor:pointer}
-#passions-list button:hover{box-shadow:0 4px 14px rgba(43,122,252,0.08);transform:translateY(-2px)}
-
-/* Passion link buttons - styled like tab buttons but navigate to dedicated pages */
-.passion-link-button{
-  display:inline-block;
+#passions{margin-top:32px}
+#passions h2{margin-bottom:16px;color:#073B4C;font-size:1.75rem;font-weight:700}
+#passions-list button{
   background:transparent;
-  border:1px solid rgba(11,22,39,0.06);
-  padding:8px 12px;
+  border:1px solid rgba(11,22,39,0.08);
+  padding:10px 16px;
   border-radius:8px;
   cursor:pointer;
-  text-decoration:none;
-  color:#0f172a;
-  transition:all 0.2s;
+  font-size:1rem;
+  transition: all 0.2s ease;
 }
-.passion-link-button:hover{
-  box-shadow:0 4px 14px rgba(43,122,252,0.08);
+#passions-list button:hover{
+  box-shadow:0 6px 18px rgba(43,122,252,0.12);
   transform:translateY(-2px);
-  text-decoration:none;
+  border-color:rgba(43,122,252,0.2);
+}
+
+/* Passion link buttons - styled as prominent action cards */
+.passion-link-button {
+  display: inline-block;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  padding: 14px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.passion-link-button::after {
+  content: '→';
+  position: absolute;
+  right: 16px;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.passion-link-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+  text-decoration: none;
+  padding-right: 36px;
+}
+
+.passion-link-button:hover::after {
+  opacity: 1;
+  right: 20px;
+}
+
+.passion-link-button:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
 /* Pastel section variants */
@@ -117,8 +169,28 @@ li{margin:8px 0}
 
 /* Utility */
 .muted{color:var(--muted)}
-.btn{display:inline-block;background:var(--blue);color:#fff;padding:8px 14px;border-radius:8px}
-.btn.secondary{background:var(--green)}
+.btn{
+  display:inline-block;
+  background:linear-gradient(135deg, #2B7AFC 0%, #1E5FD9 100%);
+  color:#fff;
+  padding:12px 24px;
+  border-radius:8px;
+  font-weight:600;
+  box-shadow:0 4px 12px rgba(43,122,252,0.25);
+  transition: all 0.3s ease;
+  border:none;
+  cursor:pointer;
+}
+.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 20px rgba(43,122,252,0.35);
+  text-decoration:none;
+}
+.btn.secondary{
+  background:linear-gradient(135deg, #2EC4B6 0%, #25A89A 100%);
+  box-shadow:0 4px 12px rgba(46,196,182,0.25);
+}
+.btn.secondary:hover{box-shadow:0 6px 20px rgba(46,196,182,0.35);}
 /*
  * What follows is the result of much research on cross-browser styling.
  * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
@@ -469,17 +541,19 @@ textarea {
 .feed-section,
 .custom-content,
 .contact-section {
-  margin-bottom: 48px;
+  margin-bottom: 56px;
 }
 
 .feed-section h2,
 .custom-content h2,
 .contact-section h2 {
-  font-size: 1.8rem;
+  font-size: 2rem;
+  font-weight: 700;
   color: #073B4C;
-  margin-bottom: 20px;
-  border-bottom: 2px solid var(--blue);
-  padding-bottom: 8px;
+  margin-bottom: 24px;
+  border-bottom: 3px solid var(--blue);
+  padding-bottom: 12px;
+  line-height: 1.3;
 }
 
 /* Exception for AI section */
@@ -492,8 +566,13 @@ textarea {
 .feed-container {
   background: var(--card);
   border-radius: var(--radius);
-  padding: 24px;
-  box-shadow: 0 4px 12px rgba(11,22,39,0.04);
+  padding: 28px;
+  box-shadow: 0 6px 16px rgba(11,22,39,0.06);
+  transition: box-shadow 0.3s ease;
+}
+
+.feed-container:hover {
+  box-shadow: 0 8px 24px rgba(11,22,39,0.08);
 }
 
 .loading {
