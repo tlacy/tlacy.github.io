@@ -365,7 +365,23 @@ async function initPassionTabs() {
       try {
         const proxy = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(passion.feed)}`;
         const r = await fetch(proxy);
+        
+        if (!r.ok) {
+          console.error(`HTTP error for ${passion.label}: ${r.status} ${r.statusText}`);
+          section.innerHTML = `<h3>${passion.label}</h3><p>Unable to load feed at this time. <a href="${passion.pageLink}" style="color:var(--blue)">Visit ${passion.label} page →</a></p>`;
+          return;
+        }
+        
         const json = await r.json();
+        
+        // Check for API errors or rate limiting
+        if (json.status === 'error') {
+          console.error(`RSS2JSON API error for ${passion.label}:`, json.message || json);
+          // Show graceful fallback with link to dedicated page
+          section.innerHTML = `<h3>${passion.label}</h3><p>Feed temporarily unavailable. <a href="${passion.pageLink}" style="color:var(--blue)">Explore ${passion.label} →</a></p>`;
+          return;
+        }
+        
         if (!json || !json.items) {
           section.innerHTML = `<h3>${passion.label}</h3><p>No feed items returned.</p>`;
           return;
@@ -395,7 +411,12 @@ async function initPassionTabs() {
           section.appendChild(moreLink);
         }
       } catch (err) {
-        section.innerHTML = `<h3>${passion.label}</h3><p style="color:red">Failed to load feed.</p>`;
+        console.error(`Failed to load feed for ${passion.label}:`, err);
+        // Graceful fallback with link to dedicated page
+        const fallbackMsg = passion.pageLink 
+          ? `<p>Feed temporarily unavailable. <a href="${passion.pageLink}" style="color:var(--blue)">Visit ${passion.label} page →</a></p>`
+          : `<p style="color:red">Failed to load feed.</p>`;
+        section.innerHTML = `<h3>${passion.label}</h3>${fallbackMsg}`;
       }
     }
 
