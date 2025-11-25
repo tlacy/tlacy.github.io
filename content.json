@@ -1,32 +1,29 @@
 {
-  "name": "Tom Lacy",
-  "title": "Executive Engineering Leader",
   "bio": "Hi — I'm Tom a CTO | Technology Executive | Scaling PE-Backed and Growth-Stage Companies. \nI build things, teams, take photos, and I love to play and follow sports. This site is a place to share my work and let visitors chat about it.",
-  "profileImage": "img/tomlacy - 2023.png",
-  "resume": "TomALacy Resume.pdf",
+  "name": "Tom Lacy",
   "passions": [
     {
-      "label": "Photography",
-      "galleryLink": "gallery.html",
       "album": {
-        "url": "gallery.html",
         "images": [
           "img/gallery/banner_DSC_0050.JPG",
           "img/gallery/banner_DSC_0432e.JPG",
           "img/gallery/banner_DSC_0752e.JPG",
           "img/gallery/banner_DSC_1623.JPG",
           "img/gallery/banner_DSC_5605.JPG"
-        ]
-      }
+        ],
+        "url": "gallery.html"
+      },
+      "galleryLink": "gallery.html",
+      "label": "Family & Photography"
     },
     {
-      "label": "Sports",
       "feed": "https://www.espn.com/espn/rss/news",
+      "label": "Sports",
       "pageLink": "sports.html"
     },
     {
-      "label": "Tech",
       "feed": "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml",
+      "label": "Tech",
       "pageLink": "tech.html"
     },
     {
@@ -34,13 +31,16 @@
       "pageLink": "leadership.html"
     }
   ],
-  "social": {
-    "linkedin": "",
-    "facebook": "",
-    "instagram": ""
-  },
   "people": {
     "contactEmail": "tomalacy@gmail.com",
     "content": ""
-  }
+  },
+  "profileImage": "img/tomlacy - 2023.png",
+  "resume": "TomALacy Resume.pdf",
+  "social": {
+    "facebook": "",
+    "instagram": "",
+    "linkedin": ""
+  },
+  "title": "Executive Engineering Leader"
 }
