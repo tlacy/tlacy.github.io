@@ -146,6 +146,12 @@
             .lightbox-caption:empty {
                 display: none;
             }
+            .lightbox-date {
+                color: rgba(255,255,255,0.7);
+                font-size: 12px;
+                margin-top: 6px;
+                font-style: italic;
+            }
         </style>
     </head>
     <body>
@@ -333,12 +339,19 @@
                 const photoPath = photos[currentIndex];
                 lightboxImg.src = photoPath;
                 
-                // Display caption if available
+                // Display caption and date if available
                 const photoMeta = metadata.photos && metadata.photos[photoPath];
-                if (photoMeta && photoMeta.caption) {
-                    lightboxCaption.textContent = photoMeta.caption;
+                if (photoMeta && (photoMeta.caption || photoMeta.date)) {
+                    let html = '';
+                    if (photoMeta.caption) {
+                        html += photoMeta.caption;
+                    }
+                    if (photoMeta.date) {
+                        html += '<div class="lightbox-date">' + photoMeta.date + '</div>';
+                    }
+                    lightboxCaption.innerHTML = html;
                 } else {
-                    lightboxCaption.textContent = '';
+                    lightboxCaption.innerHTML = '';
                 }
                 
                 lightbox.classList.add('active');
@@ -353,12 +366,19 @@
                 const photoPath = photos[currentIndex];
                 lightboxImg.src = photoPath;
                 
-                // Update caption
+                // Update caption and date
                 const photoMeta = metadata.photos && metadata.photos[photoPath];
-                if (photoMeta && photoMeta.caption) {
-                    lightboxCaption.textContent = photoMeta.caption;
+                if (photoMeta && (photoMeta.caption || photoMeta.date)) {
+                    let html = '';
+                    if (photoMeta.caption) {
+                        html += photoMeta.caption;
+                    }
+                    if (photoMeta.date) {
+                        html += '<div class="lightbox-date">' + photoMeta.date + '</div>';
+                    }
+                    lightboxCaption.innerHTML = html;
                 } else {
-                    lightboxCaption.textContent = '';
+                    lightboxCaption.innerHTML = '';
                 }
             }
 
@@ -367,12 +387,19 @@
                 const photoPath = photos[currentIndex];
                 lightboxImg.src = photoPath;
                 
-                // Update caption
+                // Update caption and date
                 const photoMeta = metadata.photos && metadata.photos[photoPath];
-                if (photoMeta && photoMeta.caption) {
-                    lightboxCaption.textContent = photoMeta.caption;
+                if (photoMeta && (photoMeta.caption || photoMeta.date)) {
+                    let html = '';
+                    if (photoMeta.caption) {
+                        html += photoMeta.caption;
+                    }
+                    if (photoMeta.date) {
+                        html += '<div class="lightbox-date">' + photoMeta.date + '</div>';
+                    }
+                    lightboxCaption.innerHTML = html;
                 } else {
-                    lightboxCaption.textContent = '';
+                    lightboxCaption.innerHTML = '';
                 }
             }
 
