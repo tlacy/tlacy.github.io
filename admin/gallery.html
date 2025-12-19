@@ -173,13 +173,16 @@
         <!-- Login Section (shown when not authenticated) -->
         <div id="login-section" class="login-section">
             <h1>Gallery Admin</h1>
-            <p>Sign in with GitHub to edit photo captions and dates</p>
+            <p>Sign in with your GitHub Personal Access Token to edit photo captions and dates</p>
             <a href="#" id="github-login" class="login-button">
                 <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
                     <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
                 </svg>
-                Sign in with GitHub
+                Enter Access Token
             </a>
+            <p style="margin-top: 20px; font-size: 14px; color: #666;">
+                Don't have a token? <a href="https://github.com/settings/tokens/new?description=tomlacy.net%20Gallery%20Admin&scopes=repo" target="_blank" style="color: var(--blue);">Create one here</a>
+            </p>
         </div>
 
         <!-- Admin Interface (shown when authenticated) -->
@@ -209,8 +212,6 @@
     <div id="status-message" class="status-message"></div>
 
     <script>
-        const CLIENT_ID = 'YOUR_GITHUB_CLIENT_ID'; // You'll need to set this
-        const REDIRECT_URI = window.location.origin + '/admin/gallery.html';
         const GITHUB_API = 'https://api.github.com';
         const REPO_OWNER = 'tlacy';
         const REPO_NAME = 'tlacy.github.io';
@@ -221,51 +222,19 @@
         let originalMetadata = {};
         let user = null;
 
-        // Check for OAuth callback
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-
-        if (code) {
-            // Exchange code for access token
-            exchangeCodeForToken(code);
-        } else {
-            // Check for stored token
-            accessToken = localStorage.getItem('github_token');
-            if (accessToken) {
-                initAdmin();
-            }
+        // Check for stored token
+        accessToken = localStorage.getItem('github_token');
+        if (accessToken) {
+            initAdmin();
         }
 
         function login() {
-            const authUrl = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=repo`;
-            window.location.href = authUrl;
-        }
-
-        async function exchangeCodeForToken(code) {
-            try {
-                // This needs to go through your serverless function to keep client secret secure
-                const response = await fetch('/.netlify/functions/github-auth', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ code })
-                });
-
-                const data = await response.json();
-                
-                if (data.access_token) {
-                    accessToken = data.access_token;
-                    localStorage.setItem('github_token', accessToken);
-                    
-                    // Clean up URL
-                    window.history.replaceState({}, document.title, '/admin/gallery.html');
-                    
-                    initAdmin();
-                } else {
-                    showMessage('Authentication failed', 'error');
-                }
-            } catch (error) {
-                console.error('Auth error:', error);
-                showMessage('Authentication failed', 'error');
+            const token = prompt('Enter your GitHub Personal Access Token:\n\nTo create one:\n1. Go to https://github.com/settings/tokens\n2. Click "Generate new token (classic)"\n3. Select scope: "repo"\n4. Copy the token and paste it here');
+            
+            if (token) {
+                accessToken = token;
+                localStorage.setItem('github_token', accessToken);
+                initAdmin();
             }
         }
 
