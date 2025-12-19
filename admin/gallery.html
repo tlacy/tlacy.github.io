@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gallery Admin - Tom Lacy</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+        body {
+            background: var(--bg);
+            font-family: Inter, system-ui, sans-serif;
+        }
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .admin-header h1 {
+            margin: 0;
+            color: #04233b;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .login-section {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .login-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #24292e;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .login-button:hover {
+            background: #2c3237;
+        }
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .photo-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .photo-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .photo-preview {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            cursor: pointer;
+        }
+        .photo-form {
+            padding: 16px;
+        }
+        .photo-form label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+        .photo-form input,
+        .photo-form textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        .photo-form textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+        .photo-filename {
+            font-size: 11px;
+            color: #999;
+            margin-bottom: 12px;
+            word-break: break-all;
+        }
+        .save-all-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(102,126,234,0.4);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        .save-all-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(102,126,234,0.5);
+        }
+        .save-all-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .status-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: none;
+        }
+        .status-message.success {
+            border-left: 4px solid #2EC4B6;
+            display: block;
+        }
+        .status-message.error {
+            border-left: 4px solid #ff4444;
+            display: block;
+        }
+        .logout-button {
+            padding: 8px 16px;
+            background: #f5f5f5;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .logout-button:hover {
+            background: #e5e5e5;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Login Section (shown when not authenticated) -->
+        <div id="login-section" class="login-section">
+            <h1>Gallery Admin</h1>
+            <p>Sign in with GitHub to edit photo captions and dates</p>
+            <a href="#" id="github-login" class="login-button">
+                <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+                Sign in with GitHub
+            </a>
+        </div>
+
+        <!-- Admin Interface (shown when authenticated) -->
+        <div id="admin-section" style="display: none;">
+            <div class="admin-header">
+                <div>
+                    <h1>Gallery Admin</h1>
+                    <p style="margin: 4px 0 0 0; color: #666;">Edit photo captions and dates</p>
+                </div>
+                <div class="user-info">
+                    <img id="user-avatar" class="user-avatar" src="" alt="">
+                    <span id="user-name"></span>
+                    <button class="logout-button" onclick="logout()">Sign Out</button>
+                </div>
+            </div>
+
+            <div id="photo-grid" class="photo-grid">
+                <!-- Photos will be loaded here -->
+            </div>
+
+            <button id="save-all" class="save-all-button" onclick="saveChanges()">
+                💾 Save All Changes
+            </button>
+        </div>
+    </div>
+
+    <div id="status-message" class="status-message"></div>
+
+    <script>
+        const CLIENT_ID = 'YOUR_GITHUB_CLIENT_ID'; // You'll need to set this
+        const REDIRECT_URI = window.location.origin + '/admin/gallery.html';
+        const GITHUB_API = 'https://api.github.com';
+        const REPO_OWNER = 'tlacy';
+        const REPO_NAME = 'tlacy.github.io';
+        const METADATA_PATH = 'gallery-metadata.json';
+
+        let accessToken = null;
+        let metadata = {};
+        let originalMetadata = {};
+        let user = null;
+
+        // Check for OAuth callback
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+
+        if (code) {
+            // Exchange code for access token
+            exchangeCodeForToken(code);
+        } else {
+            // Check for stored token
+            accessToken = localStorage.getItem('github_token');
+            if (accessToken) {
+                initAdmin();
+            }
+        }
+
+        function login() {
+            const authUrl = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=repo`;
+            window.location.href = authUrl;
+        }
+
+        async function exchangeCodeForToken(code) {
+            try {
+                // This needs to go through your serverless function to keep client secret secure
+                const response = await fetch('/.netlify/functions/github-auth', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code })
+                });
+
+                const data = await response.json();
+                
+                if (data.access_token) {
+                    accessToken = data.access_token;
+                    localStorage.setItem('github_token', accessToken);
+                    
+                    // Clean up URL
+                    window.history.replaceState({}, document.title, '/admin/gallery.html');
+                    
+                    initAdmin();
+                } else {
+                    showMessage('Authentication failed', 'error');
+                }
+            } catch (error) {
+                console.error('Auth error:', error);
+                showMessage('Authentication failed', 'error');
+            }
+        }
+
+        async function initAdmin() {
+            try {
+                // Verify token and get user info
+                const userResponse = await fetch(`${GITHUB_API}/user`, {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+
+                if (!userResponse.ok) {
+                    throw new Error('Invalid token');
+                }
+
+                user = await userResponse.json();
+
+                // Check if user has access to the repo
+                const repoResponse = await fetch(`${GITHUB_API}/repos/${REPO_OWNER}/${REPO_NAME}`, {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+
+                if (!repoResponse.ok) {
+                    showMessage('You do not have access to this repository', 'error');
+                    logout();
+                    return;
+                }
+
+                // Show admin interface
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('admin-section').style.display = 'block';
+                document.getElementById('user-avatar').src = user.avatar_url;
+                document.getElementById('user-name').textContent = user.login;
+
+                // Load metadata
+                await loadMetadata();
+                renderPhotoGrid();
+            } catch (error) {
+                console.error('Init error:', error);
+                logout();
+                showMessage('Authentication failed. Please sign in again.', 'error');
+            }
+        }
+
+        async function loadMetadata() {
+            try {
+                const response = await fetch(`${GITHUB_API}/repos/${REPO_OWNER}/${REPO_NAME}/contents/${METADATA_PATH}`, {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+
+                const data = await response.json();
+                const content = atob(data.content);
+                metadata = JSON.parse(content);
+                originalMetadata = JSON.parse(content); // Keep original for comparison
+            } catch (error) {
+                console.error('Failed to load metadata:', error);
+                showMessage('Failed to load gallery metadata', 'error');
+            }
+        }
+
+        function renderPhotoGrid() {
+            const grid = document.getElementById('photo-grid');
+            grid.innerHTML = '';
+
+            Object.keys(metadata.photos).sort().forEach(photoPath => {
+                const photo = metadata.photos[photoPath];
+                const card = document.createElement('div');
+                card.className = 'photo-card';
+                
+                const filename = photoPath.split('/').pop();
+                
+                card.innerHTML = `
+                    <img src="../${photoPath}" class="photo-preview" alt="${filename}" loading="lazy">
+                    <div class="photo-form">
+                        <div class="photo-filename">${filename}</div>
+                        <label>Caption</label>
+                        <textarea 
+                            data-photo="${photoPath}" 
+                            data-field="caption"
+                            placeholder="Add a caption..."
+                        >${photo.caption || ''}</textarea>
+                        <label>Date</label>
+                        <input 
+                            type="text" 
+                            data-photo="${photoPath}" 
+                            data-field="date"
+                            placeholder="e.g., November 2025"
+                            value="${photo.date || ''}"
+                        >
+                    </div>
+                `;
+
+                // Add event listeners for auto-save
+                card.querySelectorAll('input, textarea').forEach(input => {
+                    input.addEventListener('input', (e) => {
+                        const photoPath = e.target.dataset.photo;
+                        const field = e.target.dataset.field;
+                        metadata.photos[photoPath][field] = e.target.value;
+                    });
+                });
+
+                grid.appendChild(card);
+            });
+        }
+
+        async function saveChanges() {
+            const button = document.getElementById('save-all');
+            button.disabled = true;
+            button.textContent = '⏳ Saving...';
+
+            try {
+                // Get current file SHA
+                const fileResponse = await fetch(`${GITHUB_API}/repos/${REPO_OWNER}/${REPO_NAME}/contents/${METADATA_PATH}`, {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+                const fileData = await fileResponse.json();
+
+                // Update file
+                const content = btoa(JSON.stringify(metadata, null, 2));
+                const updateResponse = await fetch(`${GITHUB_API}/repos/${REPO_OWNER}/${REPO_NAME}/contents/${METADATA_PATH}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: 'Update gallery captions and dates',
+                        content: content,
+                        sha: fileData.sha,
+                        branch: 'master'
+                    })
+                });
+
+                if (updateResponse.ok) {
+                    showMessage('✓ Changes saved successfully!', 'success');
+                    originalMetadata = JSON.parse(JSON.stringify(metadata));
+                } else {
+                    throw new Error('Failed to save');
+                }
+            } catch (error) {
+                console.error('Save error:', error);
+                showMessage('Failed to save changes', 'error');
+            } finally {
+                button.disabled = false;
+                button.textContent = '💾 Save All Changes';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('github_token');
+            accessToken = null;
+            user = null;
+            document.getElementById('login-section').style.display = 'block';
+            document.getElementById('admin-section').style.display = 'none';
+        }
+
+        function showMessage(text, type) {
+            const msg = document.getElementById('status-message');
+            msg.textContent = text;
+            msg.className = `status-message ${type}`;
+            setTimeout(() => {
+                msg.className = 'status-message';
+            }, 4000);
+        }
+
+        // Set up login button
+        document.getElementById('github-login').addEventListener('click', (e) => {
+            e.preventDefault();
+            login();
+        });
+    </script>
+</body>
+</html>
