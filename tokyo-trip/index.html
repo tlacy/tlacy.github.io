@@ -5,1245 +5,735 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>東京 · May 2026</title>
   <style>
-    /* ===== RESET & BASE ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --red: #C8102E;
       --navy: #1A1A2E;
       --pink: #FFB7C5;
-      --bg: #F5F5F7;
+      --bg: #F2F2F7;
       --card: #FFFFFF;
-      --text: #1A1A2E;
-      --muted: #777;
-      --border: #E8E8E8;
-      --transit-bg: #EEF3FF;
-      --transit-border: #4A7BF7;
+      --muted: #6E6E73;
+      --border: #E5E5EA;
       --tab-h: 64px;
-      --header-h: 56px;
+      --header-h: 52px;
     }
     html, body {
       height: 100%;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
       background: var(--bg);
-      color: var(--text);
-      font-size: 16px;
+      color: #1A1A2E;
       overscroll-behavior: none;
       -webkit-font-smoothing: antialiased;
     }
-
-    /* ===== HEADER ===== */
     header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
+      position: fixed; top: 0; left: 0; right: 0;
       height: var(--header-h);
       background: var(--navy);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 200;
     }
-    header h1 {
-      color: white;
-      font-size: 1.05rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-    }
-    header .sakura { color: var(--pink); margin: 0 8px; font-size: 1rem; }
-
-    /* ===== BOTTOM NAV ===== */
+    header h1 { color: #fff; font-size: 1rem; font-weight: 700; letter-spacing: 0.06em; }
     .bottom-nav {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      height: var(--tab-h);
-      background: var(--navy);
-      display: flex;
-      z-index: 100;
-      box-shadow: 0 -2px 12px rgba(0,0,0,0.25);
+      position: fixed; bottom: 0; left: 0; right: 0;
+      height: calc(var(--tab-h) + env(safe-area-inset-bottom, 0px));
       padding-bottom: env(safe-area-inset-bottom, 0px);
+      background: var(--navy);
+      display: flex; z-index: 200;
     }
-    .bottom-nav button {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      background: none;
-      border: none;
-      color: rgba(255,255,255,0.45);
-      font-size: 0.62rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: color 0.15s;
-      padding: 6px 0 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      min-height: 48px;
+    .nav-btn {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 3px;
+      background: none; border: none;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+      cursor: pointer; min-height: 48px;
+      -webkit-tap-highlight-color: transparent;
     }
-    .bottom-nav button .nav-icon { font-size: 1.45rem; line-height: 1; }
-    .bottom-nav button.active { color: var(--pink); }
-
-    /* ===== MAIN CONTENT ===== */
+    .nav-btn .ico { font-size: 1.4rem; line-height: 1; }
+    .nav-btn.active { color: var(--pink); }
     main {
-      padding-top: calc(var(--header-h) + 8px);
-      padding-bottom: calc(var(--tab-h) + 12px);
+      padding-top: var(--header-h);
+      padding-bottom: calc(var(--tab-h) + env(safe-area-inset-bottom, 0px) + 4px);
       min-height: 100%;
     }
     .section { display: none; }
     .section.active { display: block; }
-
-    /* ===== SHARED CARDS ===== */
-    .card {
-      background: var(--card);
-      border-radius: 14px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-      margin: 0 12px 12px;
-      padding: 16px;
-    }
-
-    /* ===== ITINERARY ===== */
     .day-tabs {
-      display: flex;
-      overflow-x: auto;
-      gap: 6px;
-      padding: 12px 12px 4px;
-      scrollbar-width: none;
+      display: flex; overflow-x: auto; gap: 6px;
+      padding: 10px 12px 6px;
+      scrollbar-width: none; -webkit-overflow-scrolling: touch;
     }
     .day-tabs::-webkit-scrollbar { display: none; }
     .day-tab {
       flex-shrink: 0;
-      background: var(--card);
-      border: 1.5px solid var(--border);
-      border-radius: 20px;
-      padding: 7px 14px;
-      font-size: 0.76rem;
-      font-weight: 700;
-      cursor: pointer;
-      color: var(--muted);
-      transition: all 0.15s;
-      min-height: 38px;
-      white-space: nowrap;
-      text-align: center;
-      line-height: 1.3;
+      background: var(--card); border: 1.5px solid var(--border); border-radius: 20px;
+      padding: 6px 13px; font-size: 0.7rem; font-weight: 700; color: var(--muted);
+      cursor: pointer; white-space: nowrap; min-height: 40px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      -webkit-tap-highlight-color: transparent;
     }
-    .day-tab.active {
-      background: var(--red);
-      border-color: var(--red);
-      color: white;
-      box-shadow: 0 2px 8px rgba(200,16,46,0.3);
+    .day-tab .dn { font-size: 0.75rem; }
+    .day-tab .dd { font-size: 0.6rem; font-weight: 500; opacity: 0.7; }
+    .day-tab.active { background: var(--red); border-color: var(--red); color: #fff; }
+    .day-tab.active .dd { opacity: 0.8; }
+    #map { height: 250px; width: 100%; background: #dce8f4; }
+    .map-fallback {
+      height: 100%; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 12px;
+      background: linear-gradient(135deg,#e8f0fd,#dde5fa);
+      font-size: 0.84rem; color: var(--muted); text-align: center; padding: 20px;
     }
-
-    .day-header {
-      padding: 14px 12px 6px;
+    .day-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 12px 6px;
     }
-    .day-header h2 { font-size: 1.2rem; font-weight: 800; color: var(--navy); }
-    .day-header p { font-size: 0.82rem; color: var(--muted); margin-top: 3px; }
-
-    .map-container {
-      margin: 0 12px 12px;
-      border-radius: 14px;
-      overflow: hidden;
-      height: 220px;
-      background: #e0e0e0;
-      position: relative;
+    .day-bar-title { font-size: 0.98rem; font-weight: 800; color: var(--navy); }
+    .day-bar-date { font-size: 0.72rem; color: var(--muted); margin-top: 1px; }
+    .route-link {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--navy); color: #fff; text-decoration: none;
+      border-radius: 14px; padding: 8px 14px;
+      font-size: 0.73rem; font-weight: 700; white-space: nowrap;
+      -webkit-tap-highlight-color: transparent;
     }
-    .map-container iframe {
-      width: 100%; height: 100%;
-      border: none;
-      display: block;
+    .stops-list { padding: 6px 10px 16px; }
+    .stop-card {
+      background: var(--card); border-radius: 14px;
+      margin-bottom: 8px; overflow: hidden;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+      border: 2px solid transparent;
+      transition: border-color 0.15s;
     }
-    .map-placeholder {
-      width: 100%; height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      background: linear-gradient(135deg, #e8f4fd 0%, #dde8fb 100%);
-      color: var(--muted);
-      font-size: 0.85rem;
-      text-align: center;
-      padding: 16px;
+    .stop-card.highlighted { border-color: var(--red); }
+    .stop-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px;
+      cursor: pointer; user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
-    .map-placeholder .map-icon { font-size: 2.8rem; }
-    .map-open-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--red);
-      color: white;
-      text-decoration: none;
-      border-radius: 20px;
-      padding: 9px 20px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      box-shadow: 0 2px 8px rgba(200,16,46,0.3);
+    .stop-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--red); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.78rem; font-weight: 800; flex-shrink: 0;
     }
-
-    .stop {
-      display: flex;
-      gap: 12px;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--border);
+    .stop-htext { flex: 1; min-width: 0; }
+    .stop-time { font-size: 0.68rem; font-weight: 700; color: var(--red); text-transform: uppercase; letter-spacing: 0.04em; }
+    .stop-name { font-size: 0.94rem; font-weight: 700; color: var(--navy); margin-top: 1px; line-height: 1.2; }
+    .stop-booked {
+      display: inline-block;
+      background: #FFF0F3; border: 1px solid #FFCDD2;
+      border-radius: 7px; padding: 2px 7px;
+      font-size: 0.6rem; font-weight: 700; color: var(--red); margin-top: 4px;
     }
-    .stop:last-child { border-bottom: none; }
-    .stop-time {
-      flex-shrink: 0;
-      width: 62px;
-      font-size: 0.73rem;
-      font-weight: 800;
-      color: var(--red);
-      padding-top: 2px;
-      line-height: 1.3;
-    }
-    .stop-body { flex: 1; min-width: 0; }
-    .stop-name { font-weight: 700; font-size: 0.95rem; color: var(--navy); }
-    .stop-desc { font-size: 0.81rem; color: var(--muted); margin-top: 4px; line-height: 1.5; }
-    .stop-transit {
-      display: flex;
-      align-items: flex-start;
-      gap: 6px;
-      font-size: 0.76rem;
-      color: #3a5bc7;
-      background: var(--transit-bg);
-      border-left: 3px solid var(--transit-border);
+    .stop-chevron { font-size: 0.72rem; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
+    .stop-card.open .stop-chevron { transform: rotate(180deg); }
+    .stop-body { display: none; padding: 0 12px 14px; border-top: 1px solid var(--border); }
+    .stop-card.open .stop-body { display: block; }
+    .stop-desc { font-size: 0.82rem; color: #444; line-height: 1.65; padding-top: 12px; }
+    .transit-box {
+      display: flex; gap: 6px;
+      background: #EEF3FF; border-left: 3px solid #4A7BF7;
       border-radius: 0 8px 8px 0;
-      padding: 7px 10px;
-      margin-top: 7px;
-      line-height: 1.45;
+      padding: 8px 10px; margin-top: 10px;
+      font-size: 0.76rem; color: #2a5bc7; line-height: 1.5;
     }
-
-    /* ===== PHRASES ===== */
+    .booking-box {
+      background: #F4F4FF; border: 1px solid #D5D5F5;
+      border-radius: 10px; padding: 11px 12px; margin-top: 10px;
+    }
+    .booking-box-title { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; color: #3a5bc7; margin-bottom: 6px; }
+    .booking-box p { font-size: 0.79rem; color: #444; line-height: 1.6; }
+    .bref { font-family: 'SF Mono', 'Fira Code', monospace; color: var(--red); font-weight: 700; letter-spacing: 0.06em; }
+    .booking-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      margin-top: 8px; background: var(--red); color: #fff;
+      text-decoration: none; border-radius: 10px; padding: 7px 14px;
+      font-size: 0.75rem; font-weight: 700;
+    }
+    .stop-actions { display: flex; gap: 7px; margin-top: 12px; }
+    .map-btn {
+      flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px;
+      background: var(--navy); color: #fff; text-decoration: none;
+      border-radius: 10px; padding: 11px 10px;
+      font-size: 0.79rem; font-weight: 700;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .phrases-label { font-size: 0.63rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); margin-top: 16px; margin-bottom: 8px; }
+    .stop-phrases { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+    .sp-card {
+      background: var(--bg); border-radius: 10px; padding: 10px 9px;
+      cursor: pointer; border: 1.5px solid transparent;
+      -webkit-tap-highlight-color: transparent; user-select: none;
+    }
+    .sp-card:active, .sp-card.speaking { background: #FFF0F3; border-color: var(--red); }
+    .sp-en { font-size: 0.6rem; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
+    .sp-ja { font-size: 0.95rem; font-weight: 600; color: var(--navy); margin-top: 2px; line-height: 1.3; }
+    .sp-romaji { font-size: 0.6rem; color: #999; font-style: italic; margin-top: 2px; }
+    .sp-icon { float: right; font-size: 0.82rem; color: var(--red); margin-top: 2px; }
     .cat-tabs {
-      display: flex;
-      overflow-x: auto;
-      gap: 6px;
-      padding: 12px 12px 4px;
-      scrollbar-width: none;
+      display: flex; overflow-x: auto; gap: 6px;
+      padding: 10px 12px 5px; scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
     }
     .cat-tabs::-webkit-scrollbar { display: none; }
     .cat-tab {
       flex-shrink: 0;
-      background: var(--card);
-      border: 1.5px solid var(--border);
-      border-radius: 20px;
-      padding: 7px 14px;
-      font-size: 0.76rem;
-      font-weight: 700;
-      cursor: pointer;
-      color: var(--muted);
-      transition: all 0.15s;
-      min-height: 38px;
-      white-space: nowrap;
+      background: var(--card); border: 1.5px solid var(--border); border-radius: 20px;
+      padding: 6px 14px; font-size: 0.73rem; font-weight: 700; color: var(--muted);
+      cursor: pointer; min-height: 36px;
+      -webkit-tap-highlight-color: transparent;
     }
-    .cat-tab.active {
-      background: var(--red);
-      border-color: var(--red);
-      color: white;
-      box-shadow: 0 2px 8px rgba(200,16,46,0.3);
-    }
-
-    .voice-toggle {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 8px;
-      padding: 10px 12px 4px;
-      font-size: 0.78rem;
-      color: var(--muted);
-      font-weight: 600;
-    }
+    .cat-tab.active { background: var(--red); border-color: var(--red); color: #fff; }
+    .voice-row { display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding: 6px 12px 4px; font-size: 0.73rem; font-weight: 600; color: var(--muted); }
     .toggle-row { display: flex; background: var(--border); border-radius: 20px; padding: 2px; }
-    .toggle-row button {
-      border: none;
-      background: none;
-      padding: 5px 14px;
-      border-radius: 16px;
-      font-size: 0.76rem;
-      cursor: pointer;
-      font-weight: 700;
-      color: var(--muted);
-      transition: all 0.15s;
-      min-height: 34px;
-    }
-    .toggle-row button.active {
-      background: white;
-      color: var(--navy);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
-    }
-
-    .phrases-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      padding: 10px 12px 12px;
-    }
-    .phrase-card {
-      background: var(--card);
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      padding: 13px 11px;
-      cursor: pointer;
-      border: 1.5px solid transparent;
-      transition: transform 0.12s, border-color 0.12s, background 0.12s;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-    .phrase-card:active, .phrase-card.speaking {
-      background: #FFF0F3;
-      border-color: var(--red);
-      transform: scale(0.96);
-    }
-    .phrase-en {
-      font-size: 0.69rem;
-      font-weight: 800;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-    .phrase-jp {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--navy);
-      line-height: 1.35;
-      margin-top: 2px;
-    }
-    .phrase-romaji {
-      font-size: 0.69rem;
-      color: #999;
-      font-style: italic;
-      line-height: 1.4;
-    }
-    .phrase-speaker {
-      font-size: 0.85rem;
-      align-self: flex-end;
-      margin-top: 5px;
-      color: var(--red);
-    }
-
-    /* Wider single-column for long phrases */
-    .phrases-grid .phrase-card.wide {
-      grid-column: 1 / -1;
-    }
-
-    /* ===== TRANSLATOR ===== */
-    .translator-wrap { padding: 16px 12px 24px; }
-    .mic-btn-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 14px;
-      padding: 20px 0 18px;
-    }
-    .mic-btn {
-      width: 88px;
-      height: 88px;
-      border-radius: 50%;
-      background: var(--red);
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.2rem;
-      box-shadow: 0 4px 24px rgba(200,16,46,0.35);
-      transition: transform 0.12s, background 0.15s;
-      -webkit-tap-highlight-color: transparent;
-    }
+    .tog-btn { border: none; background: none; padding: 5px 12px; border-radius: 16px; font-size: 0.71rem; font-weight: 700; color: var(--muted); cursor: pointer; min-height: 30px; -webkit-tap-highlight-color: transparent; }
+    .tog-btn.active { background: #fff; color: var(--navy); box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
+    .phrases-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px 12px 16px; }
+    .ph-card { background: var(--card); border-radius: 12px; padding: 12px 10px; cursor: pointer; border: 1.5px solid transparent; box-shadow: 0 1px 5px rgba(0,0,0,0.07); -webkit-tap-highlight-color: transparent; user-select: none; }
+    .ph-card:active, .ph-card.speaking { background: #FFF0F3; border-color: var(--red); }
+    .ph-en { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em; color: var(--muted); }
+    .ph-ja { font-size: 1.05rem; font-weight: 600; color: var(--navy); margin-top: 3px; line-height: 1.35; }
+    .ph-romaji { font-size: 0.62rem; color: #999; font-style: italic; margin-top: 3px; }
+    .ph-icon { float: right; font-size: 0.88rem; color: var(--red); margin-top: 2px; }
+    .trans-wrap { padding: 20px 12px; }
+    .mic-area { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 20px 0 16px; }
+    .mic-btn { width: 88px; height: 88px; border-radius: 50%; background: var(--red); border: none; cursor: pointer; font-size: 2.1rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 22px rgba(200,16,46,0.35); transition: transform 0.12s; -webkit-tap-highlight-color: transparent; }
     .mic-btn:active { transform: scale(0.91); }
-    .mic-btn.listening {
-      animation: pulse 1.3s infinite;
-      background: #9B0022;
-    }
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 4px 24px rgba(200,16,46,0.35); }
-      50% { box-shadow: 0 4px 48px rgba(200,16,46,0.6), 0 0 0 16px rgba(200,16,46,0.1); }
-    }
-    .mic-status {
-      font-size: 0.81rem;
-      color: var(--muted);
-      font-weight: 600;
-      text-align: center;
-      min-height: 20px;
-    }
-
-    .transcript-box {
-      background: var(--card);
-      border-radius: 14px;
-      padding: 16px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-      margin-bottom: 12px;
-      min-height: 80px;
-    }
-    .box-label {
-      font-size: 0.69rem;
-      font-weight: 800;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 8px;
-    }
-    .transcript-jp {
-      font-size: 1.4rem;
-      color: var(--navy);
-      font-weight: 500;
-      min-height: 36px;
-      line-height: 1.4;
-    }
-
-    .translation-box {
-      background: var(--navy);
-      border-radius: 14px;
-      padding: 20px 16px;
-      min-height: 88px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
-    }
-    .translation-box .box-label { color: rgba(255,255,255,0.45); }
-    .translation-en {
-      font-size: 1.45rem;
-      color: white;
-      font-weight: 500;
-      min-height: 40px;
-      line-height: 1.4;
-    }
-
-    .no-mic-notice {
-      background: #FFF9E6;
-      border-left: 4px solid #FFB300;
-      border-radius: 0 10px 10px 0;
-      padding: 12px 14px;
-      font-size: 0.81rem;
-      color: #555;
-      margin-bottom: 16px;
-      line-height: 1.55;
-    }
-
-    /* ===== TIPS ===== */
+    .mic-btn.listening { animation: mpulse 1.4s infinite; }
+    @keyframes mpulse { 0%,100% { box-shadow: 0 4px 22px rgba(200,16,46,0.35); } 50% { box-shadow: 0 4px 40px rgba(200,16,46,0.6), 0 0 0 14px rgba(200,16,46,0.1); } }
+    .mic-status { font-size: 0.8rem; color: var(--muted); font-weight: 600; min-height: 20px; text-align: center; }
+    .res-box { background: var(--card); border-radius: 14px; padding: 15px; margin-bottom: 10px; min-height: 78px; box-shadow: 0 1px 5px rgba(0,0,0,0.07); }
+    .res-box.dark { background: var(--navy); }
+    .res-label { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 7px; }
+    .res-box.dark .res-label { color: rgba(255,255,255,0.4); }
+    .res-ja { font-size: 1.3rem; color: var(--navy); font-weight: 500; min-height: 34px; }
+    .res-en { font-size: 1.3rem; color: #fff; font-weight: 500; min-height: 34px; }
+    .no-mic { background: #FFF9E6; border-left: 4px solid #FFB300; border-radius: 0 10px 10px 0; padding: 12px 14px; font-size: 0.8rem; color: #555; margin-bottom: 16px; line-height: 1.5; display: none; }
     .tips-wrap { padding: 12px; }
-    .tip-group { margin-bottom: 16px; }
-    .tip-group-title {
-      font-size: 0.69rem;
-      font-weight: 800;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 8px;
-      padding-left: 4px;
-    }
-    .tip-item {
-      background: var(--card);
-      border-radius: 12px;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
-      padding: 14px;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-    }
-    .tip-icon { font-size: 1.55rem; flex-shrink: 0; line-height: 1; padding-top: 1px; }
-    .tip-body h4 { font-size: 0.9rem; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
-    .tip-body p { font-size: 0.81rem; color: var(--muted); line-height: 1.55; }
-    .tip-highlight { color: var(--red); font-weight: 700; }
-
-    .booking-card {
-      background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-    }
-    .booking-icon { font-size: 1.8rem; flex-shrink: 0; }
-    .booking-body h4 { font-size: 0.9rem; font-weight: 700; color: white; }
-    .booking-body p { font-size: 0.77rem; color: rgba(255,255,255,0.55); margin-top: 2px; line-height: 1.45; }
-    .booking-ref {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--pink);
-      font-family: 'SF Mono', 'Fira Code', monospace;
-      letter-spacing: 0.06em;
-      margin-top: 4px;
-      display: block;
-    }
-
-    .emergency-highlight {
-      background: #FFF0F0;
-      border: 1.5px solid #FFCDD2;
-      border-radius: 12px;
-      padding: 14px;
-      margin-bottom: 8px;
-    }
-    .emergency-highlight h4 { font-size: 0.9rem; font-weight: 700; color: var(--red); margin-bottom: 6px; }
-    .emergency-highlight p { font-size: 0.82rem; color: #555; line-height: 1.6; }
-    .emergency-number { font-size: 1.4rem; font-weight: 800; color: var(--red); }
+    .tips-section { margin-bottom: 14px; }
+    .tips-section-label { font-size: 0.63rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); padding-left: 2px; margin-bottom: 7px; }
+    .tip-item { background: var(--card); border-radius: 12px; padding: 13px; margin-bottom: 7px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); display: flex; gap: 11px; }
+    .ti-icon { font-size: 1.5rem; flex-shrink: 0; line-height: 1; padding-top: 1px; }
+    .ti-body h4 { font-size: 0.88rem; font-weight: 700; color: var(--navy); }
+    .ti-body p { font-size: 0.79rem; color: #555; margin-top: 3px; line-height: 1.6; }
+    .hl { color: var(--red); font-weight: 700; }
+    .bk-card { background: linear-gradient(135deg,#1A1A2E,#16213E); border-radius: 12px; padding: 14px; margin-bottom: 7px; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
+    .bk-card h4 { font-size: 0.88rem; font-weight: 700; color: #fff; }
+    .bk-card p { font-size: 0.76rem; color: rgba(255,255,255,0.55); margin-top: 3px; line-height: 1.5; }
+    .bk-ref { font-family: 'SF Mono', monospace; color: var(--pink); font-weight: 700; font-size: 0.8rem; margin-top: 5px; display: block; letter-spacing: 0.05em; }
+    .emerg { background: #FFF0F0; border: 1.5px solid #FFCDD2; border-radius: 12px; padding: 13px; margin-bottom: 7px; }
+    .emerg h4 { font-size: 0.88rem; font-weight: 800; color: var(--red); margin-bottom: 6px; }
+    .emerg p { font-size: 0.81rem; color: #444; line-height: 1.75; }
+    .emerg-n { font-size: 1.35rem; font-weight: 800; color: var(--red); }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>🌸<span class="sakura"></span>Tokyo · May 2026</h1>
-</header>
+<header><h1>&#x1F338; &#x6771;&#x4EAC; &middot; May 2026</h1></header>
 
 <main>
-
-  <!-- ========== ITINERARY ========== -->
   <div id="sec-itinerary" class="section active">
     <div class="day-tabs" id="dayTabs"></div>
-    <div id="dayContent"></div>
+    <div id="map"></div>
+    <div class="day-bar">
+      <div>
+        <div class="day-bar-title" id="dayTitle">Day 1 &middot; Arrival Day</div>
+        <div class="day-bar-date" id="dayDate">Sun May 3</div>
+      </div>
+      <a id="routeLink" class="route-link" href="#" target="_blank" rel="noopener">&#x1F5FA; Full Route &#x2197;</a>
+    </div>
+    <div class="stops-list" id="stopCards"></div>
   </div>
 
-  <!-- ========== PHRASES ========== -->
   <div id="sec-phrases" class="section">
     <div class="cat-tabs" id="catTabs"></div>
-    <div class="voice-toggle">
+    <div class="voice-row">
       <span>Voice:</span>
       <div class="toggle-row">
-        <button id="voiceMale" class="active" onclick="setVoice('male')">♂ Male</button>
-        <button id="voiceFemale" onclick="setVoice('female')">♀ Female</button>
+        <button class="tog-btn active" id="tog-male" onclick="setVoice('male')">&#9794; Male</button>
+        <button class="tog-btn" id="tog-female" onclick="setVoice('female')">&#9792; Female</button>
       </div>
     </div>
     <div class="phrases-grid" id="phrasesGrid"></div>
   </div>
 
-  <!-- ========== TRANSLATOR ========== -->
   <div id="sec-translator" class="section">
-    <div class="translator-wrap">
-      <div class="mic-btn-wrap">
-        <button class="mic-btn" id="micBtn" onclick="toggleListening()">🎤</button>
+    <div class="trans-wrap">
+      <div class="no-mic" id="noMic">&#x26A0;&#xFE0F; Mic not available. Use the &#x1F1EF;&#x1F1F5; Phrases tab to tap-to-speak.</div>
+      <div class="mic-area">
+        <button class="mic-btn" id="micBtn" onclick="toggleListen()">&#x1F3A4;</button>
         <div class="mic-status" id="micStatus">Tap to listen for Japanese</div>
       </div>
-      <div id="noMicNotice" class="no-mic-notice" style="display:none">
-        ⚠️ Live microphone not available. You can still use the phrase cards (🇯🇵 tab) for tap-to-speak.
+      <div class="res-box">
+        <div class="res-label">Heard &middot; Japanese</div>
+        <div class="res-ja" id="resJa">&mdash;</div>
       </div>
-      <div class="transcript-box">
-        <div class="box-label">Heard · Japanese</div>
-        <div class="transcript-jp" id="transcriptJP">—</div>
-      </div>
-      <div class="translation-box">
-        <div class="box-label">Translation · English</div>
-        <div class="translation-en" id="translationEN">—</div>
+      <div class="res-box dark">
+        <div class="res-label">Translation &middot; English</div>
+        <div class="res-en" id="resEn">&mdash;</div>
       </div>
     </div>
   </div>
 
-  <!-- ========== TIPS ========== -->
   <div id="sec-tips" class="section">
     <div class="tips-wrap">
-
-      <div class="tip-group">
-        <div class="tip-group-title">📋 Bookings</div>
-        <div class="booking-card">
-          <div class="booking-icon">🚶</div>
-          <div class="booking-body">
-            <h4>Private City Tour · Day 2 (Mon May 4)</h4>
-            <p>Guide: Gulay Gunay · Meets at Westin lobby · 9am–1pm</p>
-            <span class="booking-ref">Ref: CQTCWY</span>
-          </div>
+      <div class="tips-section">
+        <div class="tips-section-label">&#x1F4CB; Your Bookings</div>
+        <div class="bk-card">
+          <h4>&#x1F6B6; Private City Tour &middot; Mon May 4</h4>
+          <p>Guide: Gulay Gunay &middot; Meets at Westin lobby &middot; 9am&ndash;1pm<br>
+             Phone: <a href="tel:+818038221344" style="color:var(--pink)">+81 80 3822 1344</a></p>
+          <span class="bk-ref">Ref: CQTCWY</span>
         </div>
-        <div class="booking-card">
-          <div class="booking-icon">🏔️</div>
-          <div class="booking-body">
-            <h4>Mt. Fuji Private Tour · Day 4 (Wed May 6)</h4>
-            <p>All-day van tour · 5 pax · Hotel pickup 8am</p>
-            <span class="booking-ref">Ref: BR-1382503865</span>
-          </div>
+        <div class="bk-card">
+          <h4>&#x1F3D4; Mt. Fuji Private Tour &middot; Wed May 6</h4>
+          <p>Toyota Alphard van &middot; 5 pax &middot; Hotel pickup 8am &middot; $448.49</p>
+          <span class="bk-ref">Ref: BR-1382503865</span>
         </div>
-        <div class="booking-card">
-          <div class="booking-icon">🌆</div>
-          <div class="booking-body">
-            <h4>Shibuya Sky · Day 2 (Mon May 4)</h4>
-            <p>Open-air observation deck · 230m · Entry 2pm</p>
-            <span class="booking-ref">BOOKED — 2:00pm entry</span>
-          </div>
+        <div class="bk-card">
+          <h4>&#x1F306; Shibuya Sky &middot; Mon May 4</h4>
+          <p>Open-air observation deck at 230m &middot; Entry 2:00pm</p>
+          <span class="bk-ref">&#x2705; Confirmed on Klook</span>
+        </div>
+        <div class="bk-card">
+          <h4>&#x1F3E8; Westin Tokyo, Ebisu</h4>
+          <p>Phone: <a href="tel:+81354237000" style="color:var(--pink)">03-5423-7000</a><br>1-4-1 Mita, Meguro-ku, Tokyo 153-8580</p>
         </div>
       </div>
-
-      <div class="tip-group">
-        <div class="tip-group-title">💴 Money &amp; Payments</div>
-        <div class="tip-item">
-          <div class="tip-icon">💳</div>
-          <div class="tip-body">
-            <h4>IC Card (Suica / Pasmo)</h4>
-            <p>Get at Narita or any major station. Tap on/off for trains, buses, taxis, and 7-Eleven. Top up at station machines — keep ¥2,000+ loaded.</p>
-          </div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-icon">🏧</div>
-          <div class="tip-body">
-            <h4>Cash &amp; ATMs</h4>
-            <p><span class="tip-highlight">7-Eleven ATMs</span> reliably accept foreign cards. Carry <span class="tip-highlight">¥5,000–10,000 daily</span> — small restaurants and shrines are often cash-only.</p>
-          </div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-icon">🙅</div>
-          <div class="tip-body">
-            <h4>Do NOT Tip</h4>
-            <p>Tipping is rude in Japan. Exceptional service is standard — it is a point of cultural pride, not an expectation of extra payment.</p>
-          </div>
-        </div>
+      <div class="tips-section">
+        <div class="tips-section-label">&#x1F4B4; Money &amp; Payments</div>
+        <div class="tip-item"><div class="ti-icon">&#x1F4B3;</div><div class="ti-body"><h4>IC Card (Suica / Pasmo)</h4><p>Get at Narita or any major station. Tap on/off for trains, buses, taxis. Keep <span class="hl">&yen;2,000+</span> loaded at all times.</p></div></div>
+        <div class="tip-item"><div class="ti-icon">&#x1F3E7;</div><div class="ti-body"><h4>Cash &mdash; 7-Eleven ATMs</h4><p><span class="hl">7-Eleven ATMs</span> reliably accept foreign cards. Carry <span class="hl">&yen;5,000&ndash;10,000 daily</span>. Many small spots are cash-only.</p></div></div>
+        <div class="tip-item"><div class="ti-icon">&#x1F645;</div><div class="ti-body"><h4>Do NOT Tip</h4><p>Tipping is considered rude in Japan. Exceptional service is the baseline.</p></div></div>
       </div>
-
-      <div class="tip-group">
-        <div class="tip-group-title">🚇 Getting Around</div>
-        <div class="tip-item">
-          <div class="tip-icon">🚕</div>
-          <div class="tip-body">
-            <h4>Taxi Apps</h4>
-            <p>Use <span class="tip-highlight">GO</span> or <span class="tip-highlight">Uber</span>. Taxis start at ~¥750. Clean, safe, and drivers use GPS — you don't need to speak Japanese.</p>
-          </div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-icon">🗺️</div>
-          <div class="tip-body">
-            <h4>Google Maps Transit</h4>
-            <p>Extremely accurate in Tokyo. Download offline Tokyo metro maps before leaving Austin. <span class="tip-highlight">Note exit numbers</span> — they matter in large stations.</p>
-          </div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-icon">🟢</div>
-          <div class="tip-body">
-            <h4>Yamanote Line (Green)</h4>
-            <p>Loops through Shibuya, Shinjuku, Harajuku, Ueno, Akihabara, Tokyo Station. Runs every 2–3 minutes. Your most-used line.</p>
-          </div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-icon">🔵</div>
-          <div class="tip-body">
-            <h4>Hibiya Line (Silver/Grey)</h4>
-            <p>Runs past Ebisu (your hotel). Connects to Roppongi (3 stops), Ueno (25 min), and Ginza.</p>
-          </div>
-        </div>
+      <div class="tips-section">
+        <div class="tips-section-label">&#x1F687; Getting Around</div>
+        <div class="tip-item"><div class="ti-icon">&#x1F695;</div><div class="ti-body"><h4>Taxis &mdash; GO or Uber</h4><p>Clean, safe, GPS. Show driver the Navigate button. Starts ~&yen;750.</p></div></div>
+        <div class="tip-item"><div class="ti-icon">&#x1F7E2;</div><div class="ti-body"><h4>Yamanote Line (Green Loop)</h4><p>Every 2&ndash;3 min. Shibuya &middot; Shinjuku &middot; Harajuku &middot; Ueno &middot; Akihabara &middot; Tokyo Station. Your workhorse line.</p></div></div>
+        <div class="tip-item"><div class="ti-icon">&#x1F684;</div><div class="ti-body"><h4>Narita Express</h4><p>Every 30 min from Narita. ~75 min to Shibuya &middot; &yen;3,070. Or pre-booked taxi (~90 min, saves money for 3 people + luggage).</p></div></div>
       </div>
-
-      <div class="tip-group">
-        <div class="tip-group-title">📱 Tech &amp; Connectivity</div>
-        <div class="tip-item">
-          <div class="tip-icon">📡</div>
-          <div class="tip-body">
-            <h4>Airalo eSIM</h4>
-            <p>~$8.50 for 3GB / 30 days Japan plan. Install before leaving Austin. Activates on arrival.</p>
-          </div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-icon">📷</div>
-          <div class="tip-body">
-            <h4>Google Translate Camera</h4>
-            <p>Point at menus, signs, and labels for instant overlay translation. <span class="tip-highlight">Download the Japanese offline pack</span> before you go.</p>
-          </div>
-        </div>
+      <div class="tips-section">
+        <div class="tips-section-label">&#x1F4F1; Tech</div>
+        <div class="tip-item"><div class="ti-icon">&#x1F4E1;</div><div class="ti-body"><h4>Airalo eSIM</h4><p>~$8.50 for 3GB/30 days Japan. Install before leaving. Code <span class="hl">JANICE4259</span> for $3 off.</p></div></div>
+        <div class="tip-item"><div class="ti-icon">&#x1F4F7;</div><div class="ti-body"><h4>Google Translate Camera</h4><p>Point at menus and signs. <span class="hl">Download Japanese offline pack</span> before you go.</p></div></div>
       </div>
-
-      <div class="tip-group">
-        <div class="tip-group-title">🎌 Etiquette</div>
-        <div class="tip-item">
-          <div class="tip-icon">🤫</div>
-          <div class="tip-body">
-            <h4>Quiet in Public</h4>
-            <p>Speak softly on trains. Phone calls on trains are impolite. Eating while walking is frowned upon in many areas.</p>
-          </div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-icon">🗑️</div>
-          <div class="tip-body">
-            <h4>Almost No Public Trash Cans</h4>
-            <p>Carry a small bag for wrappers. Convenience stores have bins — buy a drink or snack if you need to dispose of something.</p>
-          </div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-icon">👟</div>
-          <div class="tip-body">
-            <h4>Remove Shoes at Temples &amp; Traditional Spaces</h4>
-            <p>Look for the raised step (threshold) as your cue. Slip-on shoes are easier. Leave them neatly pointing outward.</p>
-          </div>
-        </div>
+      <div class="tips-section">
+        <div class="tips-section-label">&#x1F38C; Etiquette</div>
+        <div class="tip-item"><div class="ti-icon">&#x1F910;</div><div class="ti-body"><h4>Quiet on Trains</h4><p>No phone calls. Speak softly. Eating while walking is frowned upon in most areas.</p></div></div>
+        <div class="tip-item"><div class="ti-icon">&#x1F45F;</div><div class="ti-body"><h4>Remove Shoes</h4><p>At temples, traditional restaurants, and ryokan. Look for a raised threshold. Leave shoes pointing outward.</p></div></div>
+        <div class="tip-item"><div class="ti-icon">&#x1F5D1;</div><div class="ti-body"><h4>Almost No Public Trash Cans</h4><p>Carry a small bag for wrappers. Use convenience store bins when you buy something.</p></div></div>
       </div>
-
-      <div class="tip-group">
-        <div class="tip-group-title">🆘 Emergency</div>
-        <div class="emergency-highlight">
+      <div class="tips-section">
+        <div class="tips-section-label">&#x1F198; Emergency</div>
+        <div class="emerg">
           <h4>Emergency Numbers</h4>
-          <p>
-            Fire / Ambulance: <span class="emergency-number">119</span><br>
-            Police: <span class="emergency-number">110</span><br>
-            English Helpline: <span class="tip-highlight">03-5285-8181</span>
-          </p>
+          <p>Ambulance/Fire: <span class="emerg-n">119</span>&nbsp;&nbsp;&nbsp;Police: <span class="emerg-n">110</span><br>
+             English help line: <span class="hl">03-5285-8181</span><br>
+             US Embassy Tokyo: <span class="hl">03-3224-5000</span></p>
         </div>
-        <div class="tip-item">
-          <div class="tip-icon">🏥</div>
-          <div class="tip-body">
-            <h4>Nearest Major Hospital (English-Friendly)</h4>
-            <p>St. Luke's International Hospital, Chuo — 03-5550-7166<br>Tokyo Medical &amp; Surgical Clinic, Minato — 03-3436-3028</p>
-          </div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-icon">🏨</div>
-          <div class="tip-body">
-            <h4>Westin Tokyo — Your Home Base</h4>
-            <p>Phone: <span class="tip-highlight">03-5423-7000</span><br>Address: 1-4-1 Mita, Meguro-ku, Tokyo 153-8580</p>
-          </div>
-        </div>
+        <div class="tip-item"><div class="ti-icon">&#x1F3E5;</div><div class="ti-body"><h4>English-Friendly Hospitals</h4><p>St. Luke&#x27;s International, Chuo: <a href="tel:+81335507166" class="hl">03-5550-7166</a><br>Tokyo Medical &amp; Surgical, Minato: <a href="tel:+81334363028" class="hl">03-3436-3028</a></p></div></div>
       </div>
-
     </div>
   </div>
-
 </main>
 
 <nav class="bottom-nav">
-  <button class="active" onclick="showSection('itinerary')" id="nav-itinerary">
-    <span class="nav-icon">🗓</span>Days
-  </button>
-  <button onclick="showSection('phrases')" id="nav-phrases">
-    <span class="nav-icon">🇯🇵</span>Phrases
-  </button>
-  <button onclick="showSection('translator')" id="nav-translator">
-    <span class="nav-icon">🎤</span>Translate
-  </button>
-  <button onclick="showSection('tips')" id="nav-tips">
-    <span class="nav-icon">ℹ️</span>Tips
-  </button>
+  <button class="nav-btn active" id="nav-itinerary" onclick="showSection('itinerary')"><span class="ico">&#x1F5D3;</span>Days</button>
+  <button class="nav-btn" id="nav-phrases" onclick="showSection('phrases')"><span class="ico">&#x1F1EF;&#x1F1F5;</span>Phrases</button>
+  <button class="nav-btn" id="nav-translator" onclick="showSection('translator')"><span class="ico">&#x1F3A4;</span>Translate</button>
+  <button class="nav-btn" id="nav-tips" onclick="showSection('tips')"><span class="ico">&#x2139;&#xFE0F;</span>Tips</button>
 </nav>
 
 <script>
-// ============================================================
-// CONFIG
-// ============================================================
-const MAPS_API_KEY = "AIzaSyDvZ3BSBL0N1t-FPVvoInmgSuZUXB0QZNQ";
-
-// ============================================================
-// ITINERARY DATA
-// ============================================================
-const ITINERARY = [
-  {
-    day: 1, date: "Sun May 3", title: "Arrival Day",
-    stops: [
-      { time: "3:00pm",   name: "Narita Airport Arrival",
-        desc: "Pre-booked taxi to Westin Tokyo, Ebisu. ~90 min drive.",
-        lat: 35.7653, lng: 140.3861 },
-      { time: "5:00pm",   name: "Westin Tokyo, Ebisu",
-        desc: "Check in. Hotel is walking distance from Nakameguro and Daikanyama.",
-        lat: 35.6432, lng: 139.7157,
-        transit: "🚕 Pre-booked taxi from Narita · ~90 min · ~¥20,000" },
-      { time: "7:00pm",   name: "Nakameguro + Ebisu Dinner",
-        desc: "Walk the Meguro River. Casual dinner nearby. Take it easy — 14hr time difference from Austin.",
-        lat: 35.6440, lng: 139.7002,
-        transit: "🚶 Walk · 10 min from hotel along the Meguro River" }
-    ]
-  },
-  {
-    day: 2, date: "Mon May 4", title: "Private Tour · Shibuya Sky · Roppongi",
-    stops: [
-      { time: "9:00am",   name: "Private City Walking Tour",
-        desc: "Guide: Gulay Gunay. Meets at the Westin lobby. Booking ref: CQTCWY. Ends 1pm.",
-        lat: 35.6432, lng: 139.7157 },
-      { time: "2:00pm",   name: "Shibuya Sky",
-        desc: "Open-air observation deck at 230m. BOOKED for 2pm.",
-        lat: 35.6580, lng: 139.7016,
-        transit: "🚂 Tokyu Toyoko Line · Nakameguro → Shibuya · 2 stops · 4 min · ¥160" },
-      { time: "4:00pm",   name: "Shibuya Scramble + Hachiko",
-        desc: "World's busiest intersection. Hachiko statue nearby — great photo.",
-        lat: 35.6595, lng: 139.7004,
-        transit: "🚶 Walk · 5 min from Shibuya Sky rooftop" },
-      { time: "7:30pm",   name: "Shinjuku Dinner + Nightlife",
-        desc: "Omoide Yokocho for yakitori. Golden Gai for tiny atmospheric bars. Bar Benfiddich (#37 World's Best Bars).",
-        lat: 35.6938, lng: 139.7036,
-        transit: "🚂 JR Yamanote Line · Shibuya → Shinjuku · 5 min · ¥170" }
-    ]
-  },
-  {
-    day: 3, date: "Tue May 5", title: "Ueno · Asakusa · Tokyo Skytree",
-    stops: [
-      { time: "9:00am",   name: "Ueno Park + Ameyoko Market",
-        desc: "Shinobazu Pond and street food: takoyaki, yakitori, taiyaki.",
-        lat: 35.7146, lng: 139.7742,
-        transit: "🚂 Tokyo Metro Hibiya Line · Ebisu → Ueno · 7 stops · ~25 min · ¥210" },
-      { time: "12:30pm",  name: "Kappabashi Kitchen Street",
-        desc: "World's only street for restaurant supplies. Fake food displays, ceramics, handmade knives.",
-        lat: 35.7172, lng: 139.7941,
-        transit: "🚶 Walk · 15 min from Ueno park exit" },
-      { time: "2:00pm",   name: "Asakusa + Senso-ji Temple",
-        desc: "Tokyo's oldest Buddhist temple. Enter via Kaminarimon (Thunder Gate). Browse Nakamise-dori for souvenirs.",
-        lat: 35.7148, lng: 139.7967,
-        transit: "🚶 Walk · 10 min from Kappabashi" },
-      { time: "3:30pm",   name: "Chacha Futatsume",
-        desc: "Famous matcha dessert shop in Asakusa. Don't skip it.",
-        lat: 35.7133, lng: 139.7967,
-        transit: "🚶 Walk · 2 min within Asakusa" },
-      { time: "4:30pm",   name: "Tokyo Skytree",
-        desc: "Tallest structure in Japan. 360° views from 350m. Tokyo Solamachi mall at base.",
-        lat: 35.7101, lng: 139.8107,
-        transit: "🚂 Tobu Skytree Line from Asakusa · 1 stop · 4 min · ¥170  OR  🚶 Walk 20 min" },
-      { time: "7:00pm",   name: "Dinner in Asakusa",
-        desc: "Asakusa Imahan for sukiyaki or Asakusa Gyukatsu for beef katsu. Hoppy Street for drinks after.",
-        lat: 35.7148, lng: 139.7967,
-        transit: "🚂 Tobu Line back · 1 stop · ¥170" }
-    ]
-  },
-  {
-    day: 4, date: "Wed May 6", title: "Mt. Fuji Private Tour All Day",
-    stops: [
-      { time: "8:00am",   name: "Mt. Fuji Private Tour",
-        desc: "All-day private tour. Booking ref: BR-1382503865. Comfortable van, 5 pax. Hotel pickup.",
-        lat: 35.3606, lng: 138.7274 },
-      { time: "Evening",  name: "Roppongi (optional)",
-        desc: "If energy allows after the tour: Mogambo Tokyo, Ayano's Bar, Bar as ONE.",
-        lat: 35.6628, lng: 139.7314,
-        transit: "🚂 Tokyo Metro Hibiya Line · Ebisu → Roppongi · 3 stops · ¥180" }
-    ]
-  },
-  {
-    day: 5, date: "Thu May 7", title: "TeamLab Planets · Akihabara · Imperial Palace · Ginza",
-    stops: [
-      { time: "9:00am",   name: "TeamLab Planets",
-        desc: "Immersive digital art. Opens 8:30am — go early. Infinite flowers, mirror worlds, floating spheres.",
-        lat: 35.6498, lng: 139.7950,
-        transit: "🚂 Yurikamome · Shimbashi → Shin-Toyosu · 15 min  OR  🚕 Taxi from hotel ~25 min" },
-      { time: "11:00am",  name: "Akihabara",
-        desc: "Electronics + anime. Yodobashi Camera (9 floors), Super Potato retro gaming, Mandarake Complex.",
-        lat: 35.7022, lng: 139.7741,
-        transit: "🚂 Rinkai Line → JR · Shin-Toyosu → Akihabara · ~30 min · change at Osaki" },
-      { time: "1:30pm",   name: "Imperial Palace East Gardens",
-        desc: "Calm and beautiful. Closes 4pm on Thursdays — arrive by 1:30pm to get full time inside.",
-        lat: 35.6852, lng: 139.7528,
-        transit: "🚂 JR Keihin-Tohoku · Akihabara → Tokyo Station · 5 min · then 10 min walk" },
-      { time: "3:30pm",   name: "Ginza Shopping",
-        desc: "Chuo-dori and Ginza SIX. Luxury and high-street. Shops open until 8:30pm.",
-        lat: 35.6717, lng: 139.7649,
-        transit: "🚶 Walk 15 min from Imperial Palace East Gate" },
-      { time: "7:00pm",   name: "Omakase Dinner in Ginza",
-        desc: "Ukai-Tei (teppanyaki) or Kyubey (sushi). Book via Pocket Concierge.",
-        lat: 35.6717, lng: 139.7649,
-        transit: "🚶 Walk within Ginza" }
-    ]
-  },
-  {
-    day: 6, date: "Fri May 8", title: "DisneySea · Roppongi Night Out",
-    stops: [
-      { time: "7:00am",   name: "Tokyo DisneySea",
-        desc: "Full day at DisneySea. See Disney itinerary for priority rides and FastPass tips.",
-        lat: 35.6267, lng: 139.8850,
-        transit: "🚂 JR Keiyo Line · Ebisu area → Maihama · ~50 min · change at Osaki · ¥590" },
-      { time: "8:00pm",   name: "Roppongi — Main Night Out",
-        desc: "Friday night is peak Roppongi. Mogambo, Ayano's Bar, Bar as ONE. Clubs: V2 Tokyo, Atom, Muse.",
-        lat: 35.6628, lng: 139.7314,
-        transit: "🚂 JR Keiyo → Tokyo → Hibiya Line → Roppongi · ~60 min total" }
-    ]
-  },
-  {
-    day: 7, date: "Sat May 9", title: "Farmers Market · Nakameguro · Daikanyama · Farewell Dinner",
-    stops: [
-      { time: "10:00am",  name: "Aoyama Farmers Market at UNU",
-        desc: "Saturday only. Organic produce, food trucks, artisan stalls. Brunch among locals.",
-        lat: 35.6641, lng: 139.7131,
-        transit: "🚂 Tokyo Metro Chiyoda Line · Ebisu → Omote-sando · 3 stops · 8 min · then 5 min walk" },
-      { time: "12:30pm",  name: "Nakameguro Starbucks Reserve + River Walk",
-        desc: "Four floors of floor-to-ceiling windows overlooking the canal. Walk the Meguro River.",
-        lat: 35.6440, lng: 139.7002,
-        transit: "🚂 Chiyoda Line → Hibiya Line · Omote-sando → Nakameguro · 2 stops" },
-      { time: "2:30pm",   name: "Daikanyama Boutiques + Vintage",
-        desc: "Tokyo's trendiest neighborhood. Vinyl, craft coffee, excellent vintage stores.",
-        lat: 35.6490, lng: 139.7027,
-        transit: "🚶 Walk · 10 min from Nakameguro station" },
-      { time: "5:00pm",   name: "Return to Westin + Rest",
-        desc: "Both areas walking distance from hotel. Optional hotel spa — book ahead.",
-        lat: 35.6432, lng: 139.7157,
-        transit: "🚶 Walk 20 min from Daikanyama  OR  🚕 2 min taxi" },
-      { time: "7:00pm",   name: "Farewell Dinner in Ebisu",
-        desc: "Consider kaiseki (traditional multi-course) to close the trip. Book via Pocket Concierge.",
-        lat: 35.6464, lng: 139.7157,
-        transit: "🚶 Walk from hotel · 5 min" }
-    ]
-  },
-  {
-    day: 8, date: "Sun May 10", title: "Departure Day",
-    stops: [
-      { time: "Morning",  name: "Final Breakfast + Last Wander",
-        desc: "Last stroll in Ebisu or Daikanyama. Pick up any remaining souvenirs from local shops.",
-        lat: 35.6464, lng: 139.7157 },
-      { time: "1:30pm",   name: "Depart for Narita Airport",
-        desc: "Pre-booked taxi or Narita Express. Allow 90 minutes minimum. Hotel holds luggage after checkout.",
-        lat: 35.7653, lng: 140.3861,
-        transit: "🚕 Pre-booked taxi ~90 min  OR  🚂 Narita Express from Shibuya · ¥3,070 · 75 min" }
-    ]
-  }
-];
-
-// ============================================================
-// PHRASES DATA
-// ============================================================
 const PHRASES = {
-  Greetings: [
-    { en: "Hello",               jp: "こんにちは",           romaji: "Konnichiwa" },
-    { en: "Good Morning",        jp: "おはようございます",   romaji: "Ohayou gozaimasu" },
-    { en: "Good Evening",        jp: "こんばんは",           romaji: "Konbanwa" },
-    { en: "Thank You",           jp: "ありがとうございます", romaji: "Arigatou gozaimasu" },
-    { en: "You're Welcome",      jp: "どういたしまして",     romaji: "Dou itashimashite" },
-    { en: "Excuse Me / Sorry",   jp: "すみません",           romaji: "Sumimasen" },
-    { en: "I'm Sorry",           jp: "ごめんなさい",         romaji: "Gomen nasai" },
-    { en: "Nice to Meet You",    jp: "はじめまして",         romaji: "Hajimemashite" },
-    { en: "Yes",                 jp: "はい",                 romaji: "Hai" },
-    { en: "No",                  jp: "いいえ",               romaji: "Iie" },
-    { en: "Please",              jp: "お願いします",         romaji: "Onegaishimasu" },
-    { en: "I don't understand",  jp: "わかりません",         romaji: "Wakarimasen" },
-    { en: "Do you speak English?", jp: "英語を話せますか？", romaji: "Eigo wo hanasemasu ka?" },
-    { en: "Goodbye",             jp: "さようなら",           romaji: "Sayounara" },
+  greetings: [
+    { en: "Hello / Good day",       ja: "\u3053\u3093\u306b\u3061\u306f",                          romaji: "Konnichiwa" },
+    { en: "Good morning",           ja: "\u304a\u306f\u3088\u3046\u3054\u3056\u3044\u307e\u3059",  romaji: "Ohayou gozaimasu" },
+    { en: "Good evening",           ja: "\u3053\u3093\u3070\u3093\u306f",                          romaji: "Konbanwa" },
+    { en: "Thank you very much",    ja: "\u3042\u308a\u304c\u3068\u3046\u3054\u3056\u3044\u307e\u3059", romaji: "Arigatou gozaimasu" },
+    { en: "Excuse me / Sorry",      ja: "\u3059\u307f\u307e\u305b\u3093",                          romaji: "Sumimasen" },
+    { en: "Please (requesting)",    ja: "\u304a\u9858\u3044\u3057\u307e\u3059",                    romaji: "Onegaishimasu" },
+    { en: "Yes",                    ja: "\u306f\u3044",                                            romaji: "Hai" },
+    { en: "No",                     ja: "\u3044\u3044\u3048",                                      romaji: "Iie" },
+    { en: "I don't understand",     ja: "\u308f\u304b\u308a\u307e\u305b\u3093",                    romaji: "Wakarimasen" },
+    { en: "Do you speak English?",  ja: "\u82f1\u8a9e\u3092\u8a71\u305b\u307e\u3059\u304b\uff1f",  romaji: "Eigo wo hanasemasu ka?" }
   ],
-  Restaurant: [
-    { en: "This one please",     jp: "これをください",              romaji: "Kore wo kudasai" },
-    { en: "Menu please",         jp: "メニューをください",          romaji: "Menyuu wo kudasai" },
-    { en: "I have a reservation",jp: "予約があります",              romaji: "Yoyaku ga arimasu" },
-    { en: "Table for N",         jp: "___人です",                   romaji: "___-nin desu" },
-    { en: "Check please",        jp: "お会計をお願いします",        romaji: "Okaikei wo onegaishimasu" },
-    { en: "It's delicious!",     jp: "おいしい！",                  romaji: "Oishii!" },
-    { en: "Very tasty!",         jp: "とてもおいしいです",          romaji: "Totemo oishii desu" },
-    { en: "Water please",        jp: "お水をください",              romaji: "Omizu wo kudasai" },
-    { en: "One more please",     jp: "もう一つください",            romaji: "Mou hitotsu kudasai" },
-    { en: "Not spicy please",    jp: "辛くしないでください",        romaji: "Karakunai de kudasai" },
-    { en: "I have allergies",    jp: "アレルギーがあります",        romaji: "Arerugi ga arimasu" },
-    { en: "No meat please",      jp: "肉なしでお願いします",        romaji: "Niku nashi de onegaishimasu" },
+  restaurant: [
+    { en: "A table for 3 please",       ja: "3\u4eba\u3067\u3059",                                          romaji: "San-nin desu" },
+    { en: "I have a reservation",       ja: "\u4e88\u7d04\u304c\u3042\u308a\u307e\u3059",                   romaji: "Yoyaku ga arimasu" },
+    { en: "The menu please",            ja: "\u30e1\u30cb\u30e5\u30fc\u3092\u304f\u3060\u3055\u3044",       romaji: "Menyuu wo kudasai" },
+    { en: "What do you recommend?",     ja: "\u304a\u3059\u3059\u3081\u306f\u4f55\u3067\u3059\u304b\uff1f", romaji: "Osusume wa nan desu ka?" },
+    { en: "I'll have this please",      ja: "\u3053\u308c\u3092\u304f\u3060\u3055\u3044",                   romaji: "Kore wo kudasai" },
+    { en: "No shellfish please",        ja: "\u8c9d\u985e\u306f\u98df\u3079\u3089\u308c\u307e\u305b\u3093", romaji: "Kairui wa taberaremasen" },
+    { en: "It's delicious!",            ja: "\u304a\u3044\u3057\u3044\u3067\u3059\uff01",                    romaji: "Oishii desu!" },
+    { en: "The check please",           ja: "\u304a\u4f1a\u8a08\u3092\u304a\u9858\u3044\u3057\u307e\u3059", romaji: "Okaikei wo onegaishimasu" },
+    { en: "Do you take credit cards?",  ja: "\u30af\u30ec\u30b8\u30c3\u30c8\u30ab\u30fc\u30c9\u306f\u4f7f\u3048\u307e\u3059\u304b\uff1f", romaji: "Kurejitto kaado wa tsukaemasu ka?" },
+    { en: "Water please",               ja: "\u304a\u6c34\u3092\u304f\u3060\u3055\u3044",                   romaji: "Omizu wo kudasai" },
+    { en: "No pork please",             ja: "\u8c5a\u8089\u306f\u98df\u3079\u3089\u308c\u307e\u305b\u3093", romaji: "Butaniku wa taberaremasen" }
   ],
-  Transit: [
-    { en: "Where is...?",        jp: "___はどこですか？",           romaji: "___wa doko desu ka?" },
-    { en: "One ticket to...",    jp: "___まで一枚",                 romaji: "___made ichimai" },
-    { en: "Which exit?",         jp: "何番出口ですか？",            romaji: "Nanban deguchi desu ka?" },
-    { en: "Which platform?",     jp: "何番線ですか？",              romaji: "Nanbansen desu ka?" },
-    { en: "IC Card top-up",      jp: "チャージしたいです",          romaji: "Chaaji shitai desu" },
-    { en: "I'm lost",            jp: "道に迷いました",              romaji: "Michi ni mayoimashita" },
-    { en: "Missed my stop",      jp: "乗り過ごしました",            romaji: "Norisugoishimashita" },
-    { en: "Next stop?",          jp: "次の駅はどこですか？",        romaji: "Tsugi no eki wa doko desu ka?" },
-    { en: "Call a taxi please",  jp: "タクシーをお願いします",      romaji: "Takushii wo onegaishimasu" },
-    { en: "To this address",     jp: "この住所までお願いします",    romaji: "Kono juusho made onegaishimasu" },
-    { en: "Is this the right train?", jp: "この電車で合ってますか？", romaji: "Kono densha de attemasu ka?" },
-    { en: "Airport",             jp: "空港",                        romaji: "Kuukou" },
+  transit: [
+    { en: "Where is the station?",          ja: "\u99c5\u306f\u3069\u3053\u3067\u3059\u304b\uff1f",                   romaji: "Eki wa doko desu ka?" },
+    { en: "Which platform?",                ja: "\u4f55\u756a\u7dda\u3067\u3059\u304b\uff1f",                         romaji: "Nan-bansen desu ka?" },
+    { en: "How do I get to [place]?",       ja: "\u301c\u306b\u306f\u3069\u3046\u3084\u3063\u3066\u884c\u304d\u307e\u3059\u304b\uff1f", romaji: "~ ni wa douyatte ikimasu ka?" },
+    { en: "One ticket to [place] please",   ja: "\u301c\u307e\u3067\u4e00\u679a\u304f\u3060\u3055\u3044",             romaji: "~ made ichimai kudasai" },
+    { en: "Where is the exit?",             ja: "\u51fa\u53e3\u306f\u3069\u3053\u3067\u3059\u304b\uff1f",             romaji: "Deguchi wa doko desu ka?" },
+    { en: "Please take me to this address", ja: "\u3053\u306e\u4f4f\u6240\u307e\u3067\u884c\u3063\u3066\u304f\u3060\u3055\u3044", romaji: "Kono juusho made itte kudasai" },
+    { en: "Is this seat taken?",            ja: "\u3053\u306e\u5e席\u306f\u7a7a\u3044\u3066\u3044\u307e\u3059\u304b\uff1f", romaji: "Kono seki wa aite imasu ka?" },
+    { en: "Narita Airport please",          ja: "\u6210\u7530\u7a7a\u6e2f\u307e\u3067\u304a\u9858\u3044\u3057\u307e\u3059", romaji: "Narita kuukou made onegaishimasu" },
+    { en: "Westin Tokyo, Ebisu please",     ja: "\u6075\u6bd4\u5bff\u306e\u30a6\u30a7\u30b9\u30c6\u30a3\u30f3\u30db\u30c6\u30eb\u6771\u4eac\u307e\u3067", romaji: "Ebisu no Westin Hoteru Tokyo made" }
   ],
-  Shopping: [
-    { en: "How much?",           jp: "いくらですか？",              romaji: "Ikura desu ka?" },
-    { en: "Just looking",        jp: "見ているだけです",            romaji: "Mite iru dake desu" },
-    { en: "Can I try this on?",  jp: "試着できますか？",            romaji: "Shichaku dekimasu ka?" },
-    { en: "Smaller size?",       jp: "もっと小さいサイズは？",      romaji: "Motto chiisai saizu wa?" },
-    { en: "Larger size?",        jp: "もっと大きいサイズは？",      romaji: "Motto ookii saizu wa?" },
-    { en: "Credit card OK?",     jp: "クレジットカード使えますか？",romaji: "Kurejitto kaado tsukaemasu ka?" },
-    { en: "Tax free?",           jp: "免税できますか？",            romaji: "Menzei dekimasu ka?" },
-    { en: "Gift wrap please",    jp: "プレゼント用に包んでください",romaji: "Purezento you ni tsutsunde kudasai" },
-    { en: "I'll take this",      jp: "これにします",               romaji: "Kore ni shimasu" },
-    { en: "Do you have a bag?",  jp: "袋はありますか？",            romaji: "Fukuro wa arimasu ka?" },
+  shopping: [
+    { en: "How much is this?",           ja: "\u3053\u308c\u306f\u3044\u304f\u3089\u3067\u3059\u304b\uff1f", romaji: "Kore wa ikura desu ka?" },
+    { en: "Do you have a larger size?",  ja: "\u5927\u304d\u3044\u30b5\u30a4\u30ba\u306f\u3042\u308a\u307e\u3059\u304b\uff1f", romaji: "Ookii saizu wa arimasu ka?" },
+    { en: "Can I try this on?",          ja: "\u8a66\u7740\u3057\u3066\u3082\u3044\u3044\u3067\u3059\u304b\uff1f", romaji: "Shichaku shite mo ii desu ka?" },
+    { en: "I'm just looking, thanks",    ja: "\u898b\u3066\u3044\u308b\u3060\u3051\u3067\u3059",               romaji: "Mite iru dake desu" },
+    { en: "Do you have tax-free?",       ja: "\u514d\u7a0e\u306f\u3067\u304d\u307e\u3059\u304b\uff1f",         romaji: "Menzei wa dekimasu ka?" },
+    { en: "Can I pay by card?",          ja: "\u30ab\u30fc\u30c9\u3067\u6255\u3048\u307e\u3059\u304b\uff1f",   romaji: "Kaado de haraemasu ka?" },
+    { en: "Do you have a bag?",          ja: "\u888b\u306f\u3042\u308a\u307e\u3059\u304b\uff1f",               romaji: "Fukuro wa arimasu ka?" },
+    { en: "I'll take it",                ja: "\u3053\u308c\u306b\u3057\u307e\u3059",                           romaji: "Kore ni shimasu" }
   ],
-  Hotel: [
-    { en: "I have a reservation",jp: "予約があります",              romaji: "Yoyaku ga arimasu" },
-    { en: "Check in",            jp: "チェックインします",          romaji: "Chekku-in shimasu" },
-    { en: "Check out",           jp: "チェックアウトします",        romaji: "Chekku-auto shimasu" },
-    { en: "Room key please",     jp: "部屋の鍵をください",          romaji: "Heya no kagi wo kudasai" },
-    { en: "WiFi password?",      jp: "WiFiのパスワードは？",        romaji: "WiFi no pasuwaado wa?" },
-    { en: "Store luggage?",      jp: "荷物を預かってもらえますか？",romaji: "Nimotsu wo azukatte moraemasu ka?" },
-    { en: "Towels please",       jp: "タオルをください",            romaji: "Taoru wo kudasai" },
-    { en: "Late checkout?",      jp: "レイトチェックアウトできますか？", romaji: "Reito chekku-auto dekimasu ka?" },
-    { en: "Laundry available?",  jp: "コインランドリーはありますか？", romaji: "Koin randorii wa arimasu ka?" },
-    { en: "Wake-up call",        jp: "モーニングコールをお願いします", romaji: "Mooningu kooru wo onegaishimasu" },
+  hotel: [
+    { en: "Reservation - Lacy",      ja: "\u30ec\u30a4\u30b7\u30fc\u3068\u3044\u3046\u540d\u524d\u3067\u4e88\u7d04\u304c\u3042\u308a\u307e\u3059", romaji: "Reishii to iu namae de yoyaku ga arimasu" },
+    { en: "Check in please",         ja: "\u30c1\u30a7\u30c3\u30af\u30a4\u30f3\u3092\u304a\u9858\u3044\u3057\u307e\u3059",  romaji: "Chekku-in wo onegaishimasu" },
+    { en: "Check out please",        ja: "\u30c1\u30a7\u30c3\u30af\u30a2\u30a6\u30c8\u3092\u304a\u9858\u3044\u3057\u307e\u3059", romaji: "Chekku-auto wo onegaishimasu" },
+    { en: "Can I store my luggage?", ja: "\u8377\u7269\u3092\u9802\u304b\u3063\u3066\u3082\u3089\u3048\u307e\u3059\u304b\uff1f", romaji: "Nimotsu wo azukatte moraemasu ka?" },
+    { en: "What time is breakfast?", ja: "\u671d\u98df\u306f\u4f55\u6642\u3067\u3059\u304b\uff1f",              romaji: "Choushoku wa nanji desu ka?" },
+    { en: "Please call a taxi",      ja: "\u30bf\u30af\u30b7\u30fc\u3092\u547c\u3093\u3067\u304f\u3060\u3055\u3044", romaji: "Takushii wo yonde kudasai" },
+    { en: "Is there WiFi?",          ja: "WiFi\u306f\u3042\u308a\u307e\u3059\u304b\uff1f",                     romaji: "WiFi wa arimasu ka?" },
+    { en: "The room key please",     ja: "\u30eb\u30fc\u30e0\u30ad\u30fc\u3092\u304f\u3060\u3055\u3044",       romaji: "Ruumu kii wo kudasai" }
   ],
-  Emergency: [
-    { en: "HELP!",               jp: "助けてください！",            romaji: "Tasukete kudasai!" },
-    { en: "Call police!",        jp: "警察を呼んでください！",      romaji: "Keisatsu wo yonde kudasai!" },
-    { en: "Call ambulance!",     jp: "救急車を呼んでください！",    romaji: "Kyuukyuusha wo yonde kudasai!" },
-    { en: "I need a doctor",     jp: "お医者さんが必要です",        romaji: "Oisha-san ga hitsuyou desu" },
-    { en: "FIRE!",               jp: "火事です！",                  romaji: "Kaji desu!" },
-    { en: "Hospital",            jp: "病院",                        romaji: "Byouin" },
-    { en: "Police station",      jp: "警察署",                      romaji: "Keisatsu-sho" },
-    { en: "I'm allergic to ___", jp: "___アレルギーです",           romaji: "___arerugi desu" },
-    { en: "Please help me",      jp: "手伝ってください",            romaji: "Tetsudatte kudasai" },
-    { en: "I'm lost",            jp: "道に迷いました",              romaji: "Michi ni mayoimashita" },
-    { en: "Ambulance: 119",      jp: "救急・消防: 119",             romaji: "Kyuukyuu: 119" },
-    { en: "Police: 110",         jp: "警察: 110",                   romaji: "Keisatsu: 110" },
+  emergency: [
+    { en: "Help!",                  ja: "\u52a9\u3051\u3066\u304f\u3060\u3055\u3044\uff01",                               romaji: "Tasukete kudasai!" },
+    { en: "Call an ambulance",      ja: "\u6551\u6025\u8eca\u3092\u547c\u3093\u3067\u304f\u3060\u3055\u3044",            romaji: "Kyuukyuusha wo yonde kudasai" },
+    { en: "Call the police",        ja: "\u8b66\u5bdf\u3092\u547c\u3093\u3067\u304f\u3060\u3055\u3044",                  romaji: "Keisatsu wo yonde kudasai" },
+    { en: "I need a doctor",        ja: "\u533b\u8005\u304c\u5fc5\u8981\u3067\u3059",                                     romaji: "Isha ga hitsuyou desu" },
+    { en: "I'm lost",               ja: "\u8ff7\u5b50\u306b\u306a\u308a\u307e\u3057\u305f",                               romaji: "Maigo ni narimashita" },
+    { en: "I've lost my passport",  ja: "\u30d1\u30b9\u30dd\u30fc\u30c8\u3092\u306a\u304f\u3057\u307e\u3057\u305f",      romaji: "Pasupooto wo nakushimashita" },
+    { en: "I'm allergic to...",     ja: "\u301c\u30a2\u30ec\u30eb\u30ae\u30fc\u304c\u3042\u308a\u307e\u3059",             romaji: "~ arerugii ga arimasu" },
+    { en: "Nearest hospital?",      ja: "\u4e00\u756a\u8fd1\u3044\u75c5\u9662\u306f\u3069\u3053\u3067\u3059\u304b\uff1f", romaji: "Ichiban chikai byouin wa doko desu ka?" },
+    { en: "I need the US Embassy",  ja: "\u30a2\u30e1\u30ea\u30ab\u5927\u4f7f\u9928\u306b\u9023\u7d61\u3059\u308b\u5fc5\u8981\u304c\u3042\u308a\u307e\u3059", romaji: "Amerika taishikan ni renraku suru hitsuyou ga arimasu" }
   ]
 };
 
-// ============================================================
-// STATE
-// ============================================================
-let currentDay = 1;
-let currentCategory = 'Greetings';
-let voiceGender = 'male';
-let recognition = null;
-let isListening = false;
-let translatorInitialized = false;
+const G=PHRASES.greetings, R=PHRASES.restaurant, T=PHRASES.transit,
+      S=PHRASES.shopping,  H=PHRASES.hotel,      E=PHRASES.emergency;
 
-// ============================================================
-// NAVIGATION
-// ============================================================
-function showSection(name) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.remove('active'));
-  document.getElementById('sec-' + name).classList.add('active');
-  document.getElementById('nav-' + name).classList.add('active');
-  if (name === 'translator') initTranslator();
+const ITINERARY = [
+  { day:1, date:"Sun May 3", title:"Arrival Day", stops:[
+    { time:"3:00 pm", name:"Narita Airport \u2014 Arrival",
+      desc:"Collect bags and clear customs. Pre-booked taxi saves money vs Uber for 3 people + luggage. Allow 90 min.",
+      lat:35.7653, lng:140.3861, phrases:[T[7],T[5],G[3],E[5]] },
+    { time:"5:00 pm", name:"Westin Tokyo, Ebisu \u2014 Check In",
+      desc:"Walking distance from Nakameguro and Daikanyama. Your home base for the full trip.",
+      lat:35.6432, lng:139.7157, transit:"\uD83D\uDE95 Pre-booked taxi from Narita \u00b7 ~90 min",
+      phrases:[H[0],H[1],H[3],H[6]] },
+    { time:"7:00 pm", name:"Nakameguro River Walk + Dinner",
+      desc:"Walk the Meguro River canal. Lined with bars and casual restaurants. Take it easy \u2014 14-hour time difference from Austin.",
+      lat:35.6440, lng:139.7002, transit:"\uD83D\uDEB6 Walk \u00b7 10 min from hotel along the river",
+      phrases:[R[0],R[2],R[6],R[7]] }
+  ]},
+  { day:2, date:"Mon May 4", title:"Private Tour \u00b7 Shibuya Sky \u00b7 Shinjuku", stops:[
+    { time:"9:00 am", name:"Private City Walking Tour",
+      desc:"Guide Gulay Gunay meets you at the Westin lobby. Covers Shibuya, Harajuku, Meiji Shrine area. Tour ends 1pm.",
+      lat:35.6432, lng:139.7157, booked:"Ref: CQTCWY \u00b7 Gulay Gunay",
+      booking:{ title:"Tours by Locals \u00b7 Confirmed", ref:"CQTCWY",
+        notes:"Guide: Gulay Gunay \u00b7 Phone: +81 80 3822 1344<br>Meets at Westin lobby 9am \u00b7 Ends 1pm",
+        url:"https://www.toursbylocals.com/bookingconfirmation/69cc3e670a7919e8a82c3def",
+        btnLabel:"View Booking \u2197" },
+      phrases:[G[0],G[3],G[4],G[9]] },
+    { time:"2:00 pm", name:"Shibuya Sky \u2014 Observation Deck",
+      desc:"Open-air rooftop at 230m \u00b7 360\u00b0 views. Arrive 10 min early for security.",
+      lat:35.6580, lng:139.7016, booked:"BOOKED \u2014 2pm entry (Klook)",
+      transit:"\uD83D\uDE82 Tokyu Toyoko \u00b7 Nakameguro \u2192 Shibuya \u00b7 2 stops \u00b7 4 min",
+      booking:{ title:"Shibuya Sky \u00b7 Klook", ref:"2pm Entry \u2014 Confirmed",
+        notes:"Arrive 10 min early for security screening." },
+      phrases:[G[4],T[4],G[3],G[9]] },
+    { time:"4:00 pm", name:"Shibuya Scramble + Hachiko Statue",
+      desc:"World\u2019s busiest intersection. The loyal dog Hachiko statue is just outside the station.",
+      lat:35.6595, lng:139.7004, transit:"\uD83D\uDEB6 Walk \u00b7 5 min from Shibuya Sky",
+      phrases:[G[4],G[3],T[4],G[0]] },
+    { time:"7:30 pm", name:"Shinjuku \u2014 Dinner + Golden Gai",
+      desc:"Omoide Yokocho (Memory Lane) for yakitori. Golden Gai for bars. Bar Benfiddich (#37 World\u2019s Best Bars).",
+      lat:35.6938, lng:139.7036, transit:"\uD83D\uDE82 JR Yamanote \u00b7 Shibuya \u2192 Shinjuku \u00b7 5 min",
+      phrases:[R[0],R[1],R[4],R[7]] }
+  ]},
+  { day:3, date:"Tue May 5", title:"Ueno \u00b7 Kappabashi \u00b7 Asakusa \u00b7 Skytree", stops:[
+    { time:"9:00 am", name:"Ueno Park + Ameya-Yokocho Market",
+      desc:"Beautiful park with Shinobazu Pond. Ameyoko street market for street food: takoyaki, yakitori, taiyaki.",
+      lat:35.7146, lng:139.7742, transit:"\uD83D\uDE82 Tokyo Metro Hibiya \u00b7 Ebisu \u2192 Ueno \u00b7 ~25 min",
+      phrases:[S[0],R[6],G[4],G[3]] },
+    { time:"12:30 pm", name:"Kappabashi Kitchen Street",
+      desc:"The world\u2019s only street for restaurant supplies. Fake food displays, ceramics, legendary handmade knives. Great gifts.",
+      lat:35.7172, lng:139.7941, transit:"\uD83D\uDEB6 Walk \u00b7 15 min from Ueno Park south exit",
+      phrases:[S[0],S[3],S[2],S[7]] },
+    { time:"2:00 pm", name:"Asakusa + Senso-ji Temple",
+      desc:"Tokyo\u2019s oldest Buddhist temple (628 AD). Enter via the iconic Kaminarimon Thunder Gate. Browse Nakamise-dori for souvenirs.",
+      lat:35.7148, lng:139.7967, transit:"\uD83D\uDEB6 Walk \u00b7 10 min from Kappabashi",
+      phrases:[G[0],G[3],G[4],G[5]] },
+    { time:"3:30 pm", name:"Chacha Futatsume \u2014 Matcha Desserts",
+      desc:"The famous matcha dessert spot in Asakusa. Perfect afternoon break. Don\u2019t skip it.",
+      lat:35.7133, lng:139.7967, transit:"\uD83D\uDEB6 Walk \u00b7 2 min within Asakusa",
+      phrases:[R[4],R[6],R[7],R[9]] },
+    { time:"4:30 pm", name:"Tokyo Skytree",
+      desc:"634m \u2014 tallest structure in Japan. Tembo Deck at 350m has 360\u00b0 views. Tokyo Solamachi mall at the base.",
+      lat:35.7101, lng:139.8107, transit:"\uD83D\uDE82 Tobu Skytree Line from Asakusa \u00b7 1 stop \u00b7 4 min  OR  \uD83D\uDEB6 Walk 20 min",
+      phrases:[G[4],T[4],G[3],S[4]] },
+    { time:"7:00 pm", name:"Dinner in Asakusa",
+      desc:"Asakusa Imahan for sukiyaki or Asakusa Gyukatsu for beef katsu. Hoppy Street for drinks after.",
+      lat:35.7148, lng:139.7967, transit:"\uD83D\uDE82 Tobu Line back from Skytree \u00b7 1 stop",
+      phrases:[R[0],R[4],R[5],R[7]] }
+  ]},
+  { day:4, date:"Wed May 6", title:"Mt. Fuji Private Tour", stops:[
+    { time:"8:00 am", name:"Mt. Fuji Private Tour \u2014 All Day",
+      desc:"Toyota Alphard van, English-speaking driver, hotel pickup. Full day to Fuji Five Lakes area. Return ~6pm.",
+      lat:35.3606, lng:138.7274, booked:"Ref: BR-1382503865",
+      booking:{ title:"Viator \u00b7 Confirmed", ref:"BR-1382503865",
+        notes:"Toyota Alphard van \u00b7 5 pax \u00b7 Hotel pickup 8am<br>$448.49 \u00b7 Charged May 4" },
+      phrases:[G[0],G[1],G[3],G[9]] },
+    { time:"Evening", name:"Roppongi (optional)",
+      desc:"If energy allows after the full day: Mogambo Tokyo, Ayano\u2019s Bar, Bar as ONE Roppongi.",
+      lat:35.6628, lng:139.7314, transit:"\uD83D\uDE82 Tokyo Metro Hibiya \u00b7 Ebisu \u2192 Roppongi \u00b7 3 stops",
+      phrases:[G[0],R[4],G[3],R[7]] }
+  ]},
+  { day:5, date:"Thu May 7", title:"TeamLab \u00b7 Akihabara \u00b7 Imperial Palace \u00b7 Ginza", stops:[
+    { time:"9:00 am", name:"TeamLab Planets (Toyosu)",
+      desc:"Immersive digital art \u2014 infinite flower rooms, mirror gardens, floating light spheres. Go early. Like stepping inside Spirited Away.",
+      lat:35.6498, lng:139.7950, transit:"\uD83D\uDE82 Yurikamome \u00b7 Shimbashi \u2192 Shin-Toyosu \u00b7 15 min",
+      phrases:[G[4],T[4],G[3],G[9]] },
+    { time:"11:00 am", name:"Akihabara \u2014 Electronics + Anime",
+      desc:"Yodobashi Camera (9 floors), Super Potato retro gaming, Mandarake Complex (8 floors of anime/Ghibli items).",
+      lat:35.7022, lng:139.7741, transit:"\uD83D\uDE82 Rinkai + JR \u00b7 Shin-Toyosu \u2192 Akihabara \u00b7 ~30 min",
+      phrases:[S[0],S[2],S[3],S[4]] },
+    { time:"1:30 pm", name:"Imperial Palace East Gardens",
+      desc:"Calm contrast after Akihabara. Closes at 4pm on Thursdays \u2014 arrive by 1:30pm. Free entry.",
+      lat:35.6852, lng:139.7528, transit:"\uD83D\uDE82 JR Keihin-Tohoku \u00b7 Akihabara \u2192 Tokyo Stn \u00b7 5 min then 10 min walk",
+      phrases:[G[0],G[3],G[4],T[4]] },
+    { time:"3:30 pm", name:"Ginza Shopping",
+      desc:"Chuo-dori and Ginza SIX. Luxury and high-street mixed. Shops open until 8:30pm.",
+      lat:35.6717, lng:139.7649, transit:"\uD83D\uDEB6 Walk 15 min from Imperial Palace East Gate",
+      phrases:[S[0],S[2],S[4],S[7]] },
+    { time:"7:00 pm", name:"Omakase Dinner in Ginza",
+      desc:"Highest concentration of elite sushi in the world. Book via Pocket Concierge. Budget \u00a515,000\u201330,000/person.",
+      lat:35.6717, lng:139.7649, transit:"\uD83D\uDEB6 Walk within Ginza",
+      phrases:[R[1],R[4],R[6],R[7]] }
+  ]},
+  { day:6, date:"Fri May 8", title:"DisneySea All Day \u00b7 Roppongi Night", stops:[
+    { time:"7:00 am", name:"Tokyo DisneySea \u2014 Full Day",
+      desc:"Arrive early. Lightning Lane for Journey to the Center of the Earth and Soaring. Fantasy Springs (Frozen, Rapunzel, Peter Pan) is new in 2024. Park closes 9pm.",
+      lat:35.6267, lng:139.8850, transit:"\uD83D\uDE82 JR Keiyo Line \u00b7 Osaki \u2192 Maihama \u00b7 ~50 min",
+      phrases:[G[0],R[4],G[3],R[9]] },
+    { time:"10:00 pm", name:"Roppongi \u2014 Main Night Out",
+      desc:"Friday night is Roppongi at its best. Mogambo Tokyo, Ayano\u2019s Bar, Bar as ONE. Clubs: V2 Tokyo, Atom, Muse.",
+      lat:35.6628, lng:139.7314, transit:"\uD83D\uDE82 JR Keiyo \u2192 Tokyo \u2192 Hibiya Line \u2192 Roppongi \u00b7 ~60 min  OR  \uD83D\uDE95 Taxi from Maihama",
+      phrases:[G[0],R[4],G[3],R[7]] }
+  ]},
+  { day:7, date:"Sat May 9", title:"Aoyama \u00b7 Nakameguro \u00b7 Daikanyama \u00b7 Farewell Dinner", stops:[
+    { time:"10:00 am", name:"Aoyama Farmers Market at UNU",
+      desc:"Saturday only, 10am\u20134pm. Organic produce, food trucks, artisan stalls outside the UN University. Have brunch here.",
+      lat:35.6641, lng:139.7131, transit:"\uD83D\uDE82 Tokyo Metro \u00b7 Ebisu \u2192 Omote-sando \u00b7 8 min then 5 min walk",
+      phrases:[S[0],R[6],G[3],G[4]] },
+    { time:"12:30 pm", name:"Nakameguro Starbucks Reserve + River",
+      desc:"Four floors of floor-to-ceiling windows overlooking the Meguro River canal.",
+      lat:35.6440, lng:139.7002, transit:"\uD83D\uDE82 Tokyo Metro \u00b7 Omote-sando \u2192 Nakameguro \u00b7 2 stops",
+      phrases:[R[4],R[9],R[6],R[7]] },
+    { time:"2:30 pm", name:"Daikanyama \u2014 Boutiques + Vintage",
+      desc:"Tokyo\u2019s trendiest neighbourhood. Independent boutiques, vinyl, craft coffee, great vintage stores.",
+      lat:35.6490, lng:139.7027, transit:"\uD83D\uDEB6 Walk \u00b7 10 min from Nakameguro station",
+      phrases:[S[0],S[2],S[3],S[7]] },
+    { time:"5:00 pm", name:"Return to Westin \u2014 Rest",
+      desc:"Both areas are walking distance from the hotel. Optional hotel spa before dinner.",
+      lat:35.6432, lng:139.7157, transit:"\uD83D\uDEB6 Walk 20 min from Daikanyama  OR  \uD83D\uDE95 2-min taxi",
+      phrases:[H[5],H[2],H[6],H[3]] },
+    { time:"7:00 pm", name:"Farewell Dinner \u2014 Ebisu",
+      desc:"Book kaiseki (traditional multi-course) via Pocket Concierge. Ebisu is one of Tokyo\u2019s best restaurant neighbourhoods.",
+      lat:35.6464, lng:139.7157, transit:"\uD83D\uDEB6 Walk from hotel \u00b7 5 min",
+      phrases:[R[1],R[4],R[6],R[7]] }
+  ]},
+  { day:8, date:"Sun May 10", title:"Departure Day", stops:[
+    { time:"Morning", name:"Final Breakfast + Last Wander",
+      desc:"Last stroll in Ebisu or Daikanyama. Pick up any remaining gifts. Hotel holds luggage after checkout \u2014 check out by noon.",
+      lat:35.6464, lng:139.7157, phrases:[R[0],R[4],R[7],G[3]] },
+    { time:"1:30 pm", name:"Depart for Narita Airport",
+      desc:"UA6 departs 5:00pm. Allow 90 minutes minimum. IAH \u2192 AUS, arrive Austin Mon May 11 at 5:26pm.",
+      lat:35.7653, lng:140.3861, transit:"\uD83D\uDE95 Pre-booked taxi ~90 min  OR  \uD83D\uDE82 Narita Express from Shibuya \u00b7 75 min",
+      phrases:[T[7],H[2],G[3],T[5]] }
+  ]}
+];
+
+let currentDay=1, currentCat='greetings', voiceGender='male';
+let googleMap=null, mapMarkers=[], recognition=null, listening=false, translatorReady=false;
+
+function initMap() {
+  googleMap = new google.maps.Map(document.getElementById('map'), {
+    center:{lat:35.6762,lng:139.6503}, zoom:12, gestureHandling:'greedy',
+    mapTypeControl:false, streetViewControl:false, fullscreenControl:false
+  });
+  renderDay(1);
 }
-
-// ============================================================
-// ITINERARY
-// ============================================================
+function gm_authFailure() {
+  document.getElementById('map').innerHTML =
+    '<div class="map-fallback">&#x1F5FA;&#xFE0F;<br>Map unavailable<br><small>Use Full Route or stop Navigate buttons</small></div>';
+}
+function showSection(name) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sec-'+name).classList.add('active');
+  document.getElementById('nav-'+name).classList.add('active');
+  if (name==='translator') initTranslator();
+  if (name==='itinerary' && googleMap) google.maps.event.trigger(googleMap,'resize');
+}
 function buildDayTabs() {
-  const container = document.getElementById('dayTabs');
-  const dateAbbr = { 'Sun': 'Sun', 'Mon': 'Mon', 'Tue': 'Tue', 'Wed': 'Wed',
-                     'Thu': 'Thu', 'Fri': 'Fri', 'Sat': 'Sat' };
-  container.innerHTML = ITINERARY.map(d => {
-    const parts = d.date.split(' '); // ["Sun", "May", "3"]
-    const dayOfWeek = parts[0];
-    const dateNum = parts[2];
-    return `<button class="day-tab${d.day === currentDay ? ' active' : ''}"
-                    onclick="selectDay(${d.day})">
-              Day ${d.day}<br>
-              <span style="font-weight:500;font-size:0.68rem;opacity:0.8">${dayOfWeek} ${dateNum}</span>
-            </button>`;
+  document.getElementById('dayTabs').innerHTML = ITINERARY.map(d=>{
+    const p=d.date.split(' ');
+    return '<button class="day-tab'+(d.day===1?' active':'')+'" onclick="selectDay('+d.day+')">'
+      +'<span class="dn">Day '+d.day+'</span><span class="dd">'+p[0]+' '+p[2]+'</span></button>';
   }).join('');
 }
-
 function selectDay(day) {
-  currentDay = day;
-  document.querySelectorAll('.day-tab').forEach((btn, i) => {
-    btn.classList.toggle('active', ITINERARY[i].day === day);
-  });
+  currentDay=day;
+  document.querySelectorAll('.day-tab').forEach((b,i)=>b.classList.toggle('active',ITINERARY[i].day===day));
+  document.querySelector('.day-tab.active').scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
   renderDay(day);
 }
-
-function buildMapsDeepLink(stops) {
-  if (!stops.length) return '#';
-  const origin = stops[0].lat + ',' + stops[0].lng;
-  const destination = stops[stops.length - 1].lat + ',' + stops[stops.length - 1].lng;
-  const wps = stops.slice(1, -1).map(s => s.lat + ',' + s.lng).join('|');
-  let url = 'https://www.google.com/maps/dir/?api=1'
-    + '&origin=' + encodeURIComponent(origin)
-    + '&destination=' + encodeURIComponent(destination)
-    + '&travelmode=transit';
-  if (wps) url += '&waypoints=' + encodeURIComponent(wps);
-  return url;
-}
-
-function buildEmbedUrl(stops) {
-  if (!MAPS_API_KEY || !stops.length) return '';
-  const origin = stops[0].lat + ',' + stops[0].lng;
-  const destination = stops[stops.length - 1].lat + ',' + stops[stops.length - 1].lng;
-  const wps = stops.slice(1, -1).map(s => s.lat + ',' + s.lng).join('|');
-  let url = 'https://www.google.com/maps/embed/v1/directions'
-    + '?key=' + MAPS_API_KEY
-    + '&origin=' + encodeURIComponent(origin)
-    + '&destination=' + encodeURIComponent(destination)
-    + '&mode=transit';
-  if (wps) url += '&waypoints=' + encodeURIComponent(wps);
-  return url;
-}
-
 function renderDay(dayNum) {
-  const day = ITINERARY.find(d => d.day === dayNum);
-  if (!day) return;
-
-  const mapsLink = buildMapsDeepLink(day.stops);
-  const embedUrl = buildEmbedUrl(day.stops);
-
-  const stopsHtml = day.stops.map(stop => `
-    <div class="stop">
-      <div class="stop-time">${stop.time}</div>
-      <div class="stop-body">
-        <div class="stop-name">${stop.name}</div>
-        <div class="stop-desc">${stop.desc}</div>
-        ${stop.transit ? '<div class="stop-transit">' + stop.transit + '</div>' : ''}
-      </div>
-    </div>
-  `).join('');
-
-  const mapHtml = embedUrl
-    ? '<iframe src="' + embedUrl + '" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'
-    : '<div class="map-placeholder">'
-    +   '<div class="map-icon">🗺️</div>'
-    +   '<div style="font-weight:600">Day ' + day.day + ' · ' + day.title + '</div>'
-    +   '<a href="' + mapsLink + '" target="_blank" rel="noopener" class="map-open-btn">Open Route in Maps ↗</a>'
-    + '</div>';
-
-  document.getElementById('dayContent').innerHTML =
-    '<div class="day-header">'
-    +  '<h2>Day ' + day.day + ' · ' + day.title + '</h2>'
-    +  '<p>' + day.date + ' · ' + day.stops.length + ' stop' + (day.stops.length !== 1 ? 's' : '') + '</p>'
-    + '</div>'
-    + '<div class="map-container">' + mapHtml + '</div>'
-    + '<div class="card">' + stopsHtml + '</div>';
+  const day=ITINERARY.find(d=>d.day===dayNum); if(!day) return;
+  document.getElementById('dayTitle').textContent='Day '+day.day+' \u00b7 '+day.title;
+  document.getElementById('dayDate').textContent=day.date;
+  const first=day.stops[0], last=day.stops[day.stops.length-1];
+  const wps=day.stops.slice(1,-1).map(s=>s.lat+','+s.lng).join('|');
+  let url='https://www.google.com/maps/dir/?api=1&origin='+first.lat+','+first.lng+'&destination='+last.lat+','+last.lng+'&travelmode=transit';
+  if(wps) url+='&waypoints='+encodeURIComponent(wps);
+  document.getElementById('routeLink').href=url;
+  updateMapMarkers(day);
+  document.getElementById('stopCards').innerHTML=day.stops.map((s,i)=>renderStop(s,i,day.day)).join('');
 }
-
-// ============================================================
-// PHRASES
-// ============================================================
-function buildCatTabs() {
-  const icons = {
-    Greetings: '👋', Restaurant: '🍜', Transit: '🚆',
-    Shopping: '🛍', Hotel: '🏨', Emergency: '🆘'
-  };
-  const container = document.getElementById('catTabs');
-  container.innerHTML = Object.keys(PHRASES).map(cat => `
-    <button class="cat-tab${cat === currentCategory ? ' active' : ''}"
-            onclick="selectCategory('${cat}')">
-      ${icons[cat] || ''} ${cat}
-    </button>
-  `).join('');
-}
-
-function selectCategory(cat) {
-  currentCategory = cat;
-  document.querySelectorAll('.cat-tab').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent.trim().includes(cat));
+function updateMapMarkers(day) {
+  if(!googleMap) return;
+  mapMarkers.forEach(m=>m.setMap(null)); mapMarkers=[];
+  const bounds=new google.maps.LatLngBounds();
+  day.stops.forEach((stop,i)=>{
+    const pos={lat:stop.lat,lng:stop.lng}; bounds.extend(pos);
+    const m=new google.maps.Marker({position:pos,map:googleMap,title:stop.name,
+      label:{text:String(i+1),color:'#fff',fontSize:'12px',fontWeight:'bold'},
+      icon:{path:google.maps.SymbolPath.CIRCLE,fillColor:'#C8102E',fillOpacity:1,
+        strokeColor:'#fff',strokeWeight:2,scale:16,labelOrigin:new google.maps.Point(0,0)}});
+    m.addListener('click',()=>{expandStop(i,day.day);
+      const c=document.getElementById('s-'+day.day+'-'+i);
+      if(c) c.scrollIntoView({behavior:'smooth',block:'start'});});
+    mapMarkers.push(m);
   });
+  if(!bounds.isEmpty()) googleMap.fitBounds(bounds,{top:20,right:20,bottom:20,left:20});
+}
+function renderStop(stop,i,dayNum) {
+  const mUrl='https://maps.google.com/maps?q='+stop.lat+','+stop.lng;
+  const phrases=(stop.phrases||[]).map(p=>
+    '<div class="sp-card" onclick="speakPhrase(this,\''+esc(p.ja)+'\')"><span class="sp-icon">&#x1F50A;</span>'
+    +'<div class="sp-en">'+p.en+'</div><div class="sp-ja">'+p.ja+'</div>'
+    +'<div class="sp-romaji">'+p.romaji+'</div></div>').join('');
+  let bkHtml='';
+  if(stop.booking){const bk=stop.booking;
+    bkHtml='<div class="booking-box"><div class="booking-box-title">&#x1F4CB; '+bk.title+'</div>'
+      +'<p>'+(bk.notes||'')+(bk.ref?'<br><span class="bref">'+bk.ref+'</span>':'')+'</p>'
+      +(bk.url?'<a href="'+bk.url+'" target="_blank" rel="noopener" class="booking-btn">'+(bk.btnLabel||'View Booking \u2197')+'</a>':'')
+      +'</div>';}
+  return '<div class="stop-card" id="s-'+dayNum+'-'+i+'">'
+    +'<div class="stop-header" onclick="toggleStop('+i+','+dayNum+')">'
+    +'<div class="stop-num">'+(i+1)+'</div><div class="stop-htext">'
+    +'<div class="stop-time">'+stop.time+'</div><div class="stop-name">'+stop.name+'</div>'
+    +(stop.booked?'<div class="stop-booked">&#x2705; '+stop.booked+'</div>':'')
+    +'</div><span class="stop-chevron">&#x25BC;</span></div>'
+    +'<div class="stop-body"><div class="stop-desc">'+stop.desc+'</div>'
+    +(stop.transit?'<div class="transit-box">'+stop.transit+'</div>':'')
+    +bkHtml
+    +'<div class="stop-actions"><a class="map-btn" href="'+mUrl+'" target="_blank" rel="noopener">&#x1F4CD; Navigate Here &#x2197;</a></div>'
+    +(phrases?'<div class="phrases-label">&#x1F5E3; Say at this stop &middot; Tap to hear</div><div class="stop-phrases">'+phrases+'</div>':'')
+    +'</div></div>';
+}
+function esc(str){return str.replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
+function toggleStop(idx,dayNum){
+  const card=document.getElementById('s-'+dayNum+'-'+idx); if(!card) return;
+  const wasOpen=card.classList.contains('open');
+  document.querySelectorAll('.stop-card.open').forEach(c=>c.classList.remove('open','highlighted'));
+  if(!wasOpen){card.classList.add('open','highlighted');
+    mapMarkers[idx]&&googleMap&&googleMap.panTo(mapMarkers[idx].getPosition());}
+}
+function expandStop(idx,dayNum){
+  document.querySelectorAll('.stop-card.open').forEach(c=>c.classList.remove('open','highlighted'));
+  const card=document.getElementById('s-'+dayNum+'-'+idx);
+  if(card) card.classList.add('open','highlighted');
+}
+const CAT_META={greetings:{icon:'&#x1F44B;',label:'Greetings'},restaurant:{icon:'&#x1F35C;',label:'Restaurant'},
+  transit:{icon:'&#x1F686;',label:'Transit'},shopping:{icon:'&#x1F6CD;',label:'Shopping'},
+  hotel:{icon:'&#x1F3E8;',label:'Hotel'},emergency:{icon:'&#x1F198;',label:'Emergency'}};
+function buildCatTabs(){
+  document.getElementById('catTabs').innerHTML=Object.entries(CAT_META).map(([k,m])=>
+    '<button class="cat-tab'+(k==='greetings'?' active':'')+'" onclick="selectCat(\''+k+'\')">'+m.icon+' '+m.label+'</button>').join('');
+}
+function selectCat(cat){
+  currentCat=cat;
+  document.querySelectorAll('.cat-tab').forEach((b,i)=>b.classList.toggle('active',Object.keys(CAT_META)[i]===cat));
   renderPhrases(cat);
 }
-
-function renderPhrases(cat) {
-  const phrases = PHRASES[cat] || [];
-  document.getElementById('phrasesGrid').innerHTML = phrases.map(p => {
-    const jpEscaped = p.jp.replace(/'/g, "\\'");
-    return `<div class="phrase-card" onclick="speakPhrase(this, '${jpEscaped}')">
-      <div class="phrase-en">${p.en}</div>
-      <div class="phrase-jp">${p.jp}</div>
-      <div class="phrase-romaji">${p.romaji}</div>
-      <div class="phrase-speaker">🔊</div>
-    </div>`;
-  }).join('');
+function renderPhrases(cat){
+  document.getElementById('phrasesGrid').innerHTML=(PHRASES[cat]||[]).map(p=>
+    '<div class="ph-card" onclick="speakPhrase(this,\''+esc(p.ja)+'\')"><span class="ph-icon">&#x1F50A;</span>'
+    +'<div class="ph-en">'+p.en+'</div><div class="ph-ja">'+p.ja+'</div>'
+    +'<div class="ph-romaji">'+p.romaji+'</div></div>').join('');
 }
-
-function setVoice(gender) {
-  voiceGender = gender;
-  document.getElementById('voiceMale').classList.toggle('active', gender === 'male');
-  document.getElementById('voiceFemale').classList.toggle('active', gender === 'female');
+function setVoice(g){
+  voiceGender=g;
+  document.getElementById('tog-male').classList.toggle('active',g==='male');
+  document.getElementById('tog-female').classList.toggle('active',g==='female');
 }
-
-function speakPhrase(card, text) {
-  if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-
-  card.classList.add('speaking');
-  setTimeout(() => card.classList.remove('speaking'), 900);
-
-  const utt = new SpeechSynthesisUtterance(text);
-  utt.lang = 'ja-JP';
-  utt.rate = 0.85;
-  utt.pitch = voiceGender === 'female' ? 1.2 : 0.8;
-
-  const voices = window.speechSynthesis.getVoices();
-  const jpVoices = voices.filter(v => v.lang && v.lang.startsWith('ja'));
-  if (jpVoices.length > 0) {
-    if (voiceGender === 'female') {
-      utt.voice = jpVoices.find(v => /kyoko|female|woman|himari|haruka/i.test(v.name)) || jpVoices[0];
-    } else {
-      utt.voice = jpVoices.find(v => /otoya|male|man|ichiro/i.test(v.name)) || jpVoices[0];
-    }
-  }
-
-  window.speechSynthesis.speak(utt);
+function speakPhrase(el,ja){
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel(); el.classList.add('speaking');
+  setTimeout(()=>el.classList.remove('speaking'),900);
+  const u=new SpeechSynthesisUtterance(ja); u.lang='ja-JP'; u.rate=0.82;
+  u.pitch=voiceGender==='female'?1.2:0.8;
+  const vv=window.speechSynthesis.getVoices().filter(v=>v.lang&&v.lang.startsWith('ja'));
+  if(vv.length) u.voice=voiceGender==='female'
+    ?(vv.find(v=>/kyoko|female|himari|haruka/i.test(v.name))||vv[0])
+    :(vv.find(v=>/otoya|male|ichiro/i.test(v.name))||vv[0]);
+  window.speechSynthesis.speak(u);
 }
-
-// Pre-load voices on iOS (they load asynchronously)
-if (window.speechSynthesis) {
-  window.speechSynthesis.getVoices();
-  if (window.speechSynthesis.onvoiceschanged !== undefined) {
-    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
-  }
+if(window.speechSynthesis){window.speechSynthesis.getVoices();
+  if(window.speechSynthesis.onvoiceschanged!==undefined)
+    window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();}
+function initTranslator(){
+  if(translatorReady) return; translatorReady=true;
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){document.getElementById('noMic').style.display='block';
+    document.getElementById('micBtn').style.opacity='0.3';
+    document.getElementById('micBtn').onclick=null;
+    document.getElementById('micStatus').textContent='Not supported \u2014 use Chrome or Safari on iOS'; return;}
+  recognition=new SR(); recognition.lang='ja-JP'; recognition.continuous=false; recognition.interimResults=true;
+  recognition.onstart=()=>{listening=true;document.getElementById('micBtn').classList.add('listening');
+    document.getElementById('micBtn').textContent='\u23F9';
+    document.getElementById('micStatus').textContent='\uD83D\uDD34 Listening for Japanese\u2026';
+    document.getElementById('resJa').textContent='\u2026';document.getElementById('resEn').textContent='\u2026';};
+  recognition.onresult=e=>{const txt=Array.from(e.results).map(r=>r[0].transcript).join('');
+    document.getElementById('resJa').textContent=txt;
+    if(e.results[e.results.length-1].isFinal) translateText(txt);};
+  recognition.onerror=e=>{stopListen();
+    if(e.error==='not-allowed') document.getElementById('micStatus').textContent='\u26A0\uFE0F Mic permission denied in Settings';};
+  recognition.onend=stopListen;
 }
-
-// ============================================================
-// TRANSLATOR
-// ============================================================
-function initTranslator() {
-  if (translatorInitialized) return;
-  translatorInitialized = true;
-
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) {
-    document.getElementById('noMicNotice').style.display = 'block';
-    const btn = document.getElementById('micBtn');
-    btn.style.opacity = '0.35';
-    btn.style.cursor = 'not-allowed';
-    btn.onclick = null;
-    document.getElementById('micStatus').textContent = 'Not supported in this browser';
-    return;
-  }
-
-  recognition = new SR();
-  recognition.lang = 'ja-JP';
-  recognition.continuous = false;
-  recognition.interimResults = true;
-
-  recognition.onstart = () => {
-    isListening = true;
-    document.getElementById('micBtn').classList.add('listening');
-    document.getElementById('micBtn').textContent = '⏹';
-    document.getElementById('micStatus').textContent = '🔴 Listening for Japanese…';
-    document.getElementById('transcriptJP').textContent = '…';
-    document.getElementById('translationEN').textContent = '…';
-  };
-
-  recognition.onresult = (event) => {
-    const transcript = Array.from(event.results).map(r => r[0].transcript).join('');
-    document.getElementById('transcriptJP').textContent = transcript;
-    if (event.results[event.results.length - 1].isFinal) {
-      translateText(transcript);
-    }
-  };
-
-  recognition.onerror = (event) => {
-    console.error('SpeechRecognition error:', event.error);
-    stopListening();
-    if (event.error === 'not-allowed') {
-      document.getElementById('micStatus').textContent = '⚠️ Mic permission denied in browser settings';
-    }
-  };
-
-  recognition.onend = stopListening;
+function stopListen(){listening=false;document.getElementById('micBtn').classList.remove('listening');
+  document.getElementById('micBtn').textContent='\uD83C\uDFA4';
+  document.getElementById('micStatus').textContent='Tap to listen for Japanese';}
+function toggleListen(){if(!recognition) return; if(listening) recognition.stop(); else try{recognition.start();}catch(e){}}
+async function translateText(text){
+  if(!text||text==='\u2026') return;
+  document.getElementById('resEn').textContent='Translating\u2026';
+  try{const r=await fetch('https://api.mymemory.translated.net/get?q='+encodeURIComponent(text)+'&langpair=ja|en');
+    const d=await r.json();
+    document.getElementById('resEn').textContent=(d.responseData&&d.responseData.translatedText)||'Translation unavailable';}
+  catch{document.getElementById('resEn').textContent='Translation failed \u2014 check connection';}
 }
-
-function stopListening() {
-  isListening = false;
-  const btn = document.getElementById('micBtn');
-  btn.classList.remove('listening');
-  btn.textContent = '🎤';
-  document.getElementById('micStatus').textContent = 'Tap to listen for Japanese';
-}
-
-function toggleListening() {
-  if (!recognition) return;
-  if (isListening) {
-    recognition.stop();
-  } else {
-    try {
-      recognition.start();
-    } catch (e) {
-      console.error('Recognition start error:', e);
-    }
-  }
-}
-
-async function translateText(text) {
-  if (!text || text === '…') return;
-  document.getElementById('translationEN').textContent = 'Translating…';
-  try {
-    const url = 'https://api.mymemory.translated.net/get?q='
-      + encodeURIComponent(text) + '&langpair=ja|en';
-    const res = await fetch(url);
-    const data = await res.json();
-    const translated = (data.responseData && data.responseData.translatedText) || 'Translation unavailable';
-    document.getElementById('translationEN').textContent = translated;
-  } catch (err) {
-    document.getElementById('translationEN').textContent = 'Translation failed — check connection';
-  }
-}
-
-// ============================================================
-// INIT
-// ============================================================
-buildDayTabs();
-renderDay(1);
-buildCatTabs();
-renderPhrases('Greetings');
+buildDayTabs(); buildCatTabs(); renderPhrases('greetings');
 </script>
-
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvZ3BSBL0N1t-FPVvoInmgSuZUXB0QZNQ&callback=initMap" onerror="gm_authFailure()"></script>
 </body>
 </html>
