@@ -403,6 +403,20 @@ const PHRASES = {
     { en: "Is there WiFi?",          ja: "WiFi\u306f\u3042\u308a\u307e\u3059\u304b\uff1f",                     romaji: "WiFi wa arimasu ka?" },
     { en: "The room key please",     ja: "\u30eb\u30fc\u30e0\u30ad\u30fc\u3092\u304f\u3060\u3055\u3044",       romaji: "Ruumu kii wo kudasai" }
   ],
+  cultural: [
+    { en: "What is the history of this?",    ja: "\u3053\u308c\u306f\u3069\u3093\u306a\u6b74\u53f2\u304c\u3042\u308a\u307e\u3059\u304b\uff1f",          romaji: "Kore wa donna rekishi ga arimasu ka?" },
+    { en: "What am I looking at?",          ja: "\u3053\u308c\u306f\u4f55\u3067\u3059\u304b\uff1f",                                                               romaji: "Kore wa nan desu ka?" },
+    { en: "What are the relevant dates?",   ja: "\u3053\u308c\u306f\u3044\u3064\u5efa\u3066\u3089\u308c\u307e\u3057\u305f\u304b\uff1f",                          romaji: "Kore wa itsu tateraremashita ka?" },
+    { en: "Who built this?",               ja: "\u8ab0\u304c\u3053\u308c\u3092\u5efa\u3066\u307e\u3057\u305f\u304b\uff1f",                                         romaji: "Dare ga kore wo tatemashita ka?" },
+    { en: "What does this symbol mean?",   ja: "\u3053\u306e\u30b7\u30f3\u30dc\u30eb\u306f\u4f55\u3092\u610f\u5473\u3057\u307e\u3059\u304b\uff1f",               romaji: "Kono shinboru wa nani wo imi shimasu ka?" },
+    { en: "Is this a Buddhist temple?",    ja: "\u3053\u3053\u306f\u4ecf\u6559\u306e\u304a\u5bfa\u3067\u3059\u304b\uff1f",                                        romaji: "Koko wa bukkyou no otera desu ka?" },
+    { en: "Is this a Shinto shrine?",      ja: "\u3053\u3053\u306f\u795e\u793e\u3067\u3059\u304b\uff1f",                                                            romaji: "Koko wa jinja desu ka?" },
+    { en: "How do I show respect here?",   ja: "\u3053\u3053\u3067\u306f\u3069\u306e\u3088\u3046\u306b\u656c\u610f\u3092\u8868\u305b\u307e\u3059\u304b\uff1f",     romaji: "Koko de wa dono you ni keii wo arawasemasu ka?" },
+    { en: "Can I take photos here?",       ja: "\u3053\u3053\u3067\u5199\u771f\u3092\u6483\u3063\u3066\u3082\u3044\u3044\u3067\u3059\u304b\uff1f",               romaji: "Koko de shashin wo totte mo ii desu ka?" },
+    { en: "What is this area called?",     ja: "\u3053\u306e\u5730\u57df\u306f\u4f55\u3068\u3044\u3046\u540d\u524d\u3067\u3059\u304b\uff1f",                     romaji: "Kono chiiki wa nan to iu namae desu ka?" },
+    { en: "Is there a guided tour?",       ja: "\u30ac\u30a4\u30c9\u30c4\u30a2\u30fc\u306f\u3042\u308a\u307e\u3059\u304b\uff1f",                                  romaji: "Gaido tsuaa wa arimasu ka?" },
+    { en: "Can you explain this ritual?",  ja: "\u3053\u306e\u5100\u5f0f\u3092\u8aac\u660e\u3057\u3066\u3044\u305f\u3060\u3051\u307e\u3059\u304b\uff1f",         romaji: "Kono gishiki wo setsumei shite itadakemasu ka?" }
+  ],
   emergency: [
     { en: "Help!",                  ja: "\u52a9\u3051\u3066\u304f\u3060\u3055\u3044\uff01",                               romaji: "Tasukete kudasai!" },
     { en: "Call an ambulance",      ja: "\u6551\u6025\u8eca\u3092\u547c\u3093\u3067\u304f\u3060\u3055\u3044",            romaji: "Kyuukyuusha wo yonde kudasai" },
@@ -665,7 +679,7 @@ function expandStop(idx,dayNum){
 }
 const CAT_META={greetings:{icon:'&#x1F44B;',label:'Greetings'},restaurant:{icon:'&#x1F35C;',label:'Restaurant'},
   transit:{icon:'&#x1F686;',label:'Transit'},shopping:{icon:'&#x1F6CD;',label:'Shopping'},
-  hotel:{icon:'&#x1F3E8;',label:'Hotel'},emergency:{icon:'&#x1F198;',label:'Emergency'}};
+  hotel:{icon:'&#x1F3E8;',label:'Hotel'},cultural:{icon:'&#x26E9;&#xFE0F;',label:'Culture'},emergency:{icon:'&#x1F198;',label:'Emergency'}};
 function buildCatTabs(){
   document.getElementById('catTabs').innerHTML=Object.entries(CAT_META).map(([k,m])=>
     '<button class="cat-tab'+(k==='greetings'?' active':'')+'" onclick="selectCat(\''+k+'\')">'+m.icon+' '+m.label+'</button>').join('');
