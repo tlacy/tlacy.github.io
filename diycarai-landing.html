@@ -1,0 +1,285 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>homecardiy.com — AI Home &amp; Car Inventory | Built with Agentic AI</title>
+    <meta name="description" content="A live AI-powered platform to track every home and car asset you own. Built end-to-end using agentic AI (GitHub Copilot + Claude). Photos, repair history, AI guidance, warranty alerts.">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6; color: #1a1a2e; background: #f4f6fb;
+        }
+        nav {
+            background: #fff; padding: 14px 32px; border-bottom: 1px solid #e5e7eb;
+            display: flex; align-items: center; gap: 20px;
+        }
+        nav a { color: #667eea; text-decoration: none; font-size: 0.9em; }
+        nav a:hover { text-decoration: underline; }
+
+        .hero {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: #fff; padding: 72px 32px 56px; text-align: center;
+        }
+        .hero-eyebrow {
+            display: inline-block;
+            background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.4);
+            color: #ffd700; font-size: 0.8em; font-weight: 700; letter-spacing: 0.1em;
+            text-transform: uppercase; padding: 4px 14px; border-radius: 20px; margin-bottom: 20px;
+        }
+        .hero h1 { font-size: clamp(2em,5vw,3.2em); font-weight: 800; margin-bottom: 18px; line-height: 1.15; }
+        .hero h1 span { color: #ffd700; }
+        .hero .sub { font-size: 1.2em; opacity: 0.85; max-width: 620px; margin: 0 auto 32px; }
+        .hero-cta { display: inline-flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+        .btn-primary {
+            background: #ffd700; color: #1a1a2e; font-weight: 700; padding: 14px 28px;
+            border-radius: 8px; text-decoration: none; font-size: 1em;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,215,0,0.35); }
+        .btn-secondary {
+            background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.3);
+            font-weight: 600; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-size: 1em;
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.18); }
+
+        .stats-bar {
+            background: #fff; border-bottom: 1px solid #e5e7eb;
+            display: flex; justify-content: center; flex-wrap: wrap;
+        }
+        .stat { padding: 22px 36px; text-align: center; border-right: 1px solid #e5e7eb; }
+        .stat:last-child { border-right: none; }
+        .stat-num { font-size: 1.8em; font-weight: 800; color: #667eea; display: block; }
+        .stat-label { font-size: 0.8em; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; }
+
+        .section { max-width: 1000px; margin: 0 auto; padding: 56px 24px; }
+        .section-title { font-size: 1.7em; font-weight: 800; margin-bottom: 10px; color: #1a1a2e; }
+        .section-sub { color: #6b7280; margin-bottom: 36px; font-size: 1.05em; }
+
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 20px; }
+        .feature-card {
+            background: #fff; border-radius: 12px; padding: 26px; border: 1px solid #e5e7eb;
+            transition: box-shadow 0.2s;
+        }
+        .feature-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.08); }
+        .feature-card .icon { font-size: 2em; margin-bottom: 12px; }
+        .feature-card h3 { font-size: 1.05em; font-weight: 700; margin-bottom: 8px; color: #1a1a2e; }
+        .feature-card p { font-size: 0.9em; color: #4b5563; }
+
+        .build-section { background: #1a1a2e; color: #fff; }
+        .build-inner { max-width: 1000px; margin: 0 auto; padding: 56px 24px; }
+        .build-inner .section-title { color: #fff; }
+        .build-inner .section-sub { color: rgba(255,255,255,0.65); }
+        .build-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 20px; }
+        .build-card {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 12px; padding: 26px;
+        }
+        .build-card h3 { color: #ffd700; font-size: 1em; margin-bottom: 10px; }
+        .build-card ul { list-style: none; padding: 0; }
+        .build-card li {
+            padding: 5px 0 5px 18px; position: relative;
+            font-size: 0.88em; color: rgba(255,255,255,0.8);
+        }
+        .build-card li::before { content: "›"; position: absolute; left: 0; color: #ffd700; }
+
+        .callout {
+            background: linear-gradient(135deg, #667eea, #764ba2); color: #fff;
+            border-radius: 14px; padding: 32px 36px; margin: 40px 0 0;
+            display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;
+        }
+        .callout .callout-icon { font-size: 2.4em; flex-shrink: 0; }
+        .callout h3 { font-size: 1.1em; font-weight: 700; margin-bottom: 8px; }
+        .callout p { font-size: 0.9em; opacity: 0.9; }
+        .callout a { color: #ffd700; font-weight: 600; }
+
+        .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 14px; }
+        .stack-pill {
+            background: #fff; border: 1px solid #e5e7eb; border-radius: 8px;
+            padding: 14px 18px; font-size: 0.88em; font-weight: 600; color: #374151;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .stack-pill .badge {
+            font-size: 0.75em; background: #e0e7ff; color: #4338ca;
+            padding: 2px 8px; border-radius: 10px; font-weight: 500; margin-left: auto;
+        }
+
+        footer {
+            background: #fff; border-top: 1px solid #e5e7eb; text-align: center;
+            padding: 24px; font-size: 0.85em; color: #9ca3af;
+        }
+        footer a { color: #667eea; text-decoration: none; }
+
+        @media (max-width: 600px) {
+            .stat { padding: 16px 20px; }
+            .callout { padding: 24px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html">← Tom Lacy</a>
+        <a href="tech.html">AI &amp; Technology</a>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-eyebrow">Live Product — Built with Agentic AI</div>
+        <h1>Home &amp; Car AI<br><span>from idea to production in weeks</span></h1>
+        <p class="sub">
+            A full-stack AI platform built almost entirely through agentic AI conversations &mdash;
+            GitHub Copilot agent mode + Claude doing the architecture, coding, testing, and deployment.
+        </p>
+        <div class="hero-cta">
+            <a href="https://www.homecardiy.com" target="_blank" rel="noopener noreferrer" class="btn-primary">
+                Try the App →
+            </a>
+            <a href="https://github.com/tlacy/diycarai" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+                View on GitHub
+            </a>
+        </div>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat"><span class="stat-num">110+</span><span class="stat-label">Automated Tests</span></div>
+        <div class="stat"><span class="stat-num">12</span><span class="stat-label">DB Tables</span></div>
+        <div class="stat"><span class="stat-num">20+</span><span class="stat-label">API Endpoints</span></div>
+        <div class="stat"><span class="stat-num">111</span><span class="stat-label">Agent Pitfalls Documented</span></div>
+        <div class="stat"><span class="stat-num">Weeks</span><span class="stat-label">Idea to Production</span></div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">What the App Does</h2>
+        <p class="section-sub">Track every asset you own &mdash; vehicles, appliances, home systems &mdash; with AI that actually helps.</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="icon">&#128248;</div>
+                <h3>Photo → Asset Details</h3>
+                <p>Point your camera at any appliance. Claude Vision extracts brand, model, serial number, and type automatically &mdash; no forms required.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">&#128295;</div>
+                <h3>AI Repair Guidance</h3>
+                <p>Describe the problem. Get step-by-step instructions specific to your exact model, curated video links, and local parts store recommendations.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">&#9888;&#65039;</div>
+                <h3>Proactive Alerts</h3>
+                <p>Warranty expiration warnings, recall notifications for your vehicles, and maintenance reminders &mdash; computed from your actual asset data.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">&#128196;</div>
+                <h3>Document Storage</h3>
+                <p>Upload manuals, warranty cards, and receipts. All stored and linked to the right asset &mdash; never lose a manual again.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">&#128664;</div>
+                <h3>Vehicle + Home</h3>
+                <p>Cars, trucks, refrigerators, HVAC systems, washers &mdash; every asset type in one place with asset-appropriate AI context for each.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">&#128241;</div>
+                <h3>Mobile-First</h3>
+                <p>Designed for the garage and the utility room. Bottom navigation, card-based layout, touch-friendly &mdash; works great from your phone.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="build-section">
+        <div class="build-inner">
+            <h2 class="section-title">Built with Agentic AI</h2>
+            <p class="section-sub">
+                What it looks like when an engineering executive uses AI as a co-developer, not just a code autocomplete.
+                GitHub Copilot agent mode drove architecture, wrote tests, debugged failures, and shipped features.
+            </p>
+            <div class="build-cards">
+                <div class="build-card">
+                    <h3>&#129302; GitHub Copilot Agent Mode</h3>
+                    <ul>
+                        <li>Multi-step planning without hand-holding</li>
+                        <li>Writes tests before implementation (TDD)</li>
+                        <li>Catches its own errors and iterates</li>
+                        <li>Handles DB schema → API → frontend → deploy in one session</li>
+                        <li>111 pitfalls documented to prevent repeated mistakes</li>
+                    </ul>
+                </div>
+                <div class="build-card">
+                    <h3>&#128065;&#65039; Claude Vision API</h3>
+                    <ul>
+                        <li>Appliance photo → structured JSON (brand, model, serial)</li>
+                        <li>Insurance card → policy number, carrier, vehicles</li>
+                        <li>Client-side canvas resize to stay under Lambda's 6MB invocation limit</li>
+                        <li>HEIC validation, graceful fallback on unsupported formats</li>
+                    </ul>
+                </div>
+                <div class="build-card">
+                    <h3>&#9729;&#65039; Serverless on AWS</h3>
+                    <ul>
+                        <li>Lambda (Node.js 24.x) + API Gateway HTTP v2</li>
+                        <li>Aurora DSQL — IAM-auth PostgreSQL (no SERIAL, no FK constraints)</li>
+                        <li>S3 + CloudFront for global frontend delivery</li>
+                        <li>Secrets Manager — zero plaintext credentials anywhere</li>
+                        <li>Staging gate: smoke tests run before every prod deploy</li>
+                    </ul>
+                </div>
+                <div class="build-card">
+                    <h3>&#128737;&#65039; Production Quality</h3>
+                    <ul>
+                        <li>110+ Jest unit tests + schema contract validation</li>
+                        <li>OWASP Top 10 compliance &mdash; rate limiting, brute-force lockout, JWT auth</li>
+                        <li>No error.message in API responses (OWASP A05)</li>
+                        <li>Email verification + admin approval workflow</li>
+                        <li>Automated deploy pipeline with syntax check + test gate</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="callout">
+                <div class="callout-icon">&#128203;</div>
+                <div>
+                    <h3>111 Agent Pitfalls Documented</h3>
+                    <p>
+                        Every production bug, wrong assumption, and wasted debugging hour is documented in the
+                        <a href="https://github.com/tlacy/diycarai/blob/main/.github/copilot-instructions.md" target="_blank" rel="noopener noreferrer">copilot-instructions.md</a>
+                        file — 111 numbered pitfalls covering Aurora DSQL quirks, Lambda cold start gotchas, Mailgun credential types, and more.
+                        A real-world guide to agentic AI development that ships to production.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Tech Stack</h2>
+        <p class="section-sub">Standard AWS serverless pattern, chosen for operational simplicity and near-zero cost at indie scale.</p>
+        <div class="stack-grid">
+            <div class="stack-pill">&#9889; AWS Lambda <span class="badge">Compute</span></div>
+            <div class="stack-pill">&#127760; API Gateway HTTP v2 <span class="badge">API</span></div>
+            <div class="stack-pill">&#128024; Aurora DSQL <span class="badge">Database</span></div>
+            <div class="stack-pill">&#9729;&#65039; S3 + CloudFront <span class="badge">Frontend</span></div>
+            <div class="stack-pill">&#128274; Secrets Manager <span class="badge">Secrets</span></div>
+            <div class="stack-pill">&#129001; Node.js 24 / Express <span class="badge">Runtime</span></div>
+            <div class="stack-pill">&#129302; Claude API (Anthropic) <span class="badge">AI</span></div>
+            <div class="stack-pill">&#128065;&#65039; Claude Vision <span class="badge">Multimodal</span></div>
+            <div class="stack-pill">&#129516; Jest + Supertest <span class="badge">Testing</span></div>
+            <div class="stack-pill">&#9993;&#65039; Mailgun <span class="badge">Email</span></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Built by <a href="index.html">Tom Lacy</a> using GitHub Copilot agent mode &amp; Claude &mdash; 2025&ndash;2026</p>
+    </footer>
+
+</body>
+</html>
