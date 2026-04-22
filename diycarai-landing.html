@@ -135,11 +135,11 @@
     </nav>
 
     <div class="hero">
-        <div class="hero-eyebrow">Live Product — Built with Agentic AI</div>
-        <h1>Home &amp; Car AI<br><span>from idea to production in weeks</span></h1>
+        <div class="hero-eyebrow">Live Product — Agentic AI Inside &amp; Out</div>
+        <h1>Home &amp; Car AI<br><span>that thinks before it answers</span></h1>
         <p class="sub">
-            A full-stack AI platform built almost entirely through agentic AI conversations &mdash;
-            GitHub Copilot agent mode + Claude doing the architecture, coding, testing, and deployment.
+            An AI repair assistant that autonomously checks your repair history, open recalls, and overdue
+            maintenance before responding &mdash; and a product built end-to-end using GitHub Copilot agent mode.
         </p>
         <div class="hero-cta">
             <a href="https://www.homecardiy.com" target="_blank" rel="noopener noreferrer" class="btn-primary">
@@ -169,9 +169,9 @@
                 <p>Point your camera at any appliance. Claude Vision extracts brand, model, serial number, and type automatically &mdash; no forms required.</p>
             </div>
             <div class="feature-card">
-                <div class="icon">&#128295;</div>
-                <h3>AI Repair Guidance</h3>
-                <p>Describe the problem. Get step-by-step instructions specific to your exact model, curated video links, and local parts store recommendations.</p>
+                <div class="icon">&#129302;</div>
+                <h3>Agentic Repair Engine</h3>
+                <p>Ask about a symptom. Claude autonomously decides which tools to call &mdash; checking your repair history, open safety recalls, and overdue maintenance &mdash; before crafting an answer specific to your asset.</p>
             </div>
             <div class="feature-card">
                 <div class="icon">&#9888;&#65039;</div>
@@ -198,18 +198,28 @@
 
     <div class="build-section">
         <div class="build-inner">
-            <h2 class="section-title">Built with Agentic AI</h2>
+            <h2 class="section-title">Agentic AI: In the Product &amp; In the Build</h2>
             <p class="section-sub">
-                What it looks like when an engineering executive uses AI as a co-developer, not just a code autocomplete.
-                GitHub Copilot agent mode drove architecture, wrote tests, debugged failures, and shipped features.
+                Two distinct uses of agentic AI &mdash; one running in production answering user queries,
+                one used during development to build the product itself.
             </p>
             <div class="build-cards">
                 <div class="build-card">
-                    <h3>&#129302; GitHub Copilot Agent Mode</h3>
+                    <h3>&#129302; Agentic Repair Engine (IN the Product)</h3>
                     <ul>
-                        <li>Multi-step planning without hand-holding</li>
-                        <li>Writes tests before implementation (TDD)</li>
-                        <li>Catches its own errors and iterates</li>
+                        <li>Claude uses <strong>tool calling</strong> to decide what context to fetch before answering</li>
+                        <li><code>get_repair_history</code> — “you had the brakes done 8 months ago”</li>
+                        <li><code>get_open_recalls</code> — “there’s an open recall on your brake booster — it’s covered for free”</li>
+                        <li><code>get_maintenance_status</code> — “your brake fluid is 60 days overdue”</li>
+                        <li>7 total tools: repair history, recalls, maintenance, YouTube, Amazon, stores, contractors</li>
+                        <li>Claude decides autonomously which tools to call based on the query</li>
+                    </ul>
+                </div>
+                <div class="build-card">
+                    <h3>&#128736;&#65039; Built Using Agentic AI (GitHub Copilot)</h3>
+                    <ul>
+                        <li>GitHub Copilot agent mode drove architecture, tests, and deployment</li>
+                        <li>Writes tests before implementation (TDD), catches its own errors</li>
                         <li>Handles DB schema → API → frontend → deploy in one session</li>
                         <li>111 pitfalls documented to prevent repeated mistakes</li>
                     </ul>
