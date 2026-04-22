@@ -1,6 +1,16 @@
 <!doctype html>
 <html class="no-js" lang="en">
 <head>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+  <!-- End Google Analytics -->
+  
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title>Technology | Tom Lacy</title>
@@ -33,67 +43,147 @@
       </div>
     </section>
 
-    <!-- AI & Innovation Section -->
+    <!-- Projects Built with AI -->
     <section class="custom-content ai-section">
-      <h2>AI & Innovation Leadership</h2>
+      <h2>Projects I've Built with AI</h2>
       <div class="content-area">
         <p class="intro">
-          I've been at the forefront of AI adoption in enterprise engineering, launching AI-enabled products 
-          and establishing centers of excellence for AI/ML capabilities. Here are some key areas where I'm 
-          driving innovation:
+          Over the past year I've been building full-stack products end-to-end using agentic AI&mdash;
+          GitHub Copilot agent mode paired with Claude to handle architecture, backend, frontend, 
+          infrastructure, and deployment. These are real, live products built from scratch.
         </p>
-        
+
+        <div class="ai-highlights">
+
+          <div class="ai-card project-card">
+            <h3>🏠 homecardiy.com</h3>
+            <p class="project-status live">● Live at <a href="https://www.homecardiy.com" target="_blank" rel="noopener noreferrer">www.homecardiy.com</a></p>
+            <p>
+              Full-stack AI home &amp; car inventory platform. Track every asset you own with 
+              photos, serial numbers, repair history, AI repair guidance, warranty alerts, 
+              and document storage.
+            </p>
+            <ul>
+              <li>Claude Vision API extracts appliance details from photos automatically</li>
+              <li>AI-powered repair instructions + local parts store recommendations</li>
+              <li>AWS Lambda + Aurora DSQL + API Gateway + S3/CloudFront</li>
+              <li>110+ unit tests, schema contract validation, staging gate in deploy pipeline</li>
+              <li>Built almost entirely through agentic AI conversations</li>
+            </ul>
+          </div>
+
+          <div class="ai-card project-card">
+            <h3>🗾 Japan Trip Companion</h3>
+            <p class="project-status live">● Live at <a href="https://tlacy.github.io/tokyo-trip/" target="_blank" rel="noopener noreferrer">tlacy.github.io/tokyo-trip</a></p>
+            <p>
+              Interactive travel app built for an 8-day Tokyo family trip (May 2026). 
+              Converts a static itinerary into a full mobile web app in a single HTML file.
+            </p>
+            <ul>
+              <li>Day-by-day itinerary with Google Maps &amp; numbered stops</li>
+              <li>70+ Japanese phrases across 7 categories with native speech synthesis (ja-JP)</li>
+              <li>Live speech-to-text translation via microphone + MyMemory API</li>
+              <li>All booking refs, emergency contacts, and transit tips in one place</li>
+              <li>Proof-of-concept for <strong>myitineraryai.com</strong> (see below)</li>
+            </ul>
+          </div>
+
+          <div class="ai-card project-card">
+            <h3>🌐 myitineraryai.com</h3>
+            <p class="project-status coming-soon">⏳ In Development — <a href="https://myitineraryai.com" target="_blank" rel="noopener noreferrer">myitineraryai.com</a></p>
+            <p>
+              Upload any trip itinerary (PDF, Word doc, or text) and get back an interactive 
+              mobile web app—personalized maps, phrases, tips, and booking refs—ready in minutes.
+            </p>
+            <ul>
+              <li>Claude extracts structured trip data from unstructured itinerary documents</li>
+              <li>Generates a bespoke trip companion app, hosted on S3</li>
+              <li>Stripe-gated: review your parsed itinerary first, then pay $7 to generate</li>
+              <li>Same Lambda + API Gateway stack as homecardiy.com</li>
+            </ul>
+          </div>
+
+          <div class="ai-card project-card">
+            <h3>🔌 MCP Server (Professional Context)</h3>
+            <p class="project-status live">● <a href="mcp-demo.html">Try the interactive demo →</a></p>
+            <p>
+              An <strong>MCP (Model Context Protocol) server</strong> that exposes my professional 
+              background as structured resources for AI assistants.
+            </p>
+            <ul>
+              <li>Career data, metrics, and writing available to Claude Desktop and other MCP clients</li>
+              <li>AI tools for bio generation, career queries, and engineering metrics</li>
+              <li><a href="https://github.com/tlacy/tlacy.github.io/tree/master/mcp-server" target="_blank" rel="noopener noreferrer">View on GitHub →</a></li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- AI Leadership & Approach -->
+    <section class="custom-content ai-section" style="margin-top:0;padding-top:0;">
+      <h2>AI Leadership &amp; Approach</h2>
+      <div class="content-area">
+        <p class="intro">
+          My philosophy on AI in engineering: the fastest way to learn what's real vs. hype 
+          is to build with it. That's what I've been doing.
+        </p>
+
         <div class="ai-highlights">
           <div class="ai-card">
-            <h3>🚀 AI-Enabled Products</h3>
+            <h3>🤖 Agentic AI Development</h3>
             <p>
-              Led development and launch of company's <strong>first AI-enabled products</strong>, 
-              establishing AI as a core product differentiator and revenue driver.
+              Building products using <strong>GitHub Copilot agent mode</strong>&mdash;autonomous 
+              multi-step coding that handles planning, implementation, testing, and deployment.
             </p>
             <ul>
-              <li>Launched production AI features serving thousands of users</li>
-              <li>Built reusable AI services and infrastructure</li>
-              <li>Established AI/ML center of excellence</li>
+              <li>Agent writes tests first, catches its own errors, iterates without prompting</li>
+              <li>Full-stack apps (DB schema → API → frontend → CI/CD) in days, not weeks</li>
+              <li>Deep familiarity with where agents excel and where human judgment is irreplaceable</li>
+              <li>Documenting pitfalls and patterns in <a href="https://github.com/tlacy/diycarai/blob/main/.github/copilot-instructions.md" target="_blank" rel="noopener noreferrer">111+ agent instructions</a></li>
             </ul>
           </div>
 
           <div class="ai-card">
-            <h3>⚡ Engineering Productivity</h3>
+            <h3>👁️ Multimodal AI (Vision)</h3>
             <p>
-              Integrated AI throughout the software development lifecycle, improving developer 
-              productivity and code quality.
+              Production use of <strong>Claude Vision API</strong> to extract structured data 
+              from photos, documents, and insurance cards—no forms required.
             </p>
             <ul>
-              <li>AI-assisted code review and testing</li>
-              <li>Automated documentation generation</li>
-              <li>Intelligent deployment and monitoring</li>
+              <li>Photo → appliance details (brand, model, serial number) automatically</li>
+              <li>Insurance card → policy number, carrier, vehicles extracted in one call</li>
+              <li>Client-side resize before upload to stay within Lambda's 6MB invocation limit</li>
+              <li>HEIC handling, format validation, graceful degradation for unsupported types</li>
             </ul>
           </div>
 
           <div class="ai-card">
-            <h3>🔌 Model Context Protocol (MCP)</h3>
+            <h3>☁️ Serverless AI Infrastructure</h3>
             <p>
-              Built an <strong>MCP server</strong> that exposes my professional context to AI assistants, 
-              demonstrating practical AI integration and modern protocol adoption.
+              Deploying AI-powered APIs on AWS serverless stack built for minimal ops overhead 
+              and cost efficiency at startup scale.
             </p>
             <ul>
-              <li>Structured career data and metrics as MCP resources</li>
-              <li>AI-powered tools for career queries and bio generation</li>
-              <li>Seamless integration with Claude Desktop and other MCP clients</li>
-              <li><a href="mcp-demo.html" style="color: #ffd700; font-weight: bold;">🎮 Try Interactive Demo →</a></li>
-              <li><a href="https://github.com/tlacy/tlacy.github.io/tree/master/mcp-server" target="_blank" rel="noopener noreferrer">View MCP Server on GitHub →</a></li>
+              <li>Lambda (Node.js) + API Gateway HTTP v2 + Aurora DSQL (IAM-auth PostgreSQL)</li>
+              <li>S3 + CloudFront for global frontend delivery</li>
+              <li>AWS Secrets Manager for zero-plaintext credential management</li>
+              <li>Staging gate in deploy pipeline: smoke tests run against staging before production</li>
             </ul>
           </div>
 
           <div class="ai-card">
-            <h3>📊 Data-Driven Decision Making</h3>
+            <h3>⚡ Engineering Productivity at Scale</h3>
             <p>
-              Leverage AI and analytics to drive engineering decisions, from hiring to architecture choices.
+              At the enterprise level: establishing AI-assisted development practices that 
+              improve velocity without sacrificing quality or security.
             </p>
             <ul>
-              <li>Predictive models for team capacity planning</li>
-              <li>ML-powered performance analytics</li>
-              <li>Automated reporting and insights generation</li>
+              <li>AI-assisted code review, test generation, and documentation</li>
+              <li>DORA metrics to measure the actual impact of AI tooling on delivery</li>
+              <li>Security-first AI adoption: OWASP compliance, prompt injection defense</li>
+              <li>Build vs. buy framework for AI capabilities (when to use APIs vs. fine-tune)</li>
             </ul>
           </div>
         </div>
@@ -101,11 +191,11 @@
         <div class="tech-principles">
           <h3>Engineering Leadership Principles</h3>
           <ul>
-            <li><strong>Innovation with Purpose:</strong> AI adoption must solve real business problems, not chase trends</li>
-            <li><strong>Build vs. Buy:</strong> Strategic decisions based on competitive advantage and time-to-market</li>
-            <li><strong>Scalable Architecture:</strong> Design for 10x growth, optimize for today's constraints</li>
-            <li><strong>Engineering Excellence:</strong> DORA metrics, CI/CD, automated testing, and continuous improvement</li>
-            <li><strong>Security First:</strong> Zero-trust architecture, defense in depth, compliance by design</li>
+            <li><strong>Build to learn:</strong> The fastest way to have an informed AI opinion is to ship something with it</li>
+            <li><strong>Agents need guardrails, not leashes:</strong> Agentic AI is most powerful with tight feedback loops (tests, contracts, staging)</li>
+            <li><strong>Parity over convenience:</strong> Dev/prod environment gaps cause more production bugs than bad code</li>
+            <li><strong>Scalable architecture:</strong> Design for 10x growth, optimize for today's constraints</li>
+            <li><strong>Security first:</strong> Zero-trust, defense in depth, OWASP compliance by default—not afterthought</li>
           </ul>
         </div>
       </div>

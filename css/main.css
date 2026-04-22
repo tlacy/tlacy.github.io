@@ -774,6 +774,29 @@ textarea {
   color: #ffd700;
 }
 
+.project-card {
+  border-top: 3px solid rgba(255, 215, 0, 0.5);
+}
+
+.project-status {
+  font-size: 0.85em;
+  font-weight: 600;
+  margin-bottom: 10px;
+  opacity: 0.95;
+}
+
+.project-status.live {
+  color: #7fff7f;
+}
+
+.project-status.coming-soon {
+  color: #ffd700;
+}
+
+.project-status a {
+  color: inherit !important;
+}
+
 .tech-principles {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
