@@ -433,11 +433,24 @@ const PHRASES = {
     { en: "I'm allergic to...",     ja: "\u301c\u30a2\u30ec\u30eb\u30ae\u30fc\u304c\u3042\u308a\u307e\u3059",             romaji: "~ arerugii ga arimasu" },
     { en: "Nearest hospital?",      ja: "\u4e00\u756a\u8fd1\u3044\u75c5\u9662\u306f\u3069\u3053\u3067\u3059\u304b\uff1f", romaji: "Ichiban chikai byouin wa doko desu ka?" },
     { en: "I need the US Embassy",  ja: "\u30a2\u30e1\u30ea\u30ab\u5927\u4f7f\u9928\u306b\u9023\u7d61\u3059\u308b\u5fc5\u8981\u304c\u3042\u308a\u307e\u3059", romaji: "Amerika taishikan ni renraku suru hitsuyou ga arimasu" }
+  ],
+  chinese: [
+    { en: "Purpose of visit: business",                  zh: "\u8bbf\u95ee\u76ee\u7684\uff1a\u5546\u52a1",                                                                                      pinyin: "Fangwen mudi: shangwu" },
+    { en: "I am visiting our company team and office",   zh: "\u6211\u6765\u62dc\u8bbf\u6211\u4eec\u516c\u53f8\u7684\u56e2\u961f\u548c\u529e\u516c\u5ba4",                              pinyin: "Wo lai baifang women gongsi de tuandui he bangongshi" },
+    { en: "I leave on May 16",                           zh: "\u6211\u4e94\u6708\u5341\u516d\u65e5\u79bb\u5883",                                                                                 pinyin: "Wo wu yue shiliu ri li jing" },
+    { en: "I have nothing to declare",                   zh: "\u6211\u6ca1\u6709\u9700\u8981\u7533\u62a5\u7684\u7269\u54c1",                                                                   pinyin: "Wo meiyou xuyao shenbao de wupin" },
+    { en: "Do you speak English?",                       zh: "\u60a8\u4f1a\u8bf4\u82f1\u8bed\u5417\uff1f",                                                                                        pinyin: "Nin hui shuo Yingyu ma?" },
+    { en: "Thank you",                                   zh: "\u8c22\u8c22",                                                                                                                            pinyin: "Xie xie" },
+    { en: "Where is the exit?",                          zh: "\u51fa\u53e3\u5728\u54ea\u91cc\uff1f",                                                                                               pinyin: "Chukou zai nali?" },
+    { en: "Please call a taxi",                          zh: "\u8bf7\u5e2e\u6211\u53eb\u51fa\u79df\u8f66",                                                                                        pinyin: "Qing bang wo jiao chuzuche" },
+    { en: "I need help",                                 zh: "\u6211\u9700\u8981\u5e2e\u52a9",                                                                                                      pinyin: "Wo xuyao bangzhu" },
+    { en: "I don't understand",                          zh: "\u6211\u542c\u4e0d\u61c2",                                                                                                             pinyin: "Wo ting bu dong" }
   ]
 };
 
 const G=PHRASES.greetings, R=PHRASES.restaurant, T=PHRASES.transit,
-      S=PHRASES.shopping,  H=PHRASES.hotel,      E=PHRASES.emergency;
+      S=PHRASES.shopping,  H=PHRASES.hotel,      E=PHRASES.emergency,
+      C=PHRASES.chinese;
 
 const ITINERARY = [
   { day:1, date:"Sun May 3", title:"Arrival Day", stops:[
@@ -580,6 +593,56 @@ const ITINERARY = [
       desc:"UA6 departs 5:00pm. Allow 90 minutes minimum. IAH \u2192 AUS, arrive Austin Mon May 11 at 5:26pm.",
       lat:35.7653, lng:140.3861, transit:"\uD83D\uDE95 Pre-booked taxi ~90 min  OR  \uD83D\uDE82 Narita Express from Shibuya \u00b7 75 min",
       phrases:[T[7],H[2],G[3],T[5]] }
+  ]},
+
+  // ---- Addie\'s China Extension (May 12\u201316) ----
+  { day:9, date:"Tue May 12", title:"Addie \u00b7 Haneda \u2192 Guangzhou", stops:[
+    { time:"8:45 am", name:"Westin Check-out \u2192 Haneda T3",
+      desc:"Check out by 9am. CZ3086 departs 10:45am \u2014 check in 120 min before (8:45am). Take taxi or monorail to Haneda Terminal 3. Baggage: 2PC/Adult included.",
+      lat:35.5494, lng:139.7798, transit:"\uD83D\uDE95 Taxi to Haneda ~45 min  OR  \uD83D\uDE82 Monorail from Hamamatsucho \u00b7 25 min",
+      booking:{ title:"China Southern CZ3086 \u00b7 Confirmed", ref:"Go260311301821000012",
+        notes:"Departs Haneda T3 10:45am \u2192 Guangzhou Baiyun T2 14:30<br>Ticket: 7842207457718 \u00b7 Class E Economy \u00b7 2 bags included" },
+      phrases:[C[4],C[5],T[4],E[5]] },
+    { time:"2:30 pm", name:"Arrive Guangzhou Baiyun Airport",
+      desc:"Arrive Terminal 2. US passport holders may use 144-hour visa-free transit for business visits. At immigration: show ticket out on May 16 (UA862 HKG). Purpose: visiting company team. Phrases below are for customs.",
+      lat:23.3924, lng:113.2988,
+      phrases:[C[0],C[1],C[2],C[3],C[4]] }
+  ]},
+  { day:10, date:"Wed May 13", title:"Addie \u00b7 Guangzhou Day 1", stops:[
+    { time:"TBD", name:"Business \u2014 Team Visit Day 1",
+      desc:"Details TBD \u2014 add office address, contact, and schedule here.",
+      lat:23.1291, lng:113.2644,
+      phrases:[C[4],C[5],C[7],C[9]] }
+  ]},
+  { day:11, date:"Thu May 14", title:"Addie \u00b7 Guangzhou Day 2", stops:[
+    { time:"TBD", name:"Business \u2014 Team Visit Day 2",
+      desc:"Details TBD.",
+      lat:23.1291, lng:113.2644,
+      phrases:[C[4],C[5],C[7],C[9]] }
+  ]},
+  { day:12, date:"Fri May 15", title:"Addie \u00b7 Guangzhou \u2192 Hong Kong", stops:[
+    { time:"TBD", name:"Guangzhou \u2192 Hong Kong",
+      desc:"High-speed rail: Guangzhou South Station \u2192 Hong Kong West Kowloon ~47 min. Or airport bus. Book train in advance at 12306.cn or Trip.com. Get to HKG evening \u2014 UA862 departs 11:45am May 16.",
+      lat:22.3193, lng:114.1694, transit:"\uD83D\uDE85 High-speed rail GZ South \u2192 HK West Kowloon \u00b7 ~47 min",
+      phrases:[C[4],C[5],C[6],C[7]] }
+  ]},
+  { day:13, date:"Sat May 16", title:"Addie \u00b7 Hong Kong \u2192 Austin", stops:[
+    { time:"11:45 am", name:"UA 862 \u2014 Hong Kong \u2192 San Francisco",
+      desc:"Departs HKG 11:45am, arrives SFO 9:20am (same day, crosses date line). 12h 35m. Seat 34G.",
+      lat:22.3080, lng:113.9185, transit:"\uD83D\uDE95 Taxi or Airport Express to HKG \u00b7 allow 2 hours before departure",
+      booking:{ title:"UA 862 \u00b7 HKG \u2192 SFO", ref:"ADELAIDEN LACY",
+        notes:"Departs 11:45am \u00b7 Arrives SFO 9:20am \u00b7 Seat 34G \u00b7 12h 35m" },
+      phrases:[C[4],C[5],C[6],C[7]] },
+    { time:"9:20 am", name:"SFO Arrival \u2014 Global Entry",
+      desc:"Use Global Entry kiosks \u2014 skip the customs line entirely. Scan passport at kiosk, collect receipt, exit. Layover: 75 min to UA1116.",
+      lat:37.6213, lng:-122.3790,
+      phrases:[] },
+    { time:"12:35 pm", name:"UA 1116 \u2014 San Francisco \u2192 Austin",
+      desc:"Departs SFO 12:35pm, arrives AUS 6:16pm. 3h 41m. Seat 22C. Home!",
+      lat:30.1975, lng:-97.6664,
+      booking:{ title:"UA 1116 \u00b7 SFO \u2192 AUS", ref:"ADELAIDEN LACY",
+        notes:"Departs 12:35pm \u00b7 Arrives AUS 6:16pm \u00b7 Seat 22C \u00b7 3h 41m" },
+      phrases:[] }
   ]}
 ];
 
@@ -649,10 +712,12 @@ function updateMapMarkers(day) {
 }
 function renderStop(stop,i,dayNum) {
   const mUrl='https://maps.google.com/maps?q='+stop.lat+','+stop.lng;
-  const phrases=(stop.phrases||[]).map(p=>
-    '<div class="sp-card" onclick="speakPhrase(this,\''+esc(p.ja)+'\')"><span class="sp-icon">&#x1F50A;</span>'
-    +'<div class="sp-en">'+p.en+'</div><div class="sp-ja">'+p.ja+'</div>'
-    +'<div class="sp-romaji">'+p.romaji+'</div></div>').join('');
+  const phrases=(stop.phrases||[]).map(p=>{
+    const txt=p.zh||p.ja, rom=p.pinyin||p.romaji;
+    return '<div class="sp-card" onclick="speakPhrase(this,\''+esc(txt)+'\')"><span class="sp-icon">&#x1F50A;</span>'
+    +'<div class="sp-en">'+p.en+'</div><div class="sp-ja">'+txt+'</div>'
+    +'<div class="sp-romaji">'+rom+'</div></div>';
+  }).join('');
   let bkHtml='';
   if(stop.booking){const bk=stop.booking;
     bkHtml='<div class="booking-box"><div class="booking-box-title">&#x1F4CB; '+bk.title+'</div>'
@@ -698,26 +763,30 @@ function selectCat(cat){
   renderPhrases(cat);
 }
 function renderPhrases(cat){
-  document.getElementById('phrasesGrid').innerHTML=(PHRASES[cat]||[]).map(p=>
-    '<div class="ph-card" onclick="speakPhrase(this,\''+esc(p.ja)+'\')"><span class="ph-icon">&#x1F50A;</span>'
-    +'<div class="ph-en">'+p.en+'</div><div class="ph-ja">'+p.ja+'</div>'
-    +'<div class="ph-romaji">'+p.romaji+'</div></div>').join('');
+  document.getElementById('phrasesGrid').innerHTML=(PHRASES[cat]||[]).map(p=>{
+    const txt=p.zh||p.ja, rom=p.pinyin||p.romaji;
+    return '<div class="ph-card" onclick="speakPhrase(this,\''+esc(txt)+'\')"><span class="ph-icon">&#x1F50A;</span>'
+    +'<div class="ph-en">'+p.en+'</div><div class="ph-ja">'+txt+'</div>'
+    +'<div class="ph-romaji">'+rom+'</div></div>';
+  }).join('');
 }
 function setVoice(g){
   voiceGender=g;
   document.getElementById('tog-male').classList.toggle('active',g==='male');
   document.getElementById('tog-female').classList.toggle('active',g==='female');
 }
-function speakPhrase(el,ja){
+function speakPhrase(el,txt){
   if(!window.speechSynthesis) return;
   window.speechSynthesis.cancel(); el.classList.add('speaking');
   setTimeout(()=>el.classList.remove('speaking'),900);
-  const u=new SpeechSynthesisUtterance(ja); u.lang='ja-JP'; u.rate=0.82;
+  const isChinese=/[\u4e00-\u9fff]/.test(txt);
+  const u=new SpeechSynthesisUtterance(txt);
+  u.lang=isChinese?'zh-CN':'ja-JP'; u.rate=0.82;
   u.pitch=voiceGender==='female'?1.2:0.8;
-  const vv=window.speechSynthesis.getVoices().filter(v=>v.lang&&v.lang.startsWith('ja'));
+  const vv=window.speechSynthesis.getVoices().filter(v=>v.lang&&v.lang.startsWith(isChinese?'zh':'ja'));
   if(vv.length) u.voice=voiceGender==='female'
-    ?(vv.find(v=>/kyoko|female|himari|haruka/i.test(v.name))||vv[0])
-    :(vv.find(v=>/otoya|male|ichiro/i.test(v.name))||vv[0]);
+    ?(vv.find(v=>/female|li|mei|kyoko|himari|haruka/i.test(v.name))||vv[0])
+    :(vv.find(v=>/male|ming|otoya|ichiro/i.test(v.name))||vv[0]);
   window.speechSynthesis.speak(u);
 }
 if(window.speechSynthesis){window.speechSynthesis.getVoices();
