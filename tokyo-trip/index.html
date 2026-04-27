@@ -173,10 +173,9 @@
     .sp-icon { float: right; font-size: 0.82rem; color: var(--red); margin-top: 2px; }
     .gt-row { display: flex; gap: 7px; margin-top: 10px; }
     .gt-label { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 5px; }
-    .gt-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px;
-      background: #1a73e8; color: #fff; text-decoration: none;
-      border-radius: 10px; padding: 9px 8px; font-size: 0.73rem; font-weight: 700;
-      -webkit-tap-highlight-color: transparent; }
+    .conv-start-btn { width: 100%; margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 7px;
+      background: var(--navy); color: #fff; border: none; border-radius: 12px; padding: 13px 10px;
+      font-size: 0.82rem; font-weight: 700; cursor: pointer; -webkit-tap-highlight-color: transparent; }
     .cat-tabs {
       display: flex; overflow-x: auto; gap: 6px;
       padding: 10px 12px 5px; scrollbar-width: none;
@@ -762,13 +761,8 @@ function renderStop(stop,i,dayNum) {
   }).join('');  const isChinese=(stop.phrases||[]).some(p=>p.zh);
   const fLang=isChinese?'zh-CN':'ja';
   const fName=isChinese?'Chinese':'Japanese';
-  const gtListen='https://translate.google.com/?sl='+fLang+'&tl=en';
-  const gtSpeak='https://translate.google.com/?sl=en&tl='+fLang;
   const gtHtml=phrases
-    ?'<div class="gt-label">&#x1F310; Google Translate</div><div class="gt-row">'
-      +'<a href="'+gtListen+'" target="_blank" rel="noopener" class="gt-btn">&#x1F3A7; Listen &rarr; EN</a>'
-      +'<a href="'+gtSpeak+'" target="_blank" rel="noopener" class="gt-btn">&#x1F5E3;&#xFE0F; EN &rarr; '+fName+'</a>'
-      +'</div>'
+    ?'<button class="conv-start-btn" onclick="openConversation(\''+fLang+'\')">'+'&#x1F4AC; Start Conversation &rarr; '+fName+'</button>'
     :'';  let bkHtml='';
   if(stop.booking){const bk=stop.booking;
     bkHtml='<div class="booking-box"><div class="booking-box-title">&#x1F4CB; '+bk.title+'</div>'
@@ -843,6 +837,12 @@ function speakPhrase(el,txt){
 if(window.speechSynthesis){window.speechSynthesis.getVoices();
   if(window.speechSynthesis.onvoiceschanged!==undefined)
     window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();}
+function openConversation(lang){
+  const l=lang==='zh-CN'?'zh':'ja';
+  setTransLang(l);
+  showSection('translator');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 function setTransLang(lang){
   transLang=lang;
   document.getElementById('lbtn-ja').classList.toggle('active',lang==='ja');
