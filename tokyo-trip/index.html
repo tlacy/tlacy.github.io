@@ -923,7 +923,9 @@ async function doTranslate(text,from,to,isSpeak){
     const d=await r.json();
     const out=(d.responseData&&d.responseData.translatedText)||'Translation unavailable';
     el.textContent=out;
-    if(isSpeak){lastTTSTxt=out; lastTTSLang=transLang==='ja'?'ja-JP':'zh-CN'; setTimeout(()=>speakText(lastTTSTxt,lastTTSLang),2000);}
+    lastTTSTxt=out;
+    lastTTSLang=isSpeak?(transLang==='ja'?'ja-JP':'zh-CN'):'en-US';
+    setTimeout(()=>speakText(lastTTSTxt,lastTTSLang),2000);
   }catch{el.textContent='Translation failed \u2014 check connection';}
 }
 function replayTranslation(){if(lastTTSTxt) speakText(lastTTSTxt,lastTTSLang);}
@@ -932,11 +934,11 @@ function speakText(txt,lang){
   window.speechSynthesis.cancel();
   const u=new SpeechSynthesisUtterance(txt);
   u.lang=lang; u.rate=0.82; u.pitch=voiceGender==='female'?1.2:0.8;
-  const pre=lang.startsWith('zh')?'zh':'ja';
+  const pre=lang.startsWith('zh')?'zh':lang.startsWith('en')?'en':'ja';
   const vv=window.speechSynthesis.getVoices().filter(v=>v.lang&&v.lang.startsWith(pre));
   if(vv.length) u.voice=voiceGender==='female'
-    ?(vv.find(v=>/female|li|mei|kyoko|himari|haruka/i.test(v.name))||vv[0])
-    :(vv.find(v=>/male|ming|otoya|ichiro/i.test(v.name))||vv[0]);
+    ?(vv.find(v=>/female|li|mei|kyoko|himari|haruka|samantha|karen/i.test(v.name))||vv[0])
+    :(vv.find(v=>/male|ming|otoya|ichiro|daniel|alex/i.test(v.name))||vv[0]);
   window.speechSynthesis.speak(u);
 }
 buildDayTabs(); buildCatTabs(); renderPhrases('greetings');
