@@ -923,7 +923,7 @@ async function doTranslate(text,from,to,isSpeak){
     const d=await r.json();
     const out=(d.responseData&&d.responseData.translatedText)||'Translation unavailable';
     el.textContent=out;
-    if(isSpeak){lastTTSTxt=out; lastTTSLang=transLang==='ja'?'ja-JP':'zh-CN'; speakText(out,lastTTSLang);}
+    if(isSpeak){lastTTSTxt=out; lastTTSLang=transLang==='ja'?'ja-JP':'zh-CN'; setTimeout(()=>speakText(lastTTSTxt,lastTTSLang),2000);}
   }catch{el.textContent='Translation failed \u2014 check connection';}
 }
 function replayTranslation(){if(lastTTSTxt) speakText(lastTTSTxt,lastTTSLang);}
