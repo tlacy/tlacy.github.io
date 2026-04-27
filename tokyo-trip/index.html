@@ -309,6 +309,7 @@
           <div class="conv-heard" id="listenHeard"></div>
           <div class="conv-arrow-lbl">&#x2193; in English</div>
           <div class="conv-translated" id="listenTranslated"></div>
+          <button class="conv-play" onclick="replayTranslation()">&#x1F50A; Play again</button>
         </div>
       </div>
 
@@ -912,6 +913,8 @@ function startConv(mode){
   if(convActive===mode){convRec.stop(); return;}
   if(convActive) convRec.stop();
   convActive=mode;
+  // Unlock TTS on iOS Safari: play a silent utterance within the user gesture
+  if(window.speechSynthesis){const su=new SpeechSynthesisUtterance('\u200B'); su.volume=0; window.speechSynthesis.speak(su);}
   convRec.lang=mode==='speak'?'en-US':(transLang==='ja'?'ja-JP':'zh-CN');
   try{convRec.start();}catch(e){convActive=null;}
 }
