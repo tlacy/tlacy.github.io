@@ -858,6 +858,15 @@ function initTranslator(){
   if(convReady) return; convReady=true;
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SR){
+    const ua=navigator.userAgent;
+    const isIOS=/iPad|iPhone|iPod/.test(ua);
+    const isChromeIOS=isIOS&&/CriOS/.test(ua);
+    const msg=isChromeIOS
+      ? '\uD83D\uDEAB Chrome on iPhone can\u2019t access the mic \u2014 Apple restricts this. Open this page in <strong>Safari</strong> instead (tap Share \u203A Open in Safari).'
+      : isIOS
+        ? '\u26A0\uFE0F Mic requires Safari on iPhone (iOS 17+). Tap the share icon and choose \u201COpen in Safari\u201D.'
+        : '\u26A0\uFE0F Mic not supported in this browser. Try Chrome on Android or Safari on iPhone.';
+    document.getElementById('noMic').innerHTML=msg;
     document.getElementById('noMic').style.display='block';
     ['speakBtn','listenBtn'].forEach(id=>{const b=document.getElementById(id);b.style.opacity='0.35';b.onclick=null;});
     return;
