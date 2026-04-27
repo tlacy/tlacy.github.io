@@ -171,6 +171,12 @@
     .sp-ja { font-size: 0.95rem; font-weight: 600; color: var(--navy); margin-top: 2px; line-height: 1.3; }
     .sp-romaji { font-size: 0.6rem; color: #999; font-style: italic; margin-top: 2px; }
     .sp-icon { float: right; font-size: 0.82rem; color: var(--red); margin-top: 2px; }
+    .gt-row { display: flex; gap: 7px; margin-top: 10px; }
+    .gt-label { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 5px; }
+    .gt-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px;
+      background: #1a73e8; color: #fff; text-decoration: none;
+      border-radius: 10px; padding: 9px 8px; font-size: 0.73rem; font-weight: 700;
+      -webkit-tap-highlight-color: transparent; }
     .cat-tabs {
       display: flex; overflow-x: auto; gap: 6px;
       padding: 10px 12px 5px; scrollbar-width: none;
@@ -196,20 +202,30 @@
     .ph-ja { font-size: 1.05rem; font-weight: 600; color: var(--navy); margin-top: 3px; line-height: 1.35; }
     .ph-romaji { font-size: 0.62rem; color: #999; font-style: italic; margin-top: 3px; }
     .ph-icon { float: right; font-size: 0.88rem; color: var(--red); margin-top: 2px; }
-    .trans-wrap { padding: 20px 12px; }
-    .mic-area { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 20px 0 16px; }
-    .mic-btn { width: 88px; height: 88px; border-radius: 50%; background: var(--red); border: none; cursor: pointer; font-size: 2.1rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 22px rgba(200,16,46,0.35); transition: transform 0.12s; -webkit-tap-highlight-color: transparent; }
-    .mic-btn:active { transform: scale(0.91); }
-    .mic-btn.listening { animation: mpulse 1.4s infinite; }
+    .trans-wrap { padding: 16px 12px; }
     @keyframes mpulse { 0%,100% { box-shadow: 0 4px 22px rgba(200,16,46,0.35); } 50% { box-shadow: 0 4px 40px rgba(200,16,46,0.6), 0 0 0 14px rgba(200,16,46,0.1); } }
-    .mic-status { font-size: 0.8rem; color: var(--muted); font-weight: 600; min-height: 20px; text-align: center; }
-    .res-box { background: var(--card); border-radius: 14px; padding: 15px; margin-bottom: 10px; min-height: 78px; box-shadow: 0 1px 5px rgba(0,0,0,0.07); }
-    .res-box.dark { background: var(--navy); }
-    .res-label { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 7px; }
-    .res-box.dark .res-label { color: rgba(255,255,255,0.4); }
-    .res-ja { font-size: 1.3rem; color: var(--navy); font-weight: 500; min-height: 34px; }
-    .res-en { font-size: 1.3rem; color: #fff; font-weight: 500; min-height: 34px; }
+    @keyframes lpulse { 0%,100% { box-shadow: 0 4px 22px rgba(26,26,46,0.35); } 50% { box-shadow: 0 4px 40px rgba(26,26,46,0.6), 0 0 0 14px rgba(26,26,46,0.12); } }
     .no-mic { background: #FFF9E6; border-left: 4px solid #FFB300; border-radius: 0 10px 10px 0; padding: 12px 14px; font-size: 0.8rem; color: #555; margin-bottom: 16px; line-height: 1.5; display: none; }
+    .lang-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 14px; }
+    .lang-pill { background: var(--navy); color: #fff; border-radius: 20px; padding: 5px 14px; font-size: 0.78rem; font-weight: 700; }
+    .lang-arrow { font-size: 1.05rem; color: var(--muted); }
+    .lang-toggle { display: flex; background: var(--border); border-radius: 20px; padding: 2px; gap: 2px; }
+    .lang-toggle-btn { border: none; background: none; padding: 5px 13px; border-radius: 16px; font-size: 0.72rem; font-weight: 700; color: var(--muted); cursor: pointer; min-height: 30px; -webkit-tap-highlight-color: transparent; transition: background 0.15s; }
+    .lang-toggle-btn.active { background: #fff; color: var(--navy); box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
+    .conv-panel { background: var(--card); border-radius: 16px; padding: 18px 14px; margin-bottom: 10px; display: flex; flex-direction: column; align-items: center; gap: 10px; box-shadow: 0 1px 5px rgba(0,0,0,0.07); }
+    .conv-btn { width: 82px; height: 82px; border-radius: 50%; border: none; cursor: pointer; font-size: 2rem; display: flex; align-items: center; justify-content: center; transition: transform 0.12s; -webkit-tap-highlight-color: transparent; }
+    .conv-btn:active { transform: scale(0.91); }
+    #speakBtn { background: var(--red); box-shadow: 0 4px 20px rgba(200,16,46,0.35); }
+    #speakBtn.recording { animation: mpulse 1.4s infinite; }
+    #listenBtn { background: var(--navy); box-shadow: 0 4px 20px rgba(26,26,46,0.35); }
+    #listenBtn.recording { animation: lpulse 1.4s infinite; }
+    .conv-dir { font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); }
+    .conv-label { font-size: 0.84rem; font-weight: 700; color: #444; text-align: center; min-height: 20px; }
+    .conv-result { width: 100%; text-align: center; border-top: 1px solid var(--border); padding-top: 12px; }
+    .conv-heard { font-size: 1.05rem; font-weight: 500; color: #555; min-height: 26px; line-height: 1.4; }
+    .conv-arrow-lbl { font-size: 0.65rem; color: var(--muted); margin: 5px 0 3px; }
+    .conv-translated { font-size: 1.2rem; font-weight: 700; color: var(--navy); min-height: 30px; line-height: 1.4; }
+    .conv-play { background: none; border: 1.5px solid var(--red); color: var(--red); border-radius: 20px; padding: 5px 18px; font-size: 0.74rem; font-weight: 700; cursor: pointer; margin-top: 8px; -webkit-tap-highlight-color: transparent; }
     .tips-wrap { padding: 12px; }
     .tips-section { margin-bottom: 14px; }
     .tips-section-label { font-size: 0.63rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); padding-left: 2px; margin-bottom: 7px; }
@@ -260,19 +276,43 @@
 
   <div id="sec-translator" class="section">
     <div class="trans-wrap">
-      <div class="no-mic" id="noMic">&#x26A0;&#xFE0F; Mic not available. Use the &#x1F1EF;&#x1F1F5; Phrases tab to tap-to-speak.</div>
-      <div class="mic-area">
-        <button class="mic-btn" id="micBtn" onclick="toggleListen()">&#x1F3A4;</button>
-        <div class="mic-status" id="micStatus">Tap to listen for Japanese</div>
+      <div class="no-mic" id="noMic">&#x26A0;&#xFE0F; Mic not available &mdash; use Chrome on Android or Safari on iOS 17+.</div>
+
+      <!-- Language selector -->
+      <div class="lang-row">
+        <span class="lang-pill">English</span>
+        <span class="lang-arrow">&#x21C4;</span>
+        <div class="lang-toggle">
+          <button id="lbtn-ja" class="lang-toggle-btn active" onclick="setTransLang('ja')">Japanese</button>
+          <button id="lbtn-zh" class="lang-toggle-btn" onclick="setTransLang('zh')">Chinese</button>
+        </div>
       </div>
-      <div class="res-box">
-        <div class="res-label">Heard &middot; Japanese</div>
-        <div class="res-ja" id="resJa">&mdash;</div>
+
+      <!-- You speak English → translates to target language -->
+      <div class="conv-panel">
+        <div class="conv-dir">&#x1F1FA;&#x1F1F8; You speak &rarr; translated</div>
+        <button class="conv-btn" id="speakBtn" onclick="startConv('speak')">&#x1F3A4;</button>
+        <div class="conv-label" id="speakLabel">Tap to speak English</div>
+        <div class="conv-result" id="speakResult" style="display:none">
+          <div class="conv-heard" id="speakHeard"></div>
+          <div class="conv-arrow-lbl">&#x2193; translated</div>
+          <div class="conv-translated" id="speakTranslated"></div>
+          <button class="conv-play" onclick="replayTranslation()">&#x1F50A; Play again</button>
+        </div>
       </div>
-      <div class="res-box dark">
-        <div class="res-label">Translation &middot; English</div>
-        <div class="res-en" id="resEn">&mdash;</div>
+
+      <!-- They speak target language → translates to English -->
+      <div class="conv-panel">
+        <div class="conv-dir" id="listenDir">&#x1F1EF;&#x1F1F5; They speak &rarr; English</div>
+        <button class="conv-btn" id="listenBtn" onclick="startConv('listen')">&#x1F399;&#xFE0F;</button>
+        <div class="conv-label" id="listenLabel">Tap to listen to Japanese</div>
+        <div class="conv-result" id="listenResult" style="display:none">
+          <div class="conv-heard" id="listenHeard"></div>
+          <div class="conv-arrow-lbl">&#x2193; in English</div>
+          <div class="conv-translated" id="listenTranslated"></div>
+        </div>
       </div>
+
     </div>
   </div>
 
@@ -648,7 +688,8 @@ const ITINERARY = [
 ];
 
 let currentDay=1, currentCat='greetings', voiceGender='male';
-let googleMap=null, mapMarkers=[], recognition=null, listening=false, translatorReady=false;
+let googleMap=null, mapMarkers=[];
+let convRec=null, convActive=null, convReady=false, transLang='ja', lastTTSTxt='', lastTTSLang='';
 
 function initMap() {
   googleMap = new google.maps.Map(document.getElementById('map'), {
@@ -718,8 +759,17 @@ function renderStop(stop,i,dayNum) {
     return '<div class="sp-card" onclick="speakPhrase(this,\''+esc(txt)+'\')"><span class="sp-icon">&#x1F50A;</span>'
     +'<div class="sp-en">'+p.en+'</div><div class="sp-ja">'+txt+'</div>'
     +'<div class="sp-romaji">'+rom+'</div></div>';
-  }).join('');
-  let bkHtml='';
+  }).join('');  const isChinese=(stop.phrases||[]).some(p=>p.zh);
+  const fLang=isChinese?'zh-CN':'ja';
+  const fName=isChinese?'Chinese':'Japanese';
+  const gtListen='https://translate.google.com/?sl='+fLang+'&tl=en';
+  const gtSpeak='https://translate.google.com/?sl=en&tl='+fLang;
+  const gtHtml=phrases
+    ?'<div class="gt-label">&#x1F310; Google Translate</div><div class="gt-row">'
+      +'<a href="'+gtListen+'" target="_blank" rel="noopener" class="gt-btn">&#x1F3A7; Listen &rarr; EN</a>'
+      +'<a href="'+gtSpeak+'" target="_blank" rel="noopener" class="gt-btn">&#x1F5E3;&#xFE0F; EN &rarr; '+fName+'</a>'
+      +'</div>'
+    :'';  let bkHtml='';
   if(stop.booking){const bk=stop.booking;
     bkHtml='<div class="booking-box"><div class="booking-box-title">&#x1F4CB; '+bk.title+'</div>'
       +'<p>'+(bk.notes||'')+(bk.ref?'<br><span class="bref">'+bk.ref+'</span>':'')+'</p>'
@@ -735,7 +785,7 @@ function renderStop(stop,i,dayNum) {
     +(stop.transit?'<div class="transit-box">'+stop.transit+'</div>':'')
     +bkHtml
     +'<div class="stop-actions"><a class="map-btn" href="'+mUrl+'" target="_blank" rel="noopener">&#x1F4CD; Navigate Here &#x2197;</a></div>'
-    +(phrases?'<div class="phrases-label">&#x1F5E3; Say at this stop &middot; Tap to hear</div><div class="stop-phrases">'+phrases+'</div>':'')
+    +(phrases?'<div class="phrases-label">&#x1F5E3; Say at this stop &middot; Tap to hear</div><div class="stop-phrases">'+phrases+'</div>'+gtHtml:'')
     +'</div></div>';
 }
 function esc(str){return str.replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
@@ -793,36 +843,92 @@ function speakPhrase(el,txt){
 if(window.speechSynthesis){window.speechSynthesis.getVoices();
   if(window.speechSynthesis.onvoiceschanged!==undefined)
     window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();}
-function initTranslator(){
-  if(translatorReady) return; translatorReady=true;
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){document.getElementById('noMic').style.display='block';
-    document.getElementById('micBtn').style.opacity='0.3';
-    document.getElementById('micBtn').onclick=null;
-    document.getElementById('micStatus').textContent='Not supported \u2014 use Chrome or Safari on iOS'; return;}
-  recognition=new SR(); recognition.lang='ja-JP'; recognition.continuous=false; recognition.interimResults=true;
-  recognition.onstart=()=>{listening=true;document.getElementById('micBtn').classList.add('listening');
-    document.getElementById('micBtn').textContent='\u23F9';
-    document.getElementById('micStatus').textContent='\uD83D\uDD34 Listening for Japanese\u2026';
-    document.getElementById('resJa').textContent='\u2026';document.getElementById('resEn').textContent='\u2026';};
-  recognition.onresult=e=>{const txt=Array.from(e.results).map(r=>r[0].transcript).join('');
-    document.getElementById('resJa').textContent=txt;
-    if(e.results[e.results.length-1].isFinal) translateText(txt);};
-  recognition.onerror=e=>{stopListen();
-    if(e.error==='not-allowed') document.getElementById('micStatus').textContent='\u26A0\uFE0F Mic permission denied in Settings';};
-  recognition.onend=stopListen;
+function setTransLang(lang){
+  transLang=lang;
+  document.getElementById('lbtn-ja').classList.toggle('active',lang==='ja');
+  document.getElementById('lbtn-zh').classList.toggle('active',lang==='zh');
+  const name=lang==='ja'?'Japanese':'Chinese';
+  const flag=lang==='ja'?'\uD83C\uDDEF\uD83C\uDDF5':'\uD83C\uDDE8\uD83C\uDDF3';
+  document.getElementById('listenLabel').textContent='Tap to listen to '+name;
+  document.getElementById('listenDir').textContent=flag+' They speak \u2192 English';
+  document.getElementById('speakResult').style.display='none';
+  document.getElementById('listenResult').style.display='none';
 }
-function stopListen(){listening=false;document.getElementById('micBtn').classList.remove('listening');
-  document.getElementById('micBtn').textContent='\uD83C\uDFA4';
-  document.getElementById('micStatus').textContent='Tap to listen for Japanese';}
-function toggleListen(){if(!recognition) return; if(listening) recognition.stop(); else try{recognition.start();}catch(e){}}
-async function translateText(text){
-  if(!text||text==='\u2026') return;
-  document.getElementById('resEn').textContent='Translating\u2026';
-  try{const r=await fetch('https://api.mymemory.translated.net/get?q='+encodeURIComponent(text)+'&langpair=ja|en');
+function initTranslator(){
+  if(convReady) return; convReady=true;
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){
+    document.getElementById('noMic').style.display='block';
+    ['speakBtn','listenBtn'].forEach(id=>{const b=document.getElementById(id);b.style.opacity='0.35';b.onclick=null;});
+    return;
+  }
+  convRec=new SR(); convRec.continuous=false; convRec.interimResults=true;
+  convRec.onstart=()=>{
+    const isSpeak=convActive==='speak';
+    document.getElementById(isSpeak?'speakBtn':'listenBtn').classList.add('recording');
+    document.getElementById(isSpeak?'speakBtn':'listenBtn').textContent='\u23F9';
+    document.getElementById(isSpeak?'speakLabel':'listenLabel').textContent='\uD83D\uDD34 Listening\u2026';
+    document.getElementById(isSpeak?'speakHeard':'listenHeard').textContent='\u2026';
+    document.getElementById(isSpeak?'speakTranslated':'listenTranslated').textContent='';
+    document.getElementById(isSpeak?'speakResult':'listenResult').style.display='block';
+  };
+  convRec.onresult=e=>{
+    const txt=Array.from(e.results).map(r=>r[0].transcript).join('');
+    const isSpeak=convActive==='speak';
+    document.getElementById(isSpeak?'speakHeard':'listenHeard').textContent=txt;
+    if(e.results[e.results.length-1].isFinal){
+      const from=isSpeak?'en':(transLang==='ja'?'ja':'zh-CN');
+      const to  =isSpeak?(transLang==='ja'?'ja':'zh-CN'):'en';
+      doTranslate(txt,from,to,isSpeak);
+    }
+  };
+  convRec.onerror=e=>{
+    stopConv();
+    if(e.error==='not-allowed') document.getElementById('noMic').style.display='block';
+  };
+  convRec.onend=stopConv;
+}
+function stopConv(){
+  if(!convActive) return;
+  const isSpeak=convActive==='speak';
+  const btn=document.getElementById(isSpeak?'speakBtn':'listenBtn');
+  btn.classList.remove('recording');
+  btn.textContent=isSpeak?'\uD83C\uDFA4':'\uD83C\uDF99\uFE0F';
+  const name=transLang==='ja'?'Japanese':'Chinese';
+  document.getElementById(isSpeak?'speakLabel':'listenLabel').textContent=isSpeak?'Tap to speak English':'Tap to listen to '+name;
+  convActive=null;
+}
+function startConv(mode){
+  if(!convRec){initTranslator(); if(!convRec) return;}
+  if(convActive===mode){convRec.stop(); return;}
+  if(convActive) convRec.stop();
+  convActive=mode;
+  convRec.lang=mode==='speak'?'en-US':(transLang==='ja'?'ja-JP':'zh-CN');
+  try{convRec.start();}catch(e){convActive=null;}
+}
+async function doTranslate(text,from,to,isSpeak){
+  const el=document.getElementById(isSpeak?'speakTranslated':'listenTranslated');
+  el.textContent='Translating\u2026';
+  try{
+    const r=await fetch('https://api.mymemory.translated.net/get?q='+encodeURIComponent(text)+'&langpair='+from+'|'+to);
     const d=await r.json();
-    document.getElementById('resEn').textContent=(d.responseData&&d.responseData.translatedText)||'Translation unavailable';}
-  catch{document.getElementById('resEn').textContent='Translation failed \u2014 check connection';}
+    const out=(d.responseData&&d.responseData.translatedText)||'Translation unavailable';
+    el.textContent=out;
+    if(isSpeak){lastTTSTxt=out; lastTTSLang=transLang==='ja'?'ja-JP':'zh-CN'; speakText(out,lastTTSLang);}
+  }catch{el.textContent='Translation failed \u2014 check connection';}
+}
+function replayTranslation(){if(lastTTSTxt) speakText(lastTTSTxt,lastTTSLang);}
+function speakText(txt,lang){
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(txt);
+  u.lang=lang; u.rate=0.82; u.pitch=voiceGender==='female'?1.2:0.8;
+  const pre=lang.startsWith('zh')?'zh':'ja';
+  const vv=window.speechSynthesis.getVoices().filter(v=>v.lang&&v.lang.startsWith(pre));
+  if(vv.length) u.voice=voiceGender==='female'
+    ?(vv.find(v=>/female|li|mei|kyoko|himari|haruka/i.test(v.name))||vv[0])
+    :(vv.find(v=>/male|ming|otoya|ichiro/i.test(v.name))||vv[0]);
+  window.speechSynthesis.speak(u);
 }
 buildDayTabs(); buildCatTabs(); renderPhrases('greetings');
 </script>
