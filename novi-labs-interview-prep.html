@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Novi Labs — CTO Interview Playbook</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      line-height: 1.65;
+      padding: 2rem 1rem 4rem;
+    }
+    .container { max-width: 860px; margin: 0 auto; }
+    h1 { font-size: 1.9rem; font-weight: 700; margin-bottom: .25rem; }
+    .subtitle { color: #555; font-size: 1rem; margin-bottom: 2rem; }
+    .toc { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 2rem; }
+    .toc h2 { font-size: .85rem; text-transform: uppercase; letter-spacing: .06em; color: #888; margin-bottom: .75rem; }
+    .toc ol { padding-left: 1.25rem; }
+    .toc li { font-size: .9rem; margin-bottom: .3rem; }
+    .toc a { color: #2563eb; text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    .card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 1.75rem 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .card h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      padding-bottom: .6rem;
+      border-bottom: 2px solid #2563eb;
+      color: #111;
+    }
+    .card h3 { font-size: 1rem; font-weight: 700; margin: 1.2rem 0 .4rem; color: #1a1a1a; }
+    .card p { font-size: .925rem; margin-bottom: .75rem; }
+    .card ul, .card ol { padding-left: 1.4rem; margin-bottom: .75rem; }
+    .card li { font-size: .925rem; margin-bottom: .35rem; }
+    .badge {
+      display: inline-block;
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      padding: .15rem .45rem;
+      border-radius: 4px;
+      margin-right: .4rem;
+      vertical-align: middle;
+    }
+    .badge-info { background: #dbeafe; color: #1e40af; }
+    .badge-important { background: #fee2e2; color: #991b1b; }
+    .badge-tip { background: #d1fae5; color: #065f46; }
+    .badge-new { background: #ede9fe; color: #5b21b6; }
+    .qa-block { border-left: 3px solid #2563eb; padding: .6rem 1rem; margin: .75rem 0; background: #f8faff; border-radius: 0 6px 6px 0; }
+    .qa-block .q { font-weight: 700; font-size: .9rem; margin-bottom: .35rem; color: #1e40af; }
+    .qa-block .a { font-size: .9rem; color: #222; }
+    .overlap-block { border-left: 3px solid #10b981; padding: .6rem 1rem; margin: .75rem 0; background: #f0fdf4; border-radius: 0 6px 6px 0; }
+    .overlap-block .label { font-weight: 700; font-size: .8rem; text-transform: uppercase; color: #065f46; margin-bottom: .3rem; }
+    .overlap-block p { font-size: .9rem; margin-bottom: 0; color: #1a1a1a; }
+    .highlight { background: #fffbeb; border: 1px solid #fbbf24; border-radius: 6px; padding: .75rem 1rem; margin: .75rem 0; font-size: .9rem; }
+    .checklist li::marker { content: "☐  "; }
+    .checklist li.done::marker { content: "✓  "; color: #059669; }
+    table { width: 100%; border-collapse: collapse; font-size: .875rem; margin: .75rem 0; }
+    th { background: #f3f4f6; text-align: left; padding: .5rem .75rem; font-weight: 600; border: 1px solid #e5e7eb; }
+    td { padding: .5rem .75rem; border: 1px solid #e5e7eb; vertical-align: top; }
+    .section-num { font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; color: #888; margin-bottom: .2rem; }
+    footer { text-align: center; font-size: .8rem; color: #aaa; margin-top: 3rem; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Novi Labs — CTO Interview Playbook</h1>
+  <p class="subtitle">CEO meeting with Scott Sherwood · Week of May 25, 2026 · Tom Lacy</p>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#s1">Company Overview</a></li>
+      <li><a href="#s2">Competitive Landscape</a></li>
+      <li><a href="#s3">Leadership Profiles</a></li>
+      <li><a href="#s4">The Role</a></li>
+      <li><a href="#s5">Differentiator Stack</a></li>
+      <li><a href="#s6">Opening Narrative (4 Beats)</a></li>
+      <li><a href="#s7">Likely Q&amp;A — Scripted Answers</a></li>
+      <li><a href="#s8">Reading Scott Sherwood</a></li>
+      <li><a href="#s9">Questions to Ask Scott</a></li>
+      <li><a href="#s10">Market Timing</a></li>
+      <li><a href="#s11">Using Repos as Evidence</a></li>
+      <li><a href="#s12">One-Sentence Close</a></li>
+      <li><a href="#s13">Pre-Interview Homework</a></li>
+      <li><a href="#s14">Technology Ramp-Up (Domain Vocabulary)</a></li>
+      <li><a href="#s15">Upstream AI — Talking Points &amp; Q&amp;A</a></li>
+      <li><a href="#s16">30-60-90 Day Plan</a></li>
+      <li><a href="#s17">How I Lead — What Novi Gets</a></li>
+    </ol>
+  </div>
+
+  <!-- ─── SECTION 1 ─── -->
+  <div class="card" id="s1">
+    <div class="section-num">Section 1</div>
+    <h2>Company Overview</h2>
+    <p>AI-powered energy analytics SaaS for upstream oil &amp; gas operators. ~35 employees. Growth equity backed.</p>
+    <h3>Product Suite</h3>
+    <table>
+      <tr><th>Product</th><th>What it does</th></tr>
+      <tr><td><strong>Novi Insights</strong></td><td>Analytics dashboard — benchmarking, market intelligence, operator comparison</td></tr>
+      <tr><td><strong>Forecast Engine</strong></td><td>ML-driven per-well production forecasts with uncertainty quantification; replaces biased type curves</td></tr>
+      <tr><td><strong>Data Engine</strong></td><td>Curated upstream dataset; lease-to-well allocation, formation mapping, completions data</td></tr>
+      <tr><td><strong>Model Engine</strong></td><td>Reservoir/well modeling tools built on Novi's data layer</td></tr>
+      <tr><td><strong>NDN (Novi Data Network)</strong></td><td>The moat — proprietary cross-operator well production data contributed by E&amp;P operators; non-public daily production, proppant volumes, stage/cluster counts. ~30% of Midland Basin production. No single operator can replicate it.</td></tr>
+    </table>
+    <h3>Investors &amp; Customers</h3>
+    <ul>
+      <li><strong>Investors:</strong> Montrose Lane, Bill Wood Ventures, Invictus Growth Partners</li>
+      <li><strong>E&amp;P Operators:</strong> Devon, Civitas, Continental, Coterra, Crescent Energy, Endeavor (private Permian)</li>
+      <li><strong>Majors:</strong> Shell (confirmed — named 2016 iSHALE® collaboration press release); ExxonMobil + Chevron listed in trust signals (likely press citations, worth confirming)</li>
+      <li><strong>Minerals &amp; Royalties:</strong> Sitio, Elk Range</li>
+      <li><strong>Financial/Institutional:</strong> Fidelity, McDaniel, Mercuria, Wood Mackenzie (strategic data partner)</li>
+      <li><strong>Sweet spot is mid-market E&amp;P</strong> — but Shell is a documented enterprise customer. Don't say "we don't serve majors."</li>
+    </ul>
+    <p><span class="badge badge-info">INFO</span> SOC 2 Type 2 certified. $35M growth round June 2025 (Invictus Growth Partners). Strategic data partnership with Wood Mackenzie.</p>
+    <h3>Engineering Team — What's Known</h3>
+    <table>
+      <tr><th>Location</th><th>Status</th><th>Notes</th></tr>
+      <tr><td>Austin, TX</td><td>HQ / primary hub</td><td>Most engineering likely here</td></tr>
+      <tr><td>Rotterdam, Netherlands</td><td>Office</td><td>Some technical staff</td></tr>
+      <tr><td>Calgary, Canada</td><td>Active hiring</td><td>Senior Data Engineer role open</td></tr>
+      <tr><td>US Remote</td><td>Accepted</td><td>Engineering roles eligible</td></tr>
+    </table>
+    <p><strong>Team size:</strong> ~35 total employees (post-funding). Engineering likely 12–18 people — <em>not publicly confirmed, ask Scott directly.</em> Kevin Stambaugh (VP Eng) has ~30 years experience; job postings describe a "talented, experienced" senior-weighted team. Stack: AWS (Athena, S3), Apache Iceberg, Python, dbt, Polars — modern lakehouse architecture.</p>
+  </div>
+
+  <!-- ─── SECTION 2 ─── -->
+  <div class="card" id="s2">
+    <div class="section-num">Section 2</div>
+    <h2>Competitive Landscape</h2>
+    <h3>Primary Incumbent: Enverus (formerly DrillingInfo)</h3>
+    <ul>
+      <li>Broad, complex, expensive — the "Oracle of upstream analytics"</li>
+      <li>Serves "small businesses to large enterprises" (their words) — mid-market finds it bloated and over-engineered</li>
+      <li>Public well data only — no cross-operator proprietary layer</li>
+    </ul>
+    <div class="highlight">
+      <strong>The NDN moat is structural, not technical.</strong> No single E&amp;P operator can replicate a cross-operator production data network regardless of their IT budget — participation requires competitor cooperation, which is structurally incompatible with Enverus's incumbent position. This is the key asymmetry in Novi's favor.
+    </div>
+    <h3>Other Players</h3>
+    <ul>
+      <li><strong>Quorum/IHS Markit/Aucerna</strong> — operations &amp; accounting software (different layer, see Section 15 for overlap)</li>
+      <li><strong>Spotfire, Power BI</strong> — generic visualization, not domain-specific</li>
+      <li><strong>In-house Excel/Python</strong> — the status quo Novi displaces at mid-market operators</li>
+    </ul>
+  </div>
+
+  <!-- ─── SECTION 3 ─── -->
+  <div class="card" id="s3">
+    <div class="section-num">Section 3</div>
+    <h2>Leadership Profiles</h2>
+    <table>
+      <tr><th>Name / Title</th><th>Background</th><th>How to play it</th></tr>
+      <tr>
+        <td><strong>Scott Sherwood</strong><br>CEO</td>
+        <td>20+ years sales &amp; growth leadership. Not deeply technical. Lived through NetQoS→CA acquisition (~$200M exit). Cares about revenue growth, exit trajectory, not being surprised in front of customers.</td>
+        <td>Peer, not supplicant. Translate every technical point into business impact. Frame AI reliability as customer trust and competitive moat.</td>
+      </tr>
+      <tr>
+        <td><strong>Jon Ludwig</strong><br>President &amp; Co-Founder</td>
+        <td>Hess background. Deep domain expertise. The product/technical anchor alongside Scott.</td>
+        <td>Show genuine respect for O&amp;G domain depth. He'll test whether you understand what operators actually care about.</td>
+      </tr>
+      <tr>
+        <td><strong>Kevin Stambaugh</strong><br>VP Engineering (departing)</td>
+        <td>Retiring. This role is his replacement. Institutional knowledge holder.</td>
+        <td>Ask what's most at risk when he leaves. Show you understand the transition is the first 30 days of the job. <span class="badge badge-important">KEY</span> You've done this exact transition before — see Section 4.</td>
+      </tr>
+      <tr>
+        <td><strong>Scott Jones</strong><br>CFO</td>
+        <td>16 years Sage Group, M&amp;A background. Working toward a liquidity event.</td>
+        <td>Understand he's thinking about exit multiples. Engineering decisions that improve scalability improve valuation.</td>
+      </tr>
+      <tr>
+        <td><strong>Jorge Garzon</strong><br>VP Customer Success</td>
+        <td>ExxonMobil background. PhD geomechanics. Led ML for well completions.</td>
+        <td>Show genuine curiosity about his completions ML work. Do NOT pretend to match his domain depth. Ask questions. He'll respect intellectual honesty over false expertise.</td>
+      </tr>
+      <tr>
+        <td><strong>Orion Suydam</strong><br>VP Product</td>
+        <td>30+ years B2B software product leadership.</td>
+        <td>Potential scope overlap with CTO role. Understand where the product/engineering boundary sits before day one. Ask Scott about this directly (Section 9).</td>
+      </tr>
+      <tr>
+        <td><strong>Mohamed El Hannaoui</strong><br>VP Marketing</td>
+        <td>Led ShaleProfile marketing through acquisition.</td>
+        <td>Background context. ShaleProfile was an analytics acquisition — he's seen an integration from the inside.</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ─── SECTION 4 ─── -->
+  <div class="card" id="s4">
+    <div class="section-num">Section 4</div>
+    <h2>The Role</h2>
+    <h3>What the job actually is</h3>
+    <ul>
+      <li>Replacing Kevin Stambaugh (not hired over him)</li>
+      <li>Owns technical roadmap + hands-on architectural decisions</li>
+      <li>Est. 10–15 engineers today; build toward 35–150</li>
+      <li>Exit trajectory is active — architectural decisions now determine the valuation ceiling</li>
+    </ul>
+    <h3>What Scott needs from this hire</h3>
+    <ul>
+      <li>Scale engineering org 35→150 without blowing it up</li>
+      <li>Make architectural decisions before they become irreversible</li>
+      <li>Won't embarrass the company in front of sophisticated energy customers</li>
+      <li>AI credibility — not hand-wavy, real production experience</li>
+      <li><strong>Peer CTO</strong> — not someone to manage, someone to argue with</li>
+    </ul>
+    <div class="highlight">
+      <span class="badge badge-important">IMPORTANT</span>
+      <strong>The Kevin transition parallel:</strong> At Quorum, Tom replaced the sitting CTO. He ran the knowledge transfer directly, then repositioned the former CTO as Principal Architect reporting to him — focused on advancing technology across M&amp;A and enterprise. The incumbent became a contributor, not a threat. Tom has managed this exact transition from the other side. Scott doesn't need to worry about whether the handoff will go well.
+    </div>
+    <h3>Full Org Scope — What Tom Has Led at Quorum</h3>
+    <p>This isn't a "head of development" hire. Tom has owned every function in the engineering org:</p>
+    <table>
+      <tr><th>Function</th><th>What that means at scale</th></tr>
+      <tr><td>Software Development</td><td>Product engineering across 9 acquired codebases unified into one platform</td></tr>
+      <tr><td>Platform / Architecture</td><td>Multi-tenant SaaS architecture decisions, API contracts, data model choices that affect 500+ customers</td></tr>
+      <tr><td>Hosting / DevOps / Cloud</td><td>Cloud migration, infrastructure reliability, incident response</td></tr>
+      <tr><td>Quality Assurance</td><td>Testing strategy, release quality gates, production readiness</td></tr>
+      <tr><td>Customer Support (Technical)</td><td>Escalation path, SLA accountability, enterprise support relationships</td></tr>
+      <tr><td>Documentation &amp; Knowledge</td><td>Internal engineering knowledge base, onboarding ramp, institutional knowledge capture (directly relevant to Kevin transition)</td></tr>
+      <tr><td>Overall Engineering Leadership</td><td>155→400+ headcount, hiring, talent development, culture</td></tr>
+    </table>
+  </div>
+
+  <!-- ─── SECTION 5 ─── -->
+  <div class="card" id="s5">
+    <div class="section-num">Section 5</div>
+    <h2>Differentiator Stack</h2>
+    <p>What separates this candidacy from a generic enterprise CTO. Each point should feel inevitable, not assembled.</p>
+    <table>
+      <tr><th>Differentiator</th><th>Why it matters to Novi</th></tr>
+      <tr>
+        <td><strong>Schlumberger 1991–1996</strong></td>
+        <td>O&amp;G origin. Understands what's at stake when a well decision goes wrong. Not an outsider learning the domain.</td>
+      </tr>
+      <tr>
+        <td><strong>Quorum EVP: 155→400+ team, 9 acquisitions</strong></td>
+        <td>Quorum served the same E&amp;P operator base. Tom built and ran an org 10× Novi's current size. Has strategic familiarity with how upstream operators think about software ROI and buy decisions.</td>
+      </tr>
+      <tr>
+        <td><strong>Replaced sitting CTO, ran the transition</strong></td>
+        <td>Kevin's departure is the first 30 days of the job. Tom has been on the other side of this exact transition — as the replacement who made it work. The former CTO became Principal Architect reporting to him. This is not a risk; it's a known pattern.</td>
+      </tr>
+      <tr>
+        <td><strong>Full engineering org ownership</strong></td>
+        <td>Support, QA, docs/knowledge, development, platform, hosting/devops, overall engineering. Novi doesn't need a VP of Eng in a box — it needs someone who can own the whole function.</td>
+      </tr>
+      <tr>
+        <td><strong>5 production AI SaaS apps, hands-on</strong></td>
+        <td>Deployed, broken, fixed. Rare at CTO level. Most CTOs manage engineers who build AI; Tom has built and governed production AI directly.</td>
+      </tr>
+      <tr>
+        <td><strong>110 AI post-mortems, governance frameworks</strong></td>
+        <td>When Forecast Engine says "drill here," an operator bets millions. AI reliability IS the product's credibility. Tom has the governance discipline to match Novi's stakes.</td>
+      </tr>
+      <tr>
+        <td><strong>Talent development</strong></td>
+        <td>Grew Sr. Engineers → VP; some now CTOs. The 35→150 trajectory requires this muscle.</td>
+      </tr>
+      <tr>
+        <td><strong>Austin-based</strong></td>
+        <td>No relocation risk. No "remote CTO" discount.</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ─── SECTION 6 ─── -->
+  <div class="card" id="s6">
+    <div class="section-num">Section 6</div>
+    <h2>Opening Narrative — 4 Beats</h2>
+    <p>Deliver in 90 seconds. Each beat lands before you move to the next. No bullet points in the room — this is a story.</p>
+
+    <h3>Beat 1 — Origin</h3>
+    <p>"I started at Schlumberger in the early nineties. Field work, O&amp;G from the ground up. I understand what operators are risking when a well decision goes wrong — it's not an abstract number on a dashboard."</p>
+
+    <h3>Beat 2 — Scale</h3>
+    <p>"At Quorum I came in as EVP Engineering, eventually replaced the sitting CTO, and grew the org from 155 to over 400 people across nine acquisitions. I ran the full engineering function — development, platform, devops, QA, support, documentation. When Kevin transitions out, that's a pattern I've managed from the other side."</p>
+
+    <h3>Beat 3 — AI</h3>
+    <p>"Over the last few years I've built five production SaaS applications using AI agents — shipped, broken in production, fixed. The thing most people underestimate is governance. I have 110 post-mortem analyses with dollar amounts and dates. There's a deploy checklist the model cannot skip. That discipline is what makes AI trustworthy at the stakes Novi's customers are operating at."</p>
+
+    <h3>Beat 4 — Why Novi</h3>
+    <p>"Novi is the intersection of O&amp;G software and reliable AI at an inflection point. The architectural decisions made in the next 18 months determine what's possible at 150 people. I've been at that moment before and I know what it costs to get it wrong."</p>
+  </div>
+
+  <!-- ─── SECTION 7 ─── -->
+  <div class="card" id="s7">
+    <div class="section-num">Section 7</div>
+    <h2>Likely Q&amp;A — Scripted Answers</h2>
+
+    <div class="qa-block">
+      <div class="q">"Why are you interested in going from 400 people back to 35?"</div>
+      <div class="a">Architectural choices at 35 determine what's possible at 150. I've been on the other side of those decisions — I know what happens when they get locked in wrong. The opportunity to make them intentionally, before they're irreversible, is rare. That's more interesting to me than optimizing an org that's already at scale.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="q">"What's your philosophy on AI in a product like ours?"</div>
+      <div class="a">Before it's a feature problem, it's a trust problem. When your forecast says 'drill here' and an operator commits $8 million based on that number, they need to understand the confidence interval, the key assumptions, and where the model is operating outside its training distribution. Surface the uncertainty, not just the output. That's the difference between a tool that gets used and one that gets blamed after the fact.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="q">"How do you govern AI in production?"</div>
+      <div class="a">110 post-mortems — each one has a dollar amount, a date, and a root cause. From those we built a deploy checklist that the model cannot skip. The governance has to match the velocity of the team. If it slows people down more than it catches failures, it gets ignored. If it's too loose, you find out in production. Getting that calibration right is the actual work.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="q">"What's your experience with ML and predictive modeling?"</div>
+      <div class="a">I'm not a data scientist and I won't pretend to be. What I build is the org around trustworthy models — the validation framework, confidence thresholds, human review gates, and post-deployment monitoring. I've learned enough to ask the right questions and to know when a model result should be trusted, challenged, or escalated. Jorge's depth on completions ML is an asset, not a gap I need to fill myself.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="q">"Walk me through your first 90 days."</div>
+      <div class="a">First 30: Kevin transition. I've been on the other side of this — I replaced the sitting CTO at Quorum, ran the knowledge transfer, and repositioned him as Principal Architect. I know what gets lost and how to capture it. Days 30–60: architecture audit focused on decisions that look reasonable at 35 but become structural problems at 150 — data model, API contracts, multi-tenant partitioning, observability gaps. Days 60–90: roadmap conversation with you and Orion, anchored in what I found.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="q">"What's your view on our competitive position against Enverus?"</div>
+      <div class="a">Enverus is the incumbent for a reason — breadth, distribution, brand. But the NDN moat isn't something they can buy or build. It requires operator cooperation at a scale that's structurally incompatible with their market position. The right CTO move isn't to add features — it's to make the data network so deep and the switching costs so high that the mid-market can't imagine operating without Novi.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="q">"How would you scale the data pipeline as NDN grows?"</div>
+      <div class="a">I'd ask where the bottlenecks are hiding before I prescribe anything. Ingestion latency, query performance under multi-tenant load, allocation algorithm accuracy as operator count scales. At Quorum we hit a multi-tenancy wall at around 200 enterprise customers — the data model choices we'd made at 50 customers became load-bearing walls. I'd want to find those walls before we're inside them.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="q">"How do you think about technical debt at this stage?"</div>
+      <div class="a">The debt that kills you isn't shortcuts — it's structural decisions that become unmovable: the data model, the API contracts, multi-tenant partitioning strategy. Those are the ones you can't refactor around later. I'd rather slow down twice in year one to get those right than spend years two through five paying the interest.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="q">"Have you led teams across the full engineering function — not just development?"</div>
+      <div class="a">Yes — at Quorum I owned development, platform, hosting/devops, QA, customer support, documentation/knowledge, and overall engineering. The full stack of the function, not just product engineering. I've operated at that scope and I'd expect to again.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="q">"Tell me about your leadership style."</div>
+      <div class="a">One of my direct reports described me as a "true Multiplier — amplifies the capabilities of those around him, sets high standards, and creates urgency without micromanaging." I think that's accurate. My job is to raise the ceiling for the team, not manage the floor.<br><br>The framework I rely on is Christopher Avery's Responsibility Process — it distinguishes coping responses like blame, justification, and shame from actually owning outcomes. I've built it into how I run engineering: when something breaks, we ask what happened and how we prevent it, not who did it. At Quorum, that culture translated to 56% → 75% employee engagement and 7% regrettable attrition. People stay when they feel trusted and when they know problems get fixed instead of buried.</div>
+    </div>
+  </div>
+
+  <!-- ─── SECTION 8 ─── -->
+  <div class="card" id="s8">
+    <div class="section-num">Section 8</div>
+    <h2>Understanding Scott Sherwood</h2>
+    <p>Background context — not a playbook for appealing to him, but useful for knowing who you're talking to and whether your instincts align.</p>
+    <h3>What Scott cares about (based on background research)</h3>
+    <ul>
+      <li>Revenue growth and exit trajectory — he's built and sold before, this is real</li>
+      <li>Not being surprised by technical problems in front of customers or investors</li>
+      <li>A peer CTO he can argue with, not someone who needs managing</li>
+      <li>AI credibility with sophisticated energy clients who will test it</li>
+      <li>The Kevin transition going smoothly — this is a real operational risk for him</li>
+    </ul>
+    <h3>Authentic pitfalls — things that would also be wrong to fake</h3>
+    <ul>
+      <li>Going too deep on architecture before understanding the business context</li>
+      <li>Overselling O&amp;G domain depth you don't have — if asked, be honest about where you're strong and where you'd lean on the team</li>
+      <li>Talking about what you'd build before you've listened — you won't know enough yet to prescribe</li>
+      <li>Generic "collaborative leader" language without specifics — your actual numbers say it better</li>
+    </ul>
+    <div class="highlight">
+      <strong>The alignment question:</strong> Do you care about the same things Scott cares about? If the answer is yes — reliability, accountability, building something that holds at scale — that comes through on its own. If it's not a genuine yes, better to know that now.
+    </div>
+  </div>
+
+  <!-- ─── SECTION 9 ─── -->
+  <div class="card" id="s9">
+    <div class="section-num">Section 9</div>
+    <h2>Questions to Ask Scott</h2>
+    <p>These are things you genuinely need answered before saying yes. Ask what you actually want to know — 3–4 max, let conversation breathe. If something comes up in the conversation that matters more, ask that instead.</p>
+    <ol>
+      <li>
+        <strong>Kevin transition risk:</strong><br>
+        "What institutional knowledge is most at risk when Kevin leaves, and how much runway do I have to capture it? I've navigated this from the other side — I replaced a sitting CTO and ran that transition — and I know the first 30 days are everything."
+      </li>
+      <li>
+        <strong>NDN growth:</strong><br>
+        "What's the current pace of NDN operator onboarding, and what are the biggest friction points in growing the network? The moat deepens with every participant — I'm curious what's slowing that flywheel."
+      </li>
+      <li>
+        <strong>AI trust with customers:</strong><br>
+        "When customers push back on forecast confidence — when an operator says 'your model says drill here but my geo disagrees' — what's the current story you tell them?"
+      </li>
+      <li>
+        <strong>Product/Engineering boundary:</strong><br>
+        "How do you see the relationship between Orion's product role and the CTO role working day to day? I want to understand that boundary before I'm in the job."
+      </li>
+      <li>
+        <strong>Investor view:</strong><br>
+        "Where does the investor group see the company in three years — revenue growth, product expansion, or a specific exit profile?"
+      </li>
+      <li>
+        <strong>Architectural regret:</strong><br>
+        "What's the architectural decision you wish had been made differently at this point in the company's history?"
+      </li>
+    </ol>
+  </div>
+
+  <!-- ─── SECTION 10 ─── -->
+  <div class="card" id="s10">
+    <div class="section-num">Section 10</div>
+    <h2>Market Timing</h2>
+    <p>WTI at $80–100/barrel = E&amp;P operators spending aggressively on analytics and capital allocation tools. This is a tailwind, not an assumption.</p>
+    <div class="highlight">
+      The NDN flywheel question is one you'd want Scott's perspective on: where does he see the biggest constraint on deepening that network, and how does the engineering roadmap connect to it? That's a conversation worth having — not a position to lead with.
+    </div>
+    <p>Exit timing: Growth equity investors at 3–5 year horizon are approaching their window. Scott Sherwood's background is not just background — it's context for every engineering decision made in the next 18 months. Worth understanding his actual timeline expectations before you're in the seat.</p>
+  </div>
+
+  <!-- ─── SECTION 11 ─── -->
+  <div class="card" id="s11">
+    <div class="section-num">Section 11</div>
+    <h2>Using Repos as Evidence</h2>
+    <p>GitHub: <code>github.com/tlacy</code> — these are real production systems, not portfolio projects.</p>
+    <table>
+      <tr><th>Repo</th><th>What it demonstrates</th></tr>
+      <tr>
+        <td><strong>diycarai</strong><br><small>homecardiy.com</small></td>
+        <td>Production AI with Claude, Aurora DSQL, governance framework — 110+ pitfall log with dollar amounts, mandatory deploy gates, post-mortem-driven process. This is the governance discipline Novi's stakes require.</td>
+      </tr>
+      <tr>
+        <td><strong>elawnaustin</strong></td>
+        <td>Multi-tenant B2B SaaS — every resource scoped by provider derived from auth, never from client input. The security pattern that matters when you're selling to Devon and Coterra who cannot see each other's NDN data.</td>
+      </tr>
+      <tr>
+        <td><strong>myitineraryai</strong></td>
+        <td>Async Lambda self-invoke to handle 48-second Claude calls against a 29-second API Gateway hard limit. Infrastructure-layer problem-solving, not just application-layer.</td>
+      </tr>
+    </table>
+    <p><span class="badge badge-tip">TIP</span> Don't lead with repos — they're backup evidence when Scott asks "how do I know you can actually build this?" Not opening material.</p>
+  </div>
+
+  <!-- ─── SECTION 12 ─── -->
+  <div class="card" id="s12">
+    <div class="section-num">Section 12</div>
+    <h2>One-Sentence Close</h2>
+    <div class="highlight" style="font-size:1rem; font-style:italic; text-align:center; padding: 1.25rem;">
+      "I've spent my career in O&amp;G software — first as an engineer in the field, then building the platforms operators depend on, and most recently proving that AI can ship reliably when someone owns the outcome. Novi is where all of that converges."
+    </div>
+    <p>Use this if the conversation ends without a natural close. Don't recite it — make it feel like a conclusion you arrived at together.</p>
+  </div>
+
+  <!-- ─── SECTION 13 ─── -->
+  <div class="card" id="s13">
+    <div class="section-num">Section 13</div>
+    <h2>Pre-Interview Homework Checklist</h2>
+    <ul class="checklist">
+      <li>Read Forecast Engine product page (novilabs.com/energy-analytics/forecast-engine)</li>
+      <li>Read NDN product page (novilabs.com/energy-analytics/novi-data-network)</li>
+      <li>Read at least 2 Novi blog posts / Intelligence Reports</li>
+      <li>Review Scott Sherwood's LinkedIn — look for NetQoS acquisition timeline and language he uses</li>
+      <li>Review Kevin Stambaugh's LinkedIn — understand what he built</li>
+      <li>Review Orion Suydam's LinkedIn — understand his product scope</li>
+      <li>Look up NetQoS→CA acquisition (~$200M) — understand what that exit looked like</li>
+      <li>Check current WTI price (affects operator spending posture)</li>
+      <li>Practice the 4-beat opening narrative out loud (not from notes)</li>
+      <li>Know the 6 questions to ask — have them internalized, not on paper</li>
+    </ul>
+  </div>
+
+  <!-- ─── SECTION 14 ─── -->
+  <div class="card" id="s14">
+    <div class="section-num">Section 14</div>
+    <h2>Technology Ramp-Up — Domain Vocabulary</h2>
+    <p>You don't need to be a reservoir engineer. You need to not stumble on terms that show up in every Novi conversation.</p>
+    <table>
+      <tr><th>Term</th><th>What it means</th></tr>
+      <tr><td><strong>DCA / Decline Curve Analysis (Arps)</strong></td><td>Mathematical model for predicting how a well's production declines over time. The industry-standard method Novi's ML replaces/improves.</td></tr>
+      <tr><td><strong>Type Curve</strong></td><td>A "typical" well performance curve for a given area/operator — often biased toward optimistic assumptions. Novi's per-well ML forecasts are more accurate.</td></tr>
+      <tr><td><strong>EUR (Estimated Ultimate Recovery)</strong></td><td>Total production a well is expected to produce over its lifetime. The fundamental number in reserve valuations and A&amp;D deals.</td></tr>
+      <tr><td><strong>Completion Parameters</strong></td><td>How a well was fracked — proppant volume, fluid volume, stage count, cluster count. NDN's non-public data advantage.</td></tr>
+      <tr><td><strong>API Number</strong></td><td>Unique identifier for every US well — the spine of NDN's data model. Like a Social Security number for wells.</td></tr>
+      <tr><td><strong>PDP (Proved Developed Producing)</strong></td><td>Existing producing reserves — used for reserve reports to banks and investors. Accurate PDP forecasts are a Forecast Engine use case.</td></tr>
+      <tr><td><strong>A&amp;D (Acquisitions &amp; Divestitures)</strong></td><td>Buying and selling acreage/assets. Novi's NDN gives BD teams a data edge in unfamiliar basins — key use case.</td></tr>
+      <tr><td><strong>AFE (Authorization for Expenditure)</strong></td><td>Capital approval process for drilling a well. Quorum's AFE module tracked this — downstream of Novi's forecasting decisions.</td></tr>
+      <tr><td><strong>Midland Basin / Delaware Basin / Eagle Ford</strong></td><td>Specific Permian sub-basins. Know the names; NDN covers 30% of Midland Basin production.</td></tr>
+      <tr><td><strong>Lease-to-well allocation</strong></td><td>Converting production reported at the lease level (for regulatory purposes) to the individual well level. NDN accuracy advantage here is a key selling point.</td></tr>
+    </table>
+    <div class="highlight">
+      <strong>The bridge when domain depth comes up:</strong> "The stakes are higher than what I've been building, but the governance problem is the same. When the model makes a call, who owns that call? How do you surface uncertainty to the customer so they're making an informed decision — not just trusting a number? That's the work I've been doing."
+    </div>
+  </div>
+
+  <!-- ─── SECTION 15 ─── -->
+  <div class="card" id="s15">
+    <div class="section-num">Section 15 <span class="badge badge-new">NEW</span></div>
+    <h2>Upstream AI — Talking Points &amp; Q&amp;A</h2>
+    <p>Novi's core product is upstream AI. Scott may go deep here — either to test credibility or because it's top of mind with investors. This section gives you the substance to hold the conversation at a CEO level.</p>
+
+    <h3>What Upstream AI Actually Does at Novi</h3>
+    <p>Novi's Forecast Engine replaces the industry's default approach — biased type curves and slow manual decline-curve analysis — with ML-driven per-well forecasts at scale. The critical differentiators:</p>
+    <ul>
+      <li><strong>Per-well, not per-type-curve:</strong> Instead of "wells in this area look like this," Forecast Engine gives individual well-level predictions trained on NDN's proprietary data</li>
+      <li><strong>Uncertainty quantification:</strong> Returns confidence intervals, not just point estimates — operators see the range, not just the headline number</li>
+      <li><strong>Scenario scale:</strong> Hundreds of development scenarios in the time it takes a reservoir team to run one manually</li>
+      <li><strong>A&amp;D valuations:</strong> BD teams entering unfamiliar basins use NDN to build forecast models without years of local data — 38% reduction in EUR forecast error vs. operator-only data</li>
+      <li><strong>Cross-operator intelligence:</strong> "What did my competitor do differently on the wells adjacent to mine?" — only answerable with NDN's non-public completion data</li>
+    </ul>
+
+    <h3>The 5 Upstream AI Questions Novi Answers (CEO-Level Talking Points)</h3>
+    <table>
+      <tr><th>Business Question</th><th>Novi's Answer</th></tr>
+      <tr>
+        <td>"Should I drill this well?"</td>
+        <td>EUR confidence interval + IRR at current WTI — with uncertainty range, not a single optimistic number</td>
+      </tr>
+      <tr>
+        <td>"What's the optimal development plan for this acreage?"</td>
+        <td>Forecast Engine runs hundreds of spacing/zone/timing scenarios; identifies the plan that maximizes NPV</td>
+      </tr>
+      <tr>
+        <td>"How does this acquisition compare to my existing portfolio?"</td>
+        <td>NDN cross-operator type curve benchmarking — even in basins where the operator has no history</td>
+      </tr>
+      <tr>
+        <td>"What did my competitor do differently on wells next to mine?"</td>
+        <td>NDN's non-public completion data (stage count, cluster spacing, proppant) — the only place this exists</td>
+      </tr>
+      <tr>
+        <td>"Am I forecasting my PDP accurately for my bank or investors?"</td>
+        <td>Auditable, unbiased decline curves at well level — replaces the optimism bias in manually-drawn type curves</td>
+      </tr>
+    </table>
+
+    <h3>The Quorum / Novi Customer Overlap</h3>
+    <p>Quorum's Upstream On Demand suite and Novi Labs serve the same E&amp;P operator base — Devon, Coterra, Continental, Civitas — but at different points in the decision chain. Understanding this overlap is a differentiator in conversation with Scott.</p>
+
+    <div class="overlap-block">
+      <div class="label">Quorum's Layer (Operations &amp; Accounting)</div>
+      <p>Land management, production operations, well lifecycle reporting, AFE approval, revenue accounting, JIB, SCADA. The system of record for <em>what happened</em> and <em>what it cost</em>. 500+ upstream operator customers. Decision-ready operational data.</p>
+    </div>
+
+    <div class="overlap-block">
+      <div class="label">Novi's Layer (Capital Allocation &amp; Analytics)</div>
+      <p>Forecasting, development planning, acquisition valuation, competitor benchmarking. The system that answers <em>what to do next</em> and <em>what it's worth</em>. These decisions come before the Quorum workflows (AFE gets approved after the forecast says drill) and alongside them (PDP forecasts for reserve reports that accounting owns).</p>
+    </div>
+
+    <div class="highlight">
+      <strong>The conversation bridge:</strong> "At Quorum, I sat across the table from Devon, Coterra, and Continental. I understand how their VP of Engineering evaluates a software purchase — what questions they ask about data integrity, what their IT security requirements look like, how they think about total cost of ownership. The operators on Novi's customer list aren't new territory for me."
+    </div>
+
+    <h3>Where the Two Stacks Integrate (Integration Opportunity)</h3>
+    <ul>
+      <li><strong>AFE ↔ Forecast Engine:</strong> Capital approval (Quorum AFE) happens after the well economics case (Novi forecast). A natural integration point — Novi's EUR + IRR feeding directly into the AFE workflow</li>
+      <li><strong>Production Operations ↔ NDN:</strong> Quorum's On Demand Production Operations tracks actuals; NDN uses operator-shared actuals as training data. Operators contributing to NDN are already running production tracking — the data exists</li>
+      <li><strong>On Demand Data Hub ↔ Novi Analytics:</strong> Quorum's Data Hub APIs are designed for third-party analytics integrations. Novi is exactly the kind of analytics layer it was built to support</li>
+    </ul>
+    <p><span class="badge badge-tip">TIP</span> Don't pitch this as "Quorum and Novi should integrate." Raise it as evidence that you understand the operator's full workflow and where Novi sits in it. The integration opportunity is a bonus signal, not the main point.</p>
+
+    <h3>Scripted Q&amp;A — Upstream AI Scenarios</h3>
+
+    <div class="qa-block">
+      <div class="q">"How familiar are you with the technical challenges of production forecasting at scale?"</div>
+      <div class="a">Deeply enough to be useful, not so deeply I'd confuse myself with a reservoir engineer. The core challenge I understand well is data quality upstream of the model — lease-to-well allocation errors, missing completion data, inconsistent reporting across operators. NDN's value proposition is largely about solving those data quality problems before the model ever runs. The governance problem — how you surface uncertainty, how you prevent operator over-trust in a point estimate — that's territory I've covered in production AI.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="q">"Operators like Devon have sophisticated internal data science teams. Why would they pay for Novi?"</div>
+      <div class="a">Two reasons. First, NDN — Devon's internal data is Devon's data. Novi gives them the cross-operator signal they cannot produce themselves, regardless of team size or IT budget. Second, build vs. buy economics. Devon's data science team optimizes for Devon's problems. Novi's team has iterated on forecasting across hundreds of operators. The depth of that iteration is the product. Devon's team would spend years catching up to what Novi already knows about their adjacent operators.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="q">"What's your view on where AI is going in upstream oil and gas?"</div>
+      <div class="a">The near-term value is in decision support with uncertainty surfaced — not automation. Operators are not ready to have an algorithm decide where to drill without a human reviewing the confidence interval and the assumptions. The companies that win are the ones who make AI an amplifier for the reservoir engineer's judgment, not a replacement for it. Novi's approach — per-well forecasts with uncertainty quantification — is aligned with how sophisticated operators want to use AI right now. The trust infrastructure has to be built before the automation story becomes credible.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="q">"What architectural challenges do you see as Novi scales AI across more basins and operators?"</div>
+      <div class="a">Three areas I'd want to explore: model drift as basin geology and completion practices evolve, multi-tenant data isolation as NDN grows (an operator contributing data needs absolute confidence it doesn't leak to competitors), and the latency/cost tradeoff as you scale from hundreds to thousands of scenarios per operator. The NDN data sharing model is the most interesting architectural challenge — the trust mechanism that makes operators willing to contribute data is the same mechanism that must guarantee they can't see each other's contributions. Getting that architecture right is load-bearing for the entire business model.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="q">"You spent a long time at Quorum — what specifically about Novi's AI approach made you pay attention?"</div>
+      <div class="a">The proprietary data layer. At Quorum, we had deep operational data — AFEs, production actuals, land records — but it was operator-siloed. The cross-operator signal was always the gap. NDN is solving the exact problem I could see from the other side of the table. And the approach to uncertainty quantification in Forecast Engine — returning confidence intervals, not just point estimates — shows the team understands that the trust problem is the product problem. That's not a common insight at this company stage.</div>
+    </div>
+  </div>
+
+  <!-- ─── SECTION 16 ─── -->
+  <div class="card" id="s16">
+    <div class="section-num">Section 16 <span class="badge badge-new">NEW</span></div>
+    <h2>30-60-90 Day Plan</h2>
+    <div class="highlight">
+      <strong>How to use this in the interview:</strong> If Scott asks "What would your first 90 days look like?" you can walk through this verbally — or offer to leave it with him. Either signals that you showed up having already done the thinking, not just the research.
+    </div>
+
+    <h3>Days 1–30 — Know the people. Earn the trust. Then everything else.</h3>
+    <p>A new CTO who spends month one diagnosing systems before building relationships is optimizing for the wrong thing. People tell you what's actually broken — and follow you into hard decisions — only after they trust you. That trust doesn't come from competence alone. It comes from showing up, listening without an agenda, and treating every person on the team as someone worth knowing, not just a source of information.</p>
+    <ul>
+      <li><strong>1:1s with every engineer in the first 10 days — no agenda, no evaluation.</strong> Ask about their work, what they're proud of, what frustrates them. Let them talk. Your job is to understand who they are and what they care about, not to audit the system. The technical picture will emerge. The relationship has to be built on purpose.</li>
+      <li><strong>Learn names. Remember them.</strong> At ~35 people, there's no excuse. Know what everyone's working on, what they worked on before Novi, what motivates them. This isn't soft — it's how you get honest information when something goes wrong.</li>
+      <li><strong>Build the peer relationship with Kevin Stambaugh first.</strong> He built this team and knows where every body is buried. If he sees you as someone who respects what he built, the transition goes smoothly. If he feels replaced or dismissed, it doesn't — no matter what the org chart says.</li>
+      <li><strong>Establish presence with Jorge (Customer Success) and the product side early.</strong> Engineering's reputation is built in the hallways between teams. Be the CTO who's curious about customers, not just code.</li>
+      <li><strong>No major process changes in month one.</strong> Earn the right first. A change made before trust lands as an edict. The same change made after trust lands as leadership.</li>
+      <li><strong>Diagnostics follow from relationships, not the other way around.</strong> The architecture review, the SDLC map, the SOC 2 scope, the incident history — all of that matters and all of it waits until you've shown the team that you're someone worth working for.</li>
+    </ul>
+
+    <h3>Days 31–60 — Diagnose. Prioritize. Establish the baseline.</h3>
+    <p>By day 30 I have enough to form a point of view. Month two is about translating observations into a shared picture of where we are and what matters most.</p>
+    <ul>
+      <li><strong>Present a findings memo to Scott and Jon</strong> — technical debt map, team capability gaps, top 3 engineering risks, top 3 leverage points. Not a complaint list — a prioritized view of the system.</li>
+      <li><strong>Establish engineering fundamentals</strong> — if they don't already exist formally: deployment checklist, test coverage expectations, incident response runbook, on-call rotation. These are the difference between a team that scales and one that burns out.</li>
+      <li><strong>Assess the ML/AI pipeline specifically</strong> — how are models trained, validated, versioned, and monitored in production? Model drift and data quality failures are silent killers in an AI product company. What's the alerting story when NDN data quality degrades?</li>
+      <li><strong>Define engineering metrics</strong> — deploy frequency, mean time to recovery, test coverage trend, open critical bugs. Establish a baseline before trying to move it.</li>
+      <li><strong>Build the hiring plan</strong> — at ~35 employees, every engineer hire is a 3–5% change to the team. I want to know where the capacity gaps are and what kind of hire fills each one before we're in a reactive mode.</li>
+      <li><strong>Align with Orion (VP Product) on roadmap translation</strong> — product commitments need to be grounded in engineering capacity. This relationship is the #1 source of credibility with Scott.</li>
+    </ul>
+
+    <h3>Days 61–90 — Commit. Ship something. Set the standard.</h3>
+    <p>By day 90, Scott should be able to see a difference — not just feel good about the hire.</p>
+    <ul>
+      <li><strong>Deliver the 6-month engineering roadmap</strong> — with capacity model, risk flags, and what we're explicitly not doing. A roadmap without trade-offs is a wish list.</li>
+      <li><strong>Ship at least one meaningful initiative under new leadership</strong> — team morale and Scott's confidence both need a visible win. It doesn't have to be large; it has to be clean.</li>
+      <li><strong>Stand up AI-assisted development practices</strong> — this is where my experience building with AI agents becomes directly applicable. Establish what AI-assisted development looks like at Novi: what it accelerates, what governance wraps it, and what it never touches unsupervised (NDN data handling, security controls, customer-facing ML outputs).</li>
+      <li><strong>Establish the Kevin transition closure</strong> — formal knowledge transfer complete, Kevin's institutional context documented and distributed, no single-person dependencies remaining.</li>
+      <li><strong>Weekly engineering pulse with Scott</strong> — by day 90 this should feel routine, not like a check-in. He should know what engineering is doing without having to ask.</li>
+    </ul>
+
+    <div class="qa-block">
+      <div class="q">If Scott asks: "What does success look like for you at 90 days?"</div>
+      <div class="a">"You know what engineering is doing without having to ask. The team has a clear picture of what quality looks like and why. And I've shipped at least one thing that proves I can execute, not just plan. The plan is only worth as much as the first delivery."</div>
+    </div>
+    <div class="qa-block">
+      <div class="q">If Scott asks: "Why so much time listening in month one?"</div>
+      <div class="a">"Because the most expensive mistakes I've seen — and made — come from a new leader arriving with a playbook before they understand the system. At Quorum I replaced the sitting CTO. The first thing I did was sit with every person he'd been the only context for. That transition transferred knowledge instead of losing it. Same principle applies here."</div>
+    </div>
+  </div>
+
+  <!-- ─── SECTION 17 ─── -->
+  <div class="card" id="s17">
+    <div class="section-num">Section 17</div>
+    <h2>How I Lead — What Novi Gets</h2>
+
+    <p>Scott will ask leadership questions. This section is your answer — grounded in what people who worked for you actually said.</p>
+
+    <h3>What Your Direct Reports Said</h3>
+
+    <div style="display:grid;gap:1rem;margin-bottom:1.5rem;">
+      <div style="background:#f0f9f0;border-left:4px solid #2a7a2a;padding:1rem 1.2rem;border-radius:6px;">
+        <p style="margin:0 0 0.4rem;font-weight:600;color:#1a5a1a;">David Williamson — CTO at FURTHER (direct report, 6 years, grew from Senior Manager → SVP)</p>
+        <p style="margin:0;font-style:italic;">"A true Multiplier. He amplifies the capabilities of those around him, sets high standards, and creates urgency without micromanaging. His leadership fosters collaboration, engagement, and a culture where strong results follow naturally."</p>
+      </div>
+
+      <div style="background:#f0f9f0;border-left:4px solid #2a7a2a;padding:1rem 1.2rem;border-radius:6px;">
+        <p style="margin:0 0 0.4rem;font-weight:600;color:#1a5a1a;">Corey House — SVP at Quorum (direct report)</p>
+        <p style="margin:0;font-style:italic;">"One of Tom's greatest strengths is his ability to spot potential in others before they see it themselves... hands-off in the best way — providing autonomy while removing obstacles."</p>
+      </div>
+
+      <div style="background:#f0f9f0;border-left:4px solid #2a7a2a;padding:1rem 1.2rem;border-radius:6px;">
+        <p style="margin:0 0 0.4rem;font-weight:600;color:#1a5a1a;">Jonathan Birkholz — Head of AI at Quorum (direct report)</p>
+        <p style="margin:0;font-style:italic;">"He doesn't micromanage. He watches, listens, then nudges people in better directions. He spots potential in team members before they see it themselves."</p>
+      </div>
+    </div>
+
+    <h3>The Operating Framework: Avery's Responsibility Process</h3>
+    <p>The model I use to hold myself and teams accountable is Christopher Avery's Responsibility Process. The mind's default coping sequence when something goes wrong is: <strong>Lay Blame → Justify → Shame → Obligation → Quit</strong> — before eventually reaching <strong>Responsibility</strong>. Most teams get stuck somewhere in the middle and call it a postmortem.</p>
+    <p>I've embedded this explicitly into the AI projects I've built — 110 documented post-mortems with dollar amounts and dates, a deploy checklist agents cannot skip, and a standing rule: when something breaks, state what happened, fix it, document it. No long explanations of why. No blame. No shame spirals. That discipline built directly from this framework.</p>
+    <p>From the LinkedIn post I wrote about building diycarai: <em>"Someone has to own the outcome. The agent can't. That gap doesn't shrink as AI gets more capable. It widens."</em></p>
+
+    <h3>What This Means Specifically for Novi</h3>
+    <ul>
+      <li><strong>Kevin transition:</strong> I've navigated this from both sides. At Quorum I came in and eventually took over from a sitting CTO. I know how to make a transition feel like continuity for the team, not a disruption.</li>
+      <li><strong>Scaling 35 → 150:</strong> The Multiplier model scales better than command-and-control. Williamson grew from Senior Manager to CTO under me. House became SVP. Birkholz became Head of AI. The team you build builds the company.</li>
+      <li><strong>AI governance:</strong> 110 post-mortems are not an accident — they're an operating system. At Novi, that same discipline applied to your AI pipelines is what earns trust with Schlumberger-scale customers who've seen vendors oversell and underdeliver.</li>
+      <li><strong>Senior team dynamics:</strong> I don't need to be the smartest person in the room. "Hands-off in the best way" isn't flattery — it's what let Corey and Jonathan do the best work of their careers. I hire people I can learn from and get out of their way.</li>
+    </ul>
+
+    <div class="qa-block">
+      <div class="q">"Tell me about your leadership style."</div>
+      <div class="a">One of my direct reports described me as a "true Multiplier — amplifies the capabilities of those around him, sets high standards, and creates urgency without micromanaging." I think that's accurate. My job is to raise the ceiling for the team, not manage the floor.<br><br>The framework I rely on is Christopher Avery's Responsibility Process — it distinguishes coping responses like blame and justification from actually owning outcomes. I've built it into how I run engineering: when something breaks, we ask what happened and how we prevent it, not who did it. At Quorum that translated to 56% → 75% employee engagement and 7% regrettable attrition. People stay and do their best work when they feel trusted and when problems get fixed instead of buried.<br><br>I've built through exactly this kind of inflection before — scaling, a leadership transition, technical credibility with enterprise customers who don't forgive overpromising. I'm genuinely excited about what Novi is building and I'd love to be part of it.</div>
+    </div>
+  </div>
+
+  <footer>
+    Last updated: May 22, 2026 &nbsp;·&nbsp; Tom Lacy &nbsp;·&nbsp; Confidential
+  </footer>
+
+</div>
+</body>
+</html>
