@@ -1,0 +1,471 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    <!-- End Google Analytics -->
+    
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Measuring Engineering at Scale - Tom Lacy</title>
+    <meta name="description" content="A practical framework for measuring engineering effectiveness across 30 teams with dual delivery models">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+    <style>
+        .article-container {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 0 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.8;
+        }
+        
+        .article-header {
+            margin-bottom: 48px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 24px;
+        }
+        
+        .article-title {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #1a1a1a;
+            line-height: 1.2;
+        }
+        
+        .article-meta {
+            color: #666;
+            font-size: 16px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .article-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .article-content h2 {
+            font-size: 32px;
+            margin: 48px 0 24px;
+            color: #2a2a2a;
+            font-weight: 600;
+        }
+        
+        .article-content h3 {
+            font-size: 24px;
+            margin: 36px 0 18px;
+            color: #3a3a3a;
+            font-weight: 600;
+        }
+        
+        .article-content p {
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #4a4a4a;
+        }
+        
+        .article-content ul, .article-content ol {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+        
+        .article-content li {
+            margin-bottom: 12px;
+            font-size: 18px;
+            color: #4a4a4a;
+        }
+        
+        .highlight-box {
+            background: #f8f9fa;
+            border-left: 4px solid #4a90e2;
+            padding: 24px;
+            margin: 32px 0;
+            border-radius: 4px;
+        }
+        
+        .highlight-box h4 {
+            margin-top: 0;
+            color: #2a2a2a;
+            font-size: 20px;
+        }
+        
+        .metrics-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 16px;
+        }
+        
+        .metrics-table th {
+            background: #f0f0f0;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .metrics-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .model-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 32px 0;
+        }
+        
+        .model-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 24px;
+        }
+        
+        .model-card h4 {
+            margin-top: 0;
+            color: #2a2a2a;
+            font-size: 22px;
+        }
+        
+        .back-link {
+            margin: 48px 0;
+            padding-top: 24px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .back-link a {
+            color: #4a90e2;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 32px;
+            }
+            
+            .model-comparison {
+                grid-template-columns: 1fr;
+            }
+            
+            .article-content h2 {
+                font-size: 28px;
+            }
+            
+            .article-content h3 {
+                font-size: 22px;
+            }
+        }
+    </style>
+
+    <div class="article-container">
+        <article>
+            <header class="article-header">
+                <h1 class="article-title">Measuring Engineering at Scale: A Practical Framework for 30 Teams</h1>
+                <div class="article-meta">
+                    <span>📅 January 2026</span>
+                    <span>⏱️ 12 min read</span>
+                    <span>🏷️ Engineering Leadership, Metrics, DevOps</span>
+                </div>
+            </header>
+
+            <div class="article-content">
+                <p class="lead" style="font-size: 20px; font-weight: 500; color: #2a2a2a;">
+                    After leading engineering organizations from 5 to 30 teams, I've learned that what you measure determines what you improve. But measuring the wrong things—or too many things—can be worse than measuring nothing at all.
+                </p>
+
+                <h2>The Challenge: Two Delivery Models, One Organization</h2>
+                
+                <p>
+                    Our engineering organization serves two distinct customer segments with fundamentally different needs:
+                </p>
+
+                <div class="model-comparison">
+                    <div class="model-card">
+                        <h4>🏢 Enterprise Model</h4>
+                        <ul style="padding-left: 20px; margin-bottom: 0;">
+                            <li>20 scrum teams</li>
+                            <li>Bi-annual release cycles</li>
+                            <li>Major contract commitments</li>
+                            <li>Extensive coordination requirements</li>
+                            <li>Stability over speed</li>
+                        </ul>
+                    </div>
+                    <div class="model-card">
+                        <h4>🚀 SMB Model</h4>
+                        <ul style="padding-left: 20px; margin-bottom: 0;">
+                            <li>10 scrum teams</li>
+                            <li>Continuous deployment</li>
+                            <li>Rapid iteration and feedback</li>
+                            <li>Independent team autonomy</li>
+                            <li>Speed and innovation focus</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <p>
+                    Traditional metrics frameworks like DORA or SPACE are excellent starting points, but they don't address this duality. We needed a framework that could measure both models fairly while providing actionable insights.
+                </p>
+
+                <h2>The Framework: Five Dimensions of Engineering Excellence</h2>
+
+                <p>
+                    After iterating for two years, we landed on five core dimensions. Each dimension is measured consistently but interpreted contextually based on the delivery model.
+                </p>
+
+                <h3>1. Reliability: Are We Keeping the Lights On?</h3>
+
+                <p>
+                    Reliability is non-negotiable for both models, but the bar is different:
+                </p>
+
+                <table class="metrics-table">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Enterprise Target</th>
+                            <th>SMB Target</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Uptime</strong></td>
+                            <td>99.9% (contractual SLAs)</td>
+                            <td>99.5% (balance speed vs. stability)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SLA Attainment</strong></td>
+                            <td>100% (zero tolerance)</td>
+                            <td>95% (rapid recovery preferred)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Telemetry Coverage</strong></td>
+                            <td>Full observability before deploy</td>
+                            <td>Instrument iteratively</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight-box">
+                    <h4>💡 Key Insight: Context Matters</h4>
+                    <p style="margin-bottom: 0;">
+                        Early on, we tried to hold both models to 99.9% uptime. This created friction—SMB teams felt hamstrung by overly cautious processes. By acknowledging different risk profiles, we empowered teams while maintaining accountability.
+                    </p>
+                </div>
+
+                <h3>2. Velocity: Are We Delivering Predictably?</h3>
+
+                <p>
+                    Velocity isn't about moving fast; it's about moving predictably. For enterprise teams, this means hitting release commitments. For SMB teams, it's maintaining consistent throughput.
+                </p>
+
+                <ul>
+                    <li><strong>Team Velocity Trends:</strong> Are teams maintaining consistent output, or are we seeing decline? We track story points and work items completed per sprint, looking for 10% variation or less.</li>
+                    <li><strong>Deployment Frequency:</strong> SMB teams deploy multiple times per day; enterprise teams deploy on schedule. Both are "good" if they're predictable.</li>
+                    <li><strong>Release Schedule Integrity:</strong> For enterprise, this is critical—did we deliver what we committed? Target: 90%+ features delivered per release.</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <h4>⚠️ Common Pitfall: Comparing Apples to Oranges</h4>
+                    <p style="margin-bottom: 0;">
+                        We used to rank teams by velocity. This created perverse incentives—teams inflated story points or cherry-picked work. Now we track trends within each team and celebrate improvement, not absolute numbers.
+                    </p>
+                </div>
+
+                <h3>3. Quality: Are We Building It Right?</h3>
+
+                <p>
+                    Quality metrics are where things get interesting. High deployment frequency (SMB) naturally leads to higher absolute defect counts, but that doesn't mean lower quality.
+                </p>
+
+                <ul>
+                    <li><strong>Change Failure Rate:</strong> What percentage of deployments cause production issues? Target &lt;15% for both models. SMB teams often do better here due to smaller, incremental changes.</li>
+                    <li><strong>Customer Defect Trends:</strong> Track incoming vs. fixed defects by severity. The goal isn't zero defects—it's a healthy flow where high-severity issues are fixed quickly.</li>
+                    <li><strong>Maintenance SLO Compliance:</strong> Are we hitting our internal commitments for defect resolution? High severity: 48 hours. Medium: 2 weeks. Low: backlog prioritization.</li>
+                </ul>
+
+                <p>
+                    The breakthrough came when we separated <em>defect discovery rate</em> from <em>defect resolution speed</em>. High deployment frequency means you find issues faster—that's a good thing if you fix them quickly.
+                </p>
+
+                <h3>4. Security: Are We Protecting Our Customers?</h3>
+
+                <p>
+                    Security is a shared responsibility, measured consistently across both models:
+                </p>
+
+                <ul>
+                    <li><strong>Secure Score:</strong> A composite metric (0-100) covering code scanning, dependency vulnerabilities, access controls, and security training compliance. Target: 85+ for all teams.</li>
+                    <li><strong>SOC 2 State:</strong> For enterprise especially, SOC 2 compliance is table stakes. We track open findings by severity and maintain zero critical/high severity findings.</li>
+                </ul>
+
+                <p>
+                    Security metrics are "gating"—if your score drops below threshold, feature work pauses until it's addressed. This has teeth because leadership enforces it.
+                </p>
+
+                <h3>5. Focus: Are We Working on the Right Things?</h3>
+
+                <p>
+                    This dimension emerged from a painful realization: teams were hitting their metrics but still felt underwater. Why? Because 80% of their time was spent on maintenance and tech debt.
+                </p>
+
+                <ul>
+                    <li><strong>Work Breakdown Analysis:</strong> What percentage of engineering time goes to maintenance vs. tech debt vs. innovation? We target 40% maintenance, 30% tech debt, 30% innovation—but acknowledge that enterprise teams often skew more toward maintenance due to the product maturity.</li>
+                    <li><strong>Staffing Mix:</strong> Are we staffing for the work we have? If 70% of work is maintenance, but 70% of engineers are senior developers who want to innovate, we have a mismatch.</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <h4>🎯 Real Example: Rebalancing Focus</h4>
+                    <p>
+                        One quarter, we discovered three teams were spending 65%+ time on maintenance. After analysis, we found a common root cause: an aging shared service. We carved out a dedicated team to modernize it over six months. Within two quarters, those three teams had rebalanced to 40/30/30, and their velocity increased by 25%.
+                    </p>
+                </div>
+
+                <h2>Implementation: From Framework to Action</h2>
+
+                <p>
+                    A framework is worthless if it lives in a slide deck. Here's how we operationalized it:
+                </p>
+
+                <h3>Weekly: Team-Level Review</h3>
+                <p>
+                    Each team tracks their own metrics in their sprint retrospectives. They own their trends and identify improvement actions.
+                </p>
+
+                <h3>Monthly: Product-Level Rollup</h3>
+                <p>
+                    Product leadership reviews aggregated metrics across their teams. We look for outliers (both good and bad) and share learnings across teams.
+                </p>
+
+                <h3>Quarterly: Portfolio Review</h3>
+                <p>
+                    Executive team reviews organization-wide trends. This is where we make strategic decisions: Do we need to rebalance focus? Are we investing enough in tech debt? Should we adjust targets based on business priorities?
+                </p>
+
+                <h3>The Data Stack</h3>
+                <p>
+                    We automate what we can:
+                </p>
+                <ul>
+                    <li>Azure DevOps APIs for velocity and work item tracking</li>
+                    <li>Application Insights for uptime and telemetry</li>
+                    <li>PagerDuty for SLA tracking</li>
+                    <li>GitHub Advanced Security for secure score</li>
+                    <li>Manual quarterly surveys for work breakdown (surprisingly, this is the hardest to automate accurately)</li>
+                </ul>
+
+                <p>
+                    We publish dashboards in Power BI, but the real magic happens in the conversations these metrics enable.
+                </p>
+
+                <h2>What We Got Wrong (and How We Fixed It)</h2>
+
+                <h3>Mistake #1: Too Many Metrics</h3>
+                <p>
+                    Version 1 of our framework had 30+ metrics. Teams spent more time reporting than improving. We ruthlessly cut to the 15 metrics that actually drive decisions.
+                </p>
+
+                <h3>Mistake #2: Treating Metrics as Goals</h3>
+                <p>
+                    When we tied metrics directly to performance reviews, teams gamed them. Now metrics are diagnostic tools, not evaluation tools. They inform conversations about team health, not individual performance.
+                </p>
+
+                <h3>Mistake #3: Ignoring Context</h3>
+                <p>
+                    A team's velocity dropped 30% one quarter. The metrics flagged it, and leadership panicked. Turns out they'd onboarded three new engineers and deliberately slowed to invest in training. Context is everything.
+                </p>
+
+                <h3>Mistake #4: Not Listening to Teams</h3>
+                <p>
+                    The first version of "Focus" metrics came from the top down. Teams rejected it because it didn't match their reality. Version 2 was co-created with tech leads, and adoption was night and day.
+                </p>
+
+                <h2>Outcomes: What Changed?</h2>
+
+                <p>
+                    Two years in, here's what we've seen:
+                </p>
+
+                <ul>
+                    <li><strong>Reduced firefighting:</strong> Change failure rate dropped from 22% to 11% as teams focused on quality over speed.</li>
+                    <li><strong>Better planning:</strong> Enterprise release integrity improved from 78% to 93%—fewer surprises, happier customers.</li>
+                    <li><strong>Strategic tech debt investment:</strong> We now allocate ~$2M annually to targeted tech debt reduction based on Focus metrics.</li>
+                    <li><strong>Team autonomy with accountability:</strong> Teams have clear guardrails (security, quality) but freedom within them.</li>
+                    <li><strong>Shared language:</strong> Product, engineering, and executive teams speak the same language when discussing trade-offs.</li>
+                </ul>
+
+                <h2>The Meta-Lesson: Metrics Are a Conversation Starter</h2>
+
+                <p>
+                    The biggest mindset shift was this: <strong>metrics don't tell you what to do; they tell you what to discuss.</strong>
+                </p>
+
+                <p>
+                    When change failure rate spikes, that's not a sign that the team is failing—it's a signal to ask: "What changed? What did we learn? How do we adapt?" Metrics create transparency, which builds trust, which enables real improvement.
+                </p>
+
+                <div class="highlight-box">
+                    <h4>📚 Further Reading</h4>
+                    <ul style="margin-bottom: 0;">
+                        <li><strong>Accelerate</strong> by Forsgren, Humble, Kim – The research foundation for DORA metrics</li>
+                        <li><strong>The SPACE of Developer Productivity</strong> – A more holistic view beyond throughput</li>
+                        <li><strong>An Elegant Puzzle</strong> by Will Larson – Practical advice on engineering leadership and metrics</li>
+                        <li><a href="../metrics.html">Our Engineering Metrics Framework</a> – The detailed breakdown of our five dimensions</li>
+                    </ul>
+                </div>
+
+                <h2>Your Context Is Different—And That's the Point</h2>
+
+                <p>
+                    This framework works for us because it reflects our reality: dual delivery models, 30 teams, specific customer needs. Your reality is different.
+                </p>
+
+                <p>
+                    The principles are transferable:
+                </p>
+                <ol>
+                    <li>Start with what matters to your business</li>
+                    <li>Measure what you can actually influence</li>
+                    <li>Keep it simple—fewer metrics, deeper insights</li>
+                    <li>Build the framework with your teams, not for them</li>
+                    <li>Treat metrics as conversation starters, not scorecards</li>
+                </ol>
+
+                <p>
+                    If you're building something similar, I'd love to hear what you learn. Reach out on <a href="https://linkedin.com/in/tom-lacy" target="_blank">LinkedIn</a> or <a href="https://twitter.com/tomlacy" target="_blank">Twitter</a>.
+                </p>
+
+                <hr style="margin: 48px 0; border: none; border-top: 1px solid #e0e0e0;">
+
+                <p style="font-style: italic; color: #666;">
+                    <strong>About the Author:</strong> Tom Lacy is a CTO and engineering leader with 20+ years of experience scaling engineering teams from startups to enterprise organizations. He's passionate about building high-performing teams through clear metrics, strong culture, and servant leadership.
+                </p>
+            </div>
+
+            <div class="back-link">
+                <a href="../tech.html">← Back to Tech & Innovation</a>
+            </div>
+        </article>
+    </div>
+
+    <script src="../js/plugins.js"></script>
+</body>
+</html>

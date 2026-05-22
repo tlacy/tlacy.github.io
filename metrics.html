@@ -1,0 +1,301 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    <!-- End Google Analytics -->
+      <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Engineering Metrics Framework | Tom Lacy</title>
+  <meta name="description" content="A practical framework for measuring engineering effectiveness at scale">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../css/main.css">
+  
+  <style>
+    .metrics-hero {
+      background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%);
+      padding: 60px 20px;
+      text-align: center;
+      margin-bottom: 40px;
+      border-radius: 10px;
+    }
+    .metrics-hero h1 {
+      margin: 0 0 16px 0;
+      color: #04233b;
+      font-size: 2.5rem;
+    }
+    .metrics-hero p {
+      color: #666;
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .metric-category {
+      background: white;
+      border-radius: 10px;
+      padding: 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border-left: 4px solid;
+    }
+    .metric-category.reliability { border-left-color: #2EC4B6; }
+    .metric-category.velocity { border-left-color: #667eea; }
+    .metric-category.quality { border-left-color: #764ba2; }
+    .metric-category.security { border-left-color: #ff6b6b; }
+    .metric-category.focus { border-left-color: #ffd93d; }
+    
+    .metric-category h2 {
+      margin: 0 0 8px 0;
+      color: #04233b;
+      font-size: 1.8rem;
+    }
+    .metric-category .description {
+      color: #666;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+    .metric-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .metric-item {
+      padding: 12px 0 12px 28px;
+      position: relative;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .metric-item:last-child {
+      border-bottom: none;
+    }
+    .metric-item::before {
+      content: "📊";
+      position: absolute;
+      left: 0;
+      top: 12px;
+    }
+    .metric-name {
+      font-weight: 600;
+      color: #04233b;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .metric-detail {
+      font-size: 0.9rem;
+      color: #666;
+    }
+    .context-box {
+      background: #f7faf9;
+      border-left: 3px solid #2B7AFC;
+      padding: 20px 24px;
+      margin: 32px 0;
+      border-radius: 4px;
+    }
+    .context-box h3 {
+      margin: 0 0 12px 0;
+      color: #04233b;
+    }
+    .context-box ul {
+      margin: 8px 0;
+      padding-left: 20px;
+    }
+    .model-comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 32px 0;
+    }
+    .model-card {
+      background: white;
+      border-radius: 10px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .model-card h3 {
+      margin: 0 0 16px 0;
+      color: #04233b;
+    }
+    .model-card .stat {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #667eea;
+      margin-bottom: 4px;
+    }
+    .model-card .label {
+      color: #666;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 768px) {
+      .model-comparison {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  
+  <script src="../js/vendor/modernizr-2.8.3.min.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="main-nav">
+      <a href="../index.html" class="nav-link">← Back to Home</a>
+    </nav>
+  </header>
+
+  <main class="passion-page">
+    <div class="container">
+      <section class="metrics-hero">
+        <h1>Engineering Metrics Framework</h1>
+        <p>A practical approach to measuring engineering effectiveness across 30+ teams delivering both enterprise and SMB solutions</p>
+      </section>
+
+      <div class="context-box">
+        <h3>Context: Dual Delivery Model</h3>
+        <div class="model-comparison">
+          <div class="model-card">
+            <div class="stat">~20</div>
+            <div class="label">Enterprise Teams</div>
+            <ul style="margin-top: 16px; font-size: 0.9rem;">
+              <li>Bi-annual releases</li>
+              <li>On-prem & cloud deployment</li>
+              <li>Services-assisted upgrades</li>
+              <li>Longer feedback cycles</li>
+            </ul>
+          </div>
+          <div class="model-card">
+            <div class="stat">~10</div>
+            <div class="label">SMB Teams</div>
+            <ul style="margin-top: 16px; font-size: 0.9rem;">
+              <li>Sprint-based or on-demand releases</li>
+              <li>Multi-tenant cloud environment</li>
+              <li>Instant deployment to all customers</li>
+              <li>Rapid feedback loops</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <section class="metric-category reliability">
+        <h2>Reliability</h2>
+        <p class="description">Are our systems available and performing when customers need them?</p>
+        <ul class="metric-list">
+          <li class="metric-item">
+            <span class="metric-name">Uptime by Product</span>
+            <span class="metric-detail">Track availability across all offerings; target: 99.9% for enterprise, 99.99% for SMB multi-tenant</span>
+          </li>
+          <li class="metric-item">
+            <span class="metric-name">SLA Attainment</span>
+            <span class="metric-detail">Percentage of contractual SLA commitments met; triggers escalation if &lt;95%</span>
+          </li>
+          <li class="metric-item">
+            <span class="metric-name">Telemetry Scorecard</span>
+            <span class="metric-detail">Health of observability: metrics coverage, alert quality, dashboard completeness</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="metric-category velocity">
+        <h2>Velocity</h2>
+        <p class="description">How efficiently are we delivering value?</p>
+        <ul class="metric-list">
+          <li class="metric-item">
+            <span class="metric-name">Team Velocity Trends</span>
+            <span class="metric-detail">Varies by team context: deployment frequency (SMB), story flow, WI throughput (Enterprise)</span>
+          </li>
+          <li class="metric-item">
+            <span class="metric-name">Release Schedule Integrity</span>
+            <span class="metric-detail">Delivering committed scope on time; track % of planned features shipped vs. deferred</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="metric-category quality">
+        <h2>Quality</h2>
+        <p class="description">How well does our software work for customers?</p>
+        <ul class="metric-list">
+          <li class="metric-item">
+            <span class="metric-name">Change Failure Rate</span>
+            <span class="metric-detail">Percentage of deployments causing regressions; target &lt;5% for SMB, &lt;2% for enterprise</span>
+          </li>
+          <li class="metric-item">
+            <span class="metric-name">Customer Defect Trends</span>
+            <span class="metric-detail">Incoming rate vs. fix rate by severity (H/M/L); healthy ratio: fix rate ≥ incoming rate</span>
+          </li>
+          <li class="metric-item">
+            <span class="metric-name">Customer Defect Backlog</span>
+            <span class="metric-detail">Total outstanding customer-reported issues trended over time; aging analysis for high-severity</span>
+          </li>
+          <li class="metric-item">
+            <span class="metric-name">Maintenance SLOs</span>
+            <span class="metric-detail">Time-to-fix targets by severity: High (24h), Medium (1 week), Low (1 month)</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="metric-category security">
+        <h2>Security</h2>
+        <p class="description">How well are we protecting customer data and maintaining compliance?</p>
+        <ul class="metric-list">
+          <li class="metric-item">
+            <span class="metric-name">Secure Score</span>
+            <span class="metric-detail">Aggregate security posture across identity, data, devices, apps; target &gt;80/100</span>
+          </li>
+          <li class="metric-item">
+            <span class="metric-name">SOC State & Security Backlog</span>
+            <span class="metric-detail">SOC 2 compliance status, summary of open security findings by severity</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="metric-category focus">
+        <h2>Focus</h2>
+        <p class="description">Where is engineering effort actually going?</p>
+        <ul class="metric-list">
+          <li class="metric-item">
+            <span class="metric-name">Work Breakdown Analysis</span>
+            <span class="metric-detail">
+              Time allocation across:
+              <br>• Maintenance (keeping the lights on)
+              <br>• Technical Debt (paying down accumulated design compromises)
+              <br>• Innovation/Roadmap (new features and capabilities)
+              <br>Target healthy mix: ~70% roadmap, ~20% maintenance, ~10% tech debt
+            </span>
+          </li>
+        </ul>
+      </section>
+
+      <div class="context-box" style="margin-top: 48px;">
+        <h3>How to Use This Framework</h3>
+        <ul>
+          <li><strong>Start simple:</strong> Don't try to measure everything at once. Pick 2-3 metrics per category.</li>
+          <li><strong>Context matters:</strong> SMB teams should focus more on deployment frequency and change failure rate; enterprise teams on release integrity and upgrade adoption.</li>
+          <li><strong>Balance is key:</strong> Velocity without quality leads to technical debt. Quality without velocity misses market opportunities.</li>
+          <li><strong>Make it visible:</strong> Display metrics in shared spaces (dashboards, team areas, exec reviews). What gets measured gets improved.</li>
+          <li><strong>Iterate the framework:</strong> Review quarterly with engineering leaders. Drop metrics that don't drive action, add ones that matter more.</li>
+        </ul>
+      </div>
+
+      <section class="custom-content" style="margin-top: 48px;">
+        <h2>Additional Resources</h2>
+        <p>Want to implement something similar? Consider these complementary practices:</p>
+        <ul style="margin-left: 24px; line-height: 1.8;">
+          <li><strong>DORA Metrics:</strong> Deploy Frequency, Lead Time, MTTR, Change Failure Rate</li>
+          <li><strong>SPACE Framework:</strong> Satisfaction, Performance, Activity, Communication, Efficiency</li>
+          <li><strong>Team Health Checks:</strong> Qualitative signals to balance quantitative metrics</li>
+          <li><strong>Customer Satisfaction Scores:</strong> NPS or CSAT tied to engineering quality</li>
+        </ul>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 Tom Lacy. All rights reserved.</p>
+  </footer>
+</body>
+</html>

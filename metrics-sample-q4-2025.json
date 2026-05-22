@@ -1,0 +1,131 @@
+{
+  "snapshot_date": "2026-01-03",
+  "period": "quarterly",
+  "reliability": {
+    "uptime_by_product": [
+      {
+        "product_name": "Enterprise Core Platform",
+        "uptime_percentage": 99.92,
+        "deployment_model": "enterprise",
+        "target_uptime": 99.9
+      },
+      {
+        "product_name": "SMB SaaS Application",
+        "uptime_percentage": 99.7,
+        "deployment_model": "smb",
+        "target_uptime": 99.5
+      },
+      {
+        "product_name": "Shared Analytics Service",
+        "uptime_percentage": 99.85,
+        "deployment_model": "hybrid",
+        "target_uptime": 99.8
+      }
+    ],
+    "sla_attainment": {
+      "percentage_met": 98.5,
+      "violations": 3,
+      "critical_violations": 0
+    },
+    "telemetry_scorecard": {
+      "metrics_coverage_percentage": 87,
+      "alert_quality_score": 82,
+      "dashboard_completeness": 91
+    }
+  },
+  "velocity": {
+    "team_metrics": [
+      {
+        "team_name": "Enterprise - Core Platform Team 1",
+        "deployment_frequency": 2,
+        "story_throughput": 45,
+        "wi_throughput": 78,
+        "cycle_time_days": 12.5
+      },
+      {
+        "team_name": "Enterprise - Core Platform Team 2",
+        "deployment_frequency": 2,
+        "story_throughput": 38,
+        "wi_throughput": 65,
+        "cycle_time_days": 14.2
+      },
+      {
+        "team_name": "SMB - Feature Team Alpha",
+        "deployment_frequency": 147,
+        "story_throughput": 62,
+        "wi_throughput": 95,
+        "cycle_time_days": 3.8
+      },
+      {
+        "team_name": "SMB - Feature Team Beta",
+        "deployment_frequency": 132,
+        "story_throughput": 58,
+        "wi_throughput": 88,
+        "cycle_time_days": 4.2
+      }
+    ],
+    "release_schedule_integrity": {
+      "planned_features": 85,
+      "delivered_features": 79,
+      "deferred_features": 6,
+      "integrity_percentage": 92.9
+    }
+  },
+  "quality": {
+    "change_failure_rate": {
+      "total_deployments": 580,
+      "failed_deployments": 64,
+      "failure_rate_percentage": 11.0
+    },
+    "customer_defects": {
+      "incoming": {
+        "high": 12,
+        "medium": 45,
+        "low": 98,
+        "total": 155
+      },
+      "fixed": {
+        "high": 15,
+        "medium": 52,
+        "low": 87,
+        "total": 154
+      },
+      "backlog": {
+        "high": 3,
+        "medium": 18,
+        "low": 76,
+        "total": 97,
+        "aged_over_30_days": 22,
+        "aged_over_90_days": 8
+      }
+    },
+    "maintenance_slo_compliance": {
+      "high_severity_met": 91.7,
+      "medium_severity_met": 88.5,
+      "low_severity_met": 72.3
+    }
+  },
+  "security": {
+    "secure_score": 88,
+    "soc_compliance": {
+      "status": "compliant",
+      "open_findings_critical": 0,
+      "open_findings_high": 0,
+      "open_findings_medium": 4,
+      "open_findings_low": 12
+    }
+  },
+  "focus": {
+    "work_breakdown": {
+      "maintenance_percentage": 42,
+      "tech_debt_percentage": 28,
+      "innovation_percentage": 30
+    },
+    "work_items_by_category": {
+      "maintenance": 342,
+      "tech_debt": 228,
+      "innovation": 245,
+      "total": 815
+    }
+  }
+}

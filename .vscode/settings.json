@@ -1,0 +1,20 @@
+{
+  // Agent Sessions - Enables dynamic AI agent capabilities
+  "github.copilot.chat.agentSessions.enabled": true,
+  
+  // Terminal Auto-Approval - Reduces interruptions for safe commands
+  "github.copilot.chat.terminalAutoApproval": true,
+  
+  // Enable Agent Skills - Allows on-demand capability loading
+  "github.copilot.chat.agentSkills.enabled": true,
+  
+  // Session History - Better tracking and navigation
+  "github.copilot.chat.sessionHistory.enabled": true,
+  
+  // Additional helpful Copilot settings
+  "github.copilot.enable": {
+    "*": true,
+    "markdown": true,
+    "plaintext": false
+  }
+}

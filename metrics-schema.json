@@ -1,0 +1,180 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Engineering Metrics Snapshot",
+  "description": "Schema for tracking engineering metrics across teams and products",
+  "type": "object",
+  "properties": {
+    "snapshot_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of this metrics snapshot (YYYY-MM-DD)"
+    },
+    "period": {
+      "type": "string",
+      "enum": ["weekly", "sprint", "monthly", "quarterly"],
+      "description": "Reporting period for these metrics"
+    },
+    "reliability": {
+      "type": "object",
+      "properties": {
+        "uptime_by_product": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "product_name": { "type": "string" },
+              "uptime_percentage": { "type": "number", "minimum": 0, "maximum": 100 },
+              "deployment_model": { "type": "string", "enum": ["enterprise", "smb", "hybrid"] },
+              "target_uptime": { "type": "number", "minimum": 0, "maximum": 100 }
+            },
+            "required": ["product_name", "uptime_percentage"]
+          }
+        },
+        "sla_attainment": {
+          "type": "object",
+          "properties": {
+            "percentage_met": { "type": "number", "minimum": 0, "maximum": 100 },
+            "violations": { "type": "integer", "minimum": 0 },
+            "critical_violations": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "telemetry_scorecard": {
+          "type": "object",
+          "properties": {
+            "metrics_coverage_percentage": { "type": "number", "minimum": 0, "maximum": 100 },
+            "alert_quality_score": { "type": "number", "minimum": 0, "maximum": 100 },
+            "dashboard_completeness": { "type": "number", "minimum": 0, "maximum": 100 }
+          }
+        }
+      }
+    },
+    "velocity": {
+      "type": "object",
+      "properties": {
+        "team_metrics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "team_name": { "type": "string" },
+              "deployment_frequency": { "type": "integer", "description": "Deployments in this period" },
+              "story_throughput": { "type": "integer", "description": "Stories completed" },
+              "wi_throughput": { "type": "integer", "description": "Work items completed" },
+              "cycle_time_days": { "type": "number", "description": "Average cycle time in days" }
+            },
+            "required": ["team_name"]
+          }
+        },
+        "release_schedule_integrity": {
+          "type": "object",
+          "properties": {
+            "planned_features": { "type": "integer" },
+            "delivered_features": { "type": "integer" },
+            "deferred_features": { "type": "integer" },
+            "integrity_percentage": { "type": "number", "minimum": 0, "maximum": 100 }
+          }
+        }
+      }
+    },
+    "quality": {
+      "type": "object",
+      "properties": {
+        "change_failure_rate": {
+          "type": "object",
+          "properties": {
+            "total_deployments": { "type": "integer" },
+            "failed_deployments": { "type": "integer" },
+            "failure_rate_percentage": { "type": "number", "minimum": 0, "maximum": 100 }
+          }
+        },
+        "customer_defects": {
+          "type": "object",
+          "properties": {
+            "incoming": {
+              "type": "object",
+              "properties": {
+                "high": { "type": "integer" },
+                "medium": { "type": "integer" },
+                "low": { "type": "integer" },
+                "total": { "type": "integer" }
+              }
+            },
+            "fixed": {
+              "type": "object",
+              "properties": {
+                "high": { "type": "integer" },
+                "medium": { "type": "integer" },
+                "low": { "type": "integer" },
+                "total": { "type": "integer" }
+              }
+            },
+            "backlog": {
+              "type": "object",
+              "properties": {
+                "high": { "type": "integer" },
+                "medium": { "type": "integer" },
+                "low": { "type": "integer" },
+                "total": { "type": "integer" },
+                "aged_over_30_days": { "type": "integer" },
+                "aged_over_90_days": { "type": "integer" }
+              }
+            }
+          }
+        },
+        "maintenance_slo_compliance": {
+          "type": "object",
+          "properties": {
+            "high_severity_met": { "type": "number", "minimum": 0, "maximum": 100, "description": "% of high severity issues fixed within SLO" },
+            "medium_severity_met": { "type": "number", "minimum": 0, "maximum": 100 },
+            "low_severity_met": { "type": "number", "minimum": 0, "maximum": 100 }
+          }
+        }
+      }
+    },
+    "security": {
+      "type": "object",
+      "properties": {
+        "secure_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Overall security score (0-100)"
+        },
+        "soc_compliance": {
+          "type": "object",
+          "properties": {
+            "status": { "type": "string", "enum": ["compliant", "in_progress", "non_compliant"] },
+            "open_findings_critical": { "type": "integer" },
+            "open_findings_high": { "type": "integer" },
+            "open_findings_medium": { "type": "integer" },
+            "open_findings_low": { "type": "integer" }
+          }
+        }
+      }
+    },
+    "focus": {
+      "type": "object",
+      "properties": {
+        "work_breakdown": {
+          "type": "object",
+          "properties": {
+            "maintenance_percentage": { "type": "number", "minimum": 0, "maximum": 100 },
+            "tech_debt_percentage": { "type": "number", "minimum": 0, "maximum": 100 },
+            "innovation_percentage": { "type": "number", "minimum": 0, "maximum": 100 }
+          },
+          "description": "Percentages should sum to 100"
+        },
+        "work_items_by_category": {
+          "type": "object",
+          "properties": {
+            "maintenance": { "type": "integer" },
+            "tech_debt": { "type": "integer" },
+            "innovation": { "type": "integer" },
+            "total": { "type": "integer" }
+          }
+        }
+      }
+    }
+  },
+  "required": ["snapshot_date", "period"]
+}

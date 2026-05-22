@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    <!-- End Google Analytics -->
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engineering Metrics Framework - Team Presentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a1a;
+            color: #333;
+        }
+        
+        .presentation-container {
+            max-width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .slide {
+            width: 1280px;
+            height: 720px;
+            background: white;
+            padding: 60px 80px;
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+        }
+        
+        .slide.active {
+            display: block;
+        }
+        
+        .slide-number {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            font-size: 14px;
+            color: #999;
+        }
+        
+        .slide-header {
+            border-bottom: 4px solid #4a90e2;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 48px;
+            color: #2a2a2a;
+            margin-bottom: 10px;
+        }
+        
+        h2 {
+            font-size: 36px;
+            color: #2a2a2a;
+            margin-bottom: 30px;
+        }
+        
+        h3 {
+            font-size: 28px;
+            color: #4a90e2;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            color: #666;
+            font-weight: 300;
+        }
+        
+        .content {
+            font-size: 18px;
+            line-height: 1.8;
+        }
+        
+        ul {
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        li {
+            margin-bottom: 15px;
+            padding-left: 35px;
+            position: relative;
+        }
+        
+        li:before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: #4a90e2;
+            font-size: 24px;
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+        
+        .metric-box {
+            background: #f8f9fa;
+            border-left: 5px solid #4a90e2;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .metric-box h4 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #2a2a2a;
+        }
+        
+        .metric-box p {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+        
+        th {
+            background: #4a90e2;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .highlight {
+            background: #fff9e6;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+        
+        button {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #357abd;
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .title-slide {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .title-slide h1 {
+            color: white;
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        
+        .title-slide .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 28px;
+        }
+        
+        .category-reliability { border-left-color: #20c997; }
+        .category-velocity { border-left-color: #6f42c1; }
+        .category-quality { border-left-color: #5a3d7a; }
+        .category-security { border-left-color: #dc3545; }
+        .category-focus { border-left-color: #ffc107; }
+        .category-migration { border-left-color: #17a2b8; }
+        .category-customer { border-left-color: #28a745; }
+        
+        .big-number {
+            font-size: 72px;
+            font-weight: 700;
+            color: #4a90e2;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .speaker-notes {
+            display: none;
+            background: #fff9e6;
+            padding: 20px;
+            margin-top: 30px;
+            border-left: 4px solid #ffc107;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        @media print {
+            .slide {
+                page-break-after: always;
+                position: relative;
+                transform: none;
+                top: 0;
+                left: 0;
+                display: block !important;
+                margin: 0;
+                box-shadow: none;
+            }
+            .controls {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <h1>Engineering Metrics Framework</h1>
+            <p class="subtitle">Measuring What Matters Across 30 Teams</p>
+            <p style="margin-top: 40px; font-size: 20px; opacity: 0.8;">Q1 2026 Team Launch</p>
+        </div>
+        
+        <!-- Slide 2: Our Context -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Our Engineering Organization</h2>
+            </div>
+            <div class="content">
+                <div class="stat-grid">
+                    <div class="stat-box">
+                        <div class="big-number">30</div>
+                        <p style="font-size: 18px; color: #666;">Scrum Teams</p>
+                    </div>
+                    <div class="stat-box">
+                        <div class="big-number">$300M</div>
+                        <p style="font-size: 18px; color: #666;">Annual Recurring Revenue</p>
+                    </div>
+                    <div class="stat-box">
+                        <div class="big-number">2</div>
+                        <p style="font-size: 18px; color: #666;">Delivery Models</p>
+                    </div>
+                </div>
+                
+                <div class="two-column" style="margin-top: 50px;">
+                    <div>
+                        <h3 style="font-size: 24px;">🏢 Enterprise Platform</h3>
+                        <ul style="font-size: 16px;">
+                            <li>20 teams</li>
+                            <li>~$150M ARR</li>
+                            <li>On-premise deployments</li>
+                            <li>Bi-annual releases</li>
+                            <li>Large contracts, high touch</li>
+                            <li>Focus: Stability & reliability</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 24px;">🚀 SMB SaaS</h3>
+                        <ul style="font-size: 16px;">
+                            <li>10 teams</li>
+                            <li>~$150M ARR</li>
+                            <li>Cloud-native SaaS</li>
+                            <li>Continuous deployment</li>
+                            <li>Self-service, high volume</li>
+                            <li>Focus: Speed & innovation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">2</div>
+        </div>
+        
+        <!-- Slide 3: The Challenge -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>The Challenge: Platform in Transition</h2>
+            </div>
+            <div class="content">
+                <h3>Strategic Migration</h3>
+                <ul style="font-size: 20px;">
+                    <li>Moving from on-premise to SaaS over 3-5 years</li>
+                    <li>Currently 40% on-premise, 60% SaaS</li>
+                    <li>Migrating 10% of revenue per year</li>
+                    <li>Maintaining both platforms during transition</li>
+                </ul>
+                
+                <div class="highlight" style="margin-top: 40px;">
+                    <h4 style="margin-bottom: 15px; font-size: 22px;">Key Tension</h4>
+                    <p style="font-size: 18px; line-height: 1.7;">
+                        Our largest, most loyal enterprise customers prefer on-premise for security, compliance, and existing infrastructure investments. We must maintain excellence on both platforms while gradually proving SaaS delivers superior ROI.
+                    </p>
+                </div>
+                
+                <p style="margin-top: 30px; font-size: 18px; color: #666; font-style: italic;">
+                    <strong>Bottom line:</strong> We need metrics that work for both models and guide our transition.
+                </p>
+            </div>
+            <div class="slide-number">3</div>
+        </div>
+        
+        <!-- Slide 4: Why Metrics Matter -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Why These Metrics Matter</h2>
+            </div>
+            <div class="content">
+                <h3 style="margin-bottom: 30px;">What You Measure Determines What You Improve</h3>
+                
+                <div class="two-column">
+                    <div>
+                        <h4 style="font-size: 22px; margin-bottom: 20px; color: #28a745;">✓ Good Metrics</h4>
+                        <ul style="font-size: 17px;">
+                            <li>Drive the right behaviors</li>
+                            <li>Create shared language</li>
+                            <li>Enable informed decisions</li>
+                            <li>Highlight systemic issues</li>
+                            <li>Celebrate progress</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 22px; margin-bottom: 20px; color: #dc3545;">✗ Bad Metrics</h4>
+                        <ul style="font-size: 17px;">
+                            <li>Create perverse incentives</li>
+                            <li>Encourage gaming the system</li>
+                            <li>Focus on activity vs. outcomes</li>
+                            <li>Ignore context</li>
+                            <li>Punish transparency</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="highlight" style="margin-top: 40px;">
+                    <p style="font-size: 18px; margin-bottom: 0;">
+                        <strong>Our Commitment:</strong> These metrics are diagnostic tools, not performance evaluations. They help us spot trends, share learnings, and improve together.
+                    </p>
+                </div>
+            </div>
+            <div class="slide-number">4</div>
+        </div>
+        
+        <!-- Slide 5: Framework Overview -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>The Framework: 7 Dimensions</h2>
+            </div>
+            <div class="content">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="metric-box category-reliability">
+                        <h4>1. Reliability</h4>
+                        <p>Are we keeping the lights on?</p>
+                    </div>
+                    <div class="metric-box category-velocity">
+                        <h4>2. Velocity</h4>
+                        <p>Are we delivering predictably?</p>
+                    </div>
+                    <div class="metric-box category-quality">
+                        <h4>3. Quality</h4>
+                        <p>Are we building it right?</p>
+                    </div>
+                    <div class="metric-box category-security">
+                        <h4>4. Security</h4>
+                        <p>Are we protecting our customers?</p>
+                    </div>
+                    <div class="metric-box category-focus">
+                        <h4>5. Focus</h4>
+                        <p>Are we working on the right things?</p>
+                    </div>
+                    <div class="metric-box category-migration">
+                        <h4>6. Platform Migration</h4>
+                        <p>Are we progressing toward SaaS?</p>
+                    </div>
+                    <div class="metric-box category-customer" style="grid-column: span 2;">
+                        <h4>7. Customer Success</h4>
+                        <p>Are customers getting value from both platforms?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">5</div>
+        </div>
+        
+        <!-- Slide 6: Dimension 1 - Reliability -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>1. Reliability</h2>
+                <p class="subtitle">Are we keeping the lights on?</p>
+            </div>
+            <div class="content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Enterprise Target</th>
+                            <th>SMB Target</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Uptime %</strong></td>
+                            <td>99.9% (contractual SLA)</td>
+                            <td>99.5% (balance speed/stability)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SLA Attainment</strong></td>
+                            <td>100% (zero tolerance)</td>
+                            <td>95% (rapid recovery OK)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Telemetry Coverage</strong></td>
+                            <td>100% before deployment</td>
+                            <td>Instrument iteratively</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="highlight">
+                    <h4 style="margin-bottom: 10px;">💡 Key Insight</h4>
+                    <p>Different risk profiles require different targets. Enterprise customers have contractual SLAs; SMB customers value speed and can tolerate occasional issues if we recover quickly.</p>
+                </div>
+                
+                <h3 style="margin-top: 30px; font-size: 20px;">How We Measure</h3>
+                <ul style="font-size: 16px;">
+                    <li>Azure Application Insights for uptime monitoring</li>
+                    <li>PagerDuty for incident tracking and SLA compliance</li>
+                    <li>Quarterly telemetry audits by product</li>
+                </ul>
+            </div>
+            <div class="slide-number">6</div>
+        </div>
+        
+        <!-- Slide 7: Dimension 2 - Velocity -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>2. Velocity</h2>
+                <p class="subtitle">Are we delivering predictably?</p>
+            </div>
+            <div class="content">
+                <h3>Key Metrics</h3>
+                <ul style="font-size: 18px;">
+                    <li><strong>Team Velocity Trends:</strong> Track story points and work items per sprint. Target: ±10% variation sprint-to-sprint</li>
+                    <li><strong>Deployment Frequency:</strong> Context matters—SMB teams deploy daily, enterprise teams deploy bi-annually. Both are "good" if predictable.</li>
+                    <li><strong>Release Schedule Integrity (Enterprise):</strong> Did we deliver what we committed? Target: 90%+ features per release</li>
+                </ul>
+                
+                <div class="highlight" style="margin-top: 30px;">
+                    <h4 style="margin-bottom: 10px;">⚠️ Common Pitfall</h4>
+                    <p>Don't compare velocity across teams. Story points are relative. Instead, track trends within each team and celebrate improvement.</p>
+                </div>
+                
+                <h3 style="margin-top: 30px; font-size: 20px;">How We Measure</h3>
+                <ul style="font-size: 16px;">
+                    <li>Azure DevOps APIs for velocity tracking</li>
+                    <li>Sprint retrospectives for context (onboarding, tech debt sprints, etc.)</li>
+                    <li>Quarterly release integrity reports</li>
+                </ul>
+            </div>
+            <div class="slide-number">7</div>
+        </div>
+        
+        <!-- Slide 8: Dimension 3 - Quality -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>3. Quality</h2>
+                <p class="subtitle">Are we building it right?</p>
+            </div>
+            <div class="content">
+                <h3>Key Metrics</h3>
+                <ul style="font-size: 18px;">
+                    <li><strong>Change Failure Rate:</strong> % of deployments causing production issues. Target: <15% for both models</li>
+                    <li><strong>Customer Defect Trends:</strong> Track incoming vs. fixed defects by severity (High/Medium/Low)</li>
+                    <li><strong>Defect Backlog Health:</strong> How many defects are aging >30 days, >90 days?</li>
+                    <li><strong>Maintenance SLO Compliance:</strong> Are we fixing defects within our commitments?
+                        <ul style="margin-top: 10px; font-size: 16px;">
+                            <li>High severity: 48 hours</li>
+                            <li>Medium severity: 2 weeks</li>
+                            <li>Low severity: backlog prioritization</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <div class="highlight" style="margin-top: 20px;">
+                    <h4 style="margin-bottom: 10px;">💡 Key Insight</h4>
+                    <p>High deployment frequency (SMB) means higher defect discovery rate—that's good! What matters is resolution speed, not absolute defect count.</p>
+                </div>
+            </div>
+            <div class="slide-number">8</div>
+        </div>
+        
+        <!-- Slide 9: Dimension 4 - Security -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>4. Security</h2>
+                <p class="subtitle">Are we protecting our customers?</p>
+            </div>
+            <div class="content">
+                <h3>Key Metrics (Same for Both Models)</h3>
+                
+                <div class="metric-box category-security" style="margin: 30px 0;">
+                    <h4>Secure Score (0-100)</h4>
+                    <p style="margin-bottom: 15px;">Composite metric covering:</p>
+                    <ul style="font-size: 16px; margin-left: 20px;">
+                        <li>Code scanning (SAST/DAST)</li>
+                        <li>Dependency vulnerability management</li>
+                        <li>Access controls and least privilege</li>
+                        <li>Security training compliance</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Target: 85+ for all teams</strong></p>
+                </div>
+                
+                <div class="metric-box category-security">
+                    <h4>SOC 2 Compliance State</h4>
+                    <p>Track open findings by severity. <strong>Target: Zero critical/high severity findings</strong></p>
+                </div>
+                
+                <div class="highlight" style="margin-top: 30px;">
+                    <h4 style="margin-bottom: 10px;">🚨 This is a Gate</h4>
+                    <p>If secure score drops below threshold, feature work pauses until resolved. Leadership enforces this.</p>
+                </div>
+            </div>
+            <div class="slide-number">9</div>
+        </div>
+        
+        <!-- Slide 10: Dimension 5 - Focus -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>5. Focus</h2>
+                <p class="subtitle">Are we working on the right things?</p>
+            </div>
+            <div class="content">
+                <h3>Work Breakdown Analysis</h3>
+                <table style="margin: 20px 0;">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Target %</th>
+                            <th>Definition</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Maintenance</strong></td>
+                            <td>40%</td>
+                            <td>Keeping existing features running (bug fixes, support)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tech Debt</strong></td>
+                            <td>30%</td>
+                            <td>Reducing complexity, improving systems</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Innovation</strong></td>
+                            <td>30%</td>
+                            <td>New features, capabilities, customer value</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="highlight">
+                    <h4 style="margin-bottom: 10px;">🎯 Real Example</h4>
+                    <p>Three teams were spending 65%+ time on maintenance due to an aging shared service. We carved out a dedicated modernization team. Within two quarters, those teams rebalanced to 40/30/30 and velocity increased 25%.</p>
+                </div>
+                
+                <p style="margin-top: 20px; font-size: 16px; color: #666;"><em>Note: Enterprise teams may skew higher on maintenance due to product maturity—that's expected and acceptable.</em></p>
+            </div>
+            <div class="slide-number">10</div>
+        </div>
+        
+        <!-- Slide 11: Dimension 6 - Platform Migration -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>6. Platform Migration Progress</h2>
+                <p class="subtitle">Are we moving toward SaaS successfully?</p>
+            </div>
+            <div class="content">
+                <h3>Key Metrics</h3>
+                <ul style="font-size: 18px;">
+                    <li><strong>Feature Parity:</strong> What % of on-premise features are available in SaaS? Target: 95% parity within 18 months</li>
+                    <li><strong>Revenue Migration Rate:</strong> Are we hitting our 10% YoY migration target?</li>
+                    <li><strong>Customer Migration Readiness:</strong> How many customers are technically ready but haven't migrated yet?</li>
+                    <li><strong>Migration Blockers:</strong> What technical debt or feature gaps are preventing migration?</li>
+                </ul>
+                
+                <div class="highlight" style="margin-top: 30px;">
+                    <h4 style="margin-bottom: 10px;">💡 Why This Matters</h4>
+                    <p>Without explicit migration metrics, teams will optimize for their local platform and the transition will stall. This dimension creates accountability for the org-wide strategic goal.</p>
+                </div>
+                
+                <h3 style="margin-top: 30px; font-size: 20px;">How We Measure</h3>
+                <ul style="font-size: 16px;">
+                    <li>Quarterly feature audits (on-prem vs. SaaS capabilities)</li>
+                    <li>Customer success team surveys</li>
+                    <li>Product backlog analysis for migration-blocking work</li>
+                </ul>
+            </div>
+            <div class="slide-number">11</div>
+        </div>
+        
+        <!-- Slide 12: Dimension 7 - Customer Success -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>7. Customer Success by Platform</h2>
+                <p class="subtitle">Are customers getting value?</p>
+            </div>
+            <div class="content">
+                <h3>Key Metrics</h3>
+                
+                <div class="two-column">
+                    <div>
+                        <h4 style="font-size: 20px; margin-bottom: 15px;">Retention & Growth</h4>
+                        <ul style="font-size: 17px;">
+                            <li><strong>Gross Revenue Retention:</strong> Target: 100% (both platforms)</li>
+                            <li><strong>Net Revenue Retention:</strong> Target: 110%+ (both platforms)</li>
+                            <li><strong>Expansion ARR:</strong> Track upsells and cross-sells by platform</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 20px; margin-bottom: 15px;">Satisfaction</h4>
+                        <ul style="font-size: 17px;">
+                            <li><strong>CSAT Score:</strong> Target: 85%+ (both platforms)</li>
+                            <li><strong>NPS by Platform:</strong> Are SaaS customers promoters?</li>
+                            <li><strong>Support Ticket Trends:</strong> By platform, by severity</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="highlight" style="margin-top: 30px;">
+                    <h4 style="margin-bottom: 10px;">🎯 Strategic Question</h4>
+                    <p>If SaaS customers are significantly happier/stickier than on-prem, that's the data we need to justify accelerating migration investments or offering incentives.</p>
+                </div>
+            </div>
+            <div class="slide-number">12</div>
+        </div>
+        
+        <!-- Slide 13: Team Template - Part 1 -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Your Team Dashboard Template</h2>
+                <p class="subtitle">What you'll track and report</p>
+            </div>
+            <div class="content">
+                <h3>Weekly: Team Retrospective</h3>
+                <ul style="font-size: 17px;">
+                    <li>Review your team's metrics from last sprint</li>
+                    <li>Discuss trends—what improved, what declined?</li>
+                    <li>Identify 1-2 improvement actions for next sprint</li>
+                    <li><em>This is a team conversation, not a report-out</em></li>
+                </ul>
+                
+                <h3 style="margin-top: 30px;">Monthly: Product Leadership Review</h3>
+                <ul style="font-size: 17px;">
+                    <li>Product leads review aggregated metrics across their teams</li>
+                    <li>Spot outliers (both positive and negative)</li>
+                    <li>Share learnings across teams</li>
+                    <li>Escalate systemic issues</li>
+                </ul>
+                
+                <h3 style="margin-top: 30px;">Quarterly: Portfolio Review</h3>
+                <ul style="font-size: 17px;">
+                    <li>Executive team reviews organization-wide trends</li>
+                    <li>Make strategic decisions: rebalance focus, adjust targets, fund tech debt</li>
+                    <li>Celebrate wins and course-correct</li>
+                </ul>
+            </div>
+            <div class="slide-number">13</div>
+        </div>
+        
+        <!-- Slide 14: Team Template - Part 2 -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Sample Team Dashboard</h2>
+            </div>
+            <div class="content">
+                <table style="font-size: 14px;">
+                    <thead>
+                        <tr>
+                            <th>Dimension</th>
+                            <th>Metric</th>
+                            <th>Last Sprint</th>
+                            <th>Target</th>
+                            <th>Trend</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Reliability</td>
+                            <td>Uptime %</td>
+                            <td>99.87%</td>
+                            <td>99.5%</td>
+                            <td style="color: #28a745;">▲</td>
+                        </tr>
+                        <tr>
+                            <td>Velocity</td>
+                            <td>Story Points Completed</td>
+                            <td>42</td>
+                            <td>40 ±10%</td>
+                            <td style="color: #28a745;">→</td>
+                        </tr>
+                        <tr>
+                            <td>Quality</td>
+                            <td>Change Failure Rate</td>
+                            <td>8%</td>
+                            <td><15%</td>
+                            <td style="color: #28a745;">▲</td>
+                        </tr>
+                        <tr>
+                            <td>Quality</td>
+                            <td>Defect Backlog (High)</td>
+                            <td>5</td>
+                            <td><3</td>
+                            <td style="color: #dc3545;">▼</td>
+                        </tr>
+                        <tr>
+                            <td>Security</td>
+                            <td>Secure Score</td>
+                            <td>88</td>
+                            <td>85+</td>
+                            <td style="color: #28a745;">▲</td>
+                        </tr>
+                        <tr>
+                            <td>Focus</td>
+                            <td>Innovation %</td>
+                            <td>22%</td>
+                            <td>30%</td>
+                            <td style="color: #ffc107;">→</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="highlight" style="margin-top: 30px;">
+                    <h4 style="margin-bottom: 10px;">📊 What This Team Should Discuss</h4>
+                    <p style="font-size: 16px;">
+                        <strong>Good:</strong> Uptime, velocity, and security are strong.<br>
+                        <strong>Concern:</strong> High severity defect backlog is growing—why? Do we need to pause features to pay down defects?<br>
+                        <strong>Context:</strong> Innovation % is low—is this expected (e.g., we're in a stabilization phase), or are we drowning in maintenance?
+                    </p>
+                </div>
+            </div>
+            <div class="slide-number">14</div>
+        </div>
+        
+        <!-- Slide 15: Implementation -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Implementation: Getting Started</h2>
+            </div>
+            <div class="content">
+                <h3>Phase 1: Setup (This Month)</h3>
+                <ul style="font-size: 17px;">
+                    <li>Each team identifies their dashboard owner (typically Scrum Master or Tech Lead)</li>
+                    <li>Teams configure their Azure DevOps/Application Insights/PagerDuty dashboards</li>
+                    <li>First metrics snapshot captured as baseline</li>
+                </ul>
+                
+                <h3 style="margin-top: 25px;">Phase 2: Learn (Next 3 Months)</h3>
+                <ul style="font-size: 17px;">
+                    <li>Teams review metrics in retrospectives—focus on understanding, not judgment</li>
+                    <li>Product leads share patterns across teams</li>
+                    <li>We'll iterate on targets and definitions based on feedback</li>
+                </ul>
+                
+                <h3 style="margin-top: 25px;">Phase 3: Optimize (Ongoing)</h3>
+                <ul style="font-size: 17px;">
+                    <li>Metrics become part of planning: "What will improve this metric?"</li>
+                    <li>Executive team uses trends to make strategic investments</li>
+                    <li>We celebrate teams that improve and share their practices</li>
+                </ul>
+                
+                <div class="highlight" style="margin-top: 25px;">
+                    <p style="font-size: 16px; margin-bottom: 0;"><strong>Remember:</strong> Metrics are a conversation starter, not a scorecard. The goal is transparency and continuous improvement.</p>
+                </div>
+            </div>
+            <div class="slide-number">15</div>
+        </div>
+        
+        <!-- Slide 16: Common Mistakes -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Common Mistakes to Avoid</h2>
+            </div>
+            <div class="content">
+                <div class="metric-box" style="background: #fff5f5; border-left-color: #dc3545; margin-bottom: 20px;">
+                    <h4>❌ Mistake #1: Gaming the System</h4>
+                    <p>If metrics are tied directly to performance reviews, teams will optimize for the metric instead of the outcome. Keep metrics diagnostic, not evaluative.</p>
+                </div>
+                
+                <div class="metric-box" style="background: #fff5f5; border-left-color: #dc3545; margin-bottom: 20px;">
+                    <h4>❌ Mistake #2: Ignoring Context</h4>
+                    <p>A team's velocity drops 30%—is that bad? Not if they onboarded 3 new engineers and deliberately slowed to invest in training. Always ask "why?"</p>
+                </div>
+                
+                <div class="metric-box" style="background: #fff5f5; border-left-color: #dc3545; margin-bottom: 20px;">
+                    <h4>❌ Mistake #3: Comparing Teams</h4>
+                    <p>Don't rank teams by velocity or story points. Context varies wildly. Instead, track each team's trend over time.</p>
+                </div>
+                
+                <div class="metric-box" style="background: #fff5f5; border-left-color: #dc3545;">
+                    <h4>❌ Mistake #4: Too Many Metrics</h4>
+                    <p>We deliberately keep this to 15-20 metrics total. More than that and teams spend more time reporting than improving.</p>
+                </div>
+            </div>
+            <div class="slide-number">16</div>
+        </div>
+        
+        <!-- Slide 17: Q&A / Resources -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Questions & Resources</h2>
+            </div>
+            <div class="content">
+                <h3>We Want Your Feedback</h3>
+                <ul style="font-size: 18px; margin-bottom: 40px;">
+                    <li>Do these metrics make sense for your team?</li>
+                    <li>Are the targets realistic?</li>
+                    <li>What's missing?</li>
+                    <li>What would you change?</li>
+                </ul>
+                
+                <div class="two-column">
+                    <div>
+                        <h3 style="font-size: 22px;">Resources</h3>
+                        <ul style="font-size: 16px;">
+                            <li>Dashboard templates (Azure DevOps)</li>
+                            <li>Metrics schema (JSON format)</li>
+                            <li>Sample quarterly snapshots</li>
+                            <li>DORA metrics research</li>
+                            <li>SPACE framework paper</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 22px;">Support</h3>
+                        <ul style="font-size: 16px;">
+                            <li>Slack: #engineering-metrics</li>
+                            <li>Office hours: Fridays 2-3pm</li>
+                            <li>Documentation: [Internal wiki]</li>
+                            <li>Contact: [Engineering Leadership]</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="highlight" style="margin-top: 40px;">
+                    <p style="font-size: 18px; text-align: center; margin-bottom: 0;">
+                        <strong>Let's build something great together. 🚀</strong>
+                    </p>
+                </div>
+            </div>
+            <div class="slide-number">17</div>
+        </div>
+        
+    </div>
+    
+    <div class="controls">
+        <button id="prevBtn" onclick="previousSlide()">← Previous</button>
+        <button id="nextBtn" onclick="nextSlide()">Next →</button>
+        <button onclick="window.print()" style="background: #6c757d;">Print/Export PDF</button>
+    </div>
+    
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+        
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            }
+        }
+        
+        function previousSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+        
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
