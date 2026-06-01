@@ -503,7 +503,7 @@ async function handleForgotPassword(e) {
   btn.textContent = 'Sending…'; btn.disabled = true;
   try {
     await api('POST', '/api/auth/forgot-password', { email: document.getElementById('forgot-email').value.trim() });
-    showAuthSuccess('If that email is registered, you'll receive a reset link.');
+    showAuthSuccess("If that email is registered, you'll receive a reset link.");
   } catch (err) {
     showAuthError(err.message || 'Failed to send reset email');
   } finally {
