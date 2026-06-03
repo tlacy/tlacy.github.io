@@ -140,6 +140,28 @@
     #toast.show { opacity: 1; transform: translateY(0); }
     #toast.toast-error { border-color: rgba(255,77,79,0.4); color: #ff8a8a; }
     #toast.toast-success { border-color: rgba(82,196,26,0.3); color: #73d13d; }
+
+    /* ── Guide / How it works ── */
+    .guide-section { margin-bottom: 2.5rem; }
+    .guide-section > h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 1.25rem; color: #f0f0f0; }
+    .guide-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .guide-step { background: #151515; border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 1.5rem; }
+    .guide-step-num { width: 28px; height: 28px; background: #6c8cff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: #fff; margin-bottom: 1rem; }
+    .guide-step h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .guide-step p { font-size: 0.8rem; color: #888; line-height: 1.55; }
+    .guide-techniques { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+    .guide-technique { background: #151515; border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 1.5rem; }
+    .guide-tag { display: inline-block; padding: 0.2rem 0.6rem; background: rgba(108,140,255,0.15); color: #a0b4ff; border-radius: 6px; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.75rem; }
+    .guide-technique h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .guide-technique p { font-size: 0.8rem; color: #888; line-height: 1.55; margin-bottom: 0.6rem; }
+    .guide-hint-line { font-size: 0.75rem; color: #555; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.6rem; }
+    .guide-ai-box { background: rgba(108,140,255,0.05); border: 1px solid rgba(108,140,255,0.18); border-radius: 12px; padding: 1.5rem; margin-top: 1.25rem; }
+    .guide-ai-box h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .guide-ai-box p { font-size: 0.8rem; color: #888; line-height: 1.55; }
+    .technique-hint { font-size: 0.7rem; color: #555; margin-top: 0.3rem; line-height: 1.4; }
+    .empty-workflow { display: flex; align-items: center; justify-content: center; gap: 0.6rem; margin-top: 1.25rem; flex-wrap: wrap; }
+    .empty-workflow-step { background: #1a1a1a; border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 0.45rem 0.85rem; font-size: 0.78rem; color: #999; }
+    .empty-workflow-arrow { color: #444; font-size: 0.8rem; }
   </style>
 </head>
 <body>
@@ -202,6 +224,8 @@
       <div class="sidebar-item" onclick="showPage('projects')" id="nav-projects">📊 Projects</div>
       <div class="sidebar-section" id="admin-section" style="display:none">Admin</div>
       <div class="sidebar-item" onclick="showPage('admin')" id="nav-admin" style="display:none">⚙️ Admin</div>
+      <div style="flex:1"></div>
+      <div class="sidebar-item" onclick="showPage('guide')" id="nav-guide">❓ Guide</div>
     </div>
     <div id="content">
 
@@ -263,18 +287,22 @@
               <div class="technique-option selected" onclick="selectTechnique('hdr',this)">
                 <div class="technique-name">HDR</div>
                 <div class="technique-desc">Exposure fusion for bracket sets</div>
+                <div class="technique-hint">3–7 exposures · landscapes &amp; architecture</div>
               </div>
               <div class="technique-option" onclick="selectTechnique('focus_stack',this)">
                 <div class="technique-name">Focus Stack</div>
                 <div class="technique-desc">Combine focus planes</div>
+                <div class="technique-hint">4–20+ shots at different distances · macro</div>
               </div>
               <div class="technique-option" onclick="selectTechnique('best_blend',this)">
                 <div class="technique-name">Best Blend</div>
                 <div class="technique-desc">Sharpest frames blended</div>
+                <div class="technique-hint">Burst or sequential · wildlife &amp; portraits</div>
               </div>
               <div class="technique-option" onclick="selectTechnique('panorama',this)">
                 <div class="technique-name">Panorama</div>
                 <div class="technique-desc">Stitch overlapping frames</div>
+                <div class="technique-hint">2–20+ frames · 30%+ overlap · wide landscapes</div>
               </div>
             </div>
           </div>
@@ -312,6 +340,66 @@
           <thead><tr><th>Email</th><th>Name</th><th>Status</th><th>Photos</th><th>Storage</th><th>Actions</th></tr></thead>
           <tbody id="admin-users-body"></tbody>
         </table>
+      </div>
+
+      <!-- Guide page -->
+      <div id="page-guide" class="page">
+        <div class="page-header">
+          <div class="page-title">How it works</div>
+        </div>
+        <div class="guide-section">
+          <h2>Three steps</h2>
+          <div class="guide-steps">
+            <div class="guide-step">
+              <div class="guide-step-num">1</div>
+              <h3>Create an Album</h3>
+              <p>Albums organize your RAW files by shoot. Create one per project — a landscape bracket set, a macro session, a panorama sequence. Albums are private by default; make one public to share a link with clients.</p>
+            </div>
+            <div class="guide-step">
+              <div class="guide-step-num">2</div>
+              <h3>Upload RAW Photos</h3>
+              <p>Open an album and upload your NEF, DNG, CR3, ARW, TIFF, or JPEG files directly to the cloud. Files go straight to S3 via presigned URLs — no server in the middle, no per-file size limits.</p>
+            </div>
+            <div class="guide-step">
+              <div class="guide-step-num">3</div>
+              <h3>Composite</h3>
+              <p>Go to <strong style="color:#f0f0f0">✨ Compositing</strong>, select your album, choose photos, and pick a technique. Hit <em>Start Compositing</em> — the job runs in a cloud container using rawpy + OpenCV. Check <strong style="color:#f0f0f0">📊 Projects</strong> for your result.</p>
+            </div>
+          </div>
+        </div>
+        <div class="guide-section">
+          <h2>Compositing techniques</h2>
+          <div class="guide-techniques">
+            <div class="guide-technique">
+              <div class="guide-tag">HDR</div>
+              <h3>Exposure Fusion (Mertens)</h3>
+              <p>Bracket 3–7 exposures and merge them into one image with natural tone mapping. AlignMTB handles slight movement between shots — no tripod required, though it helps.</p>
+              <div class="guide-hint-line">📷 3–7 exposures · ±2 stop bracket · landscapes &amp; architecture</div>
+            </div>
+            <div class="guide-technique">
+              <div class="guide-tag">Focus Stack</div>
+              <h3>Laplacian Focus Stacking</h3>
+              <p>Combine images at different focus distances into one fully-sharp result. Each frame contributes its sharpest region using Laplacian-based focus detection.</p>
+              <div class="guide-hint-line">📷 4–20+ photos · step focus through subject · macro &amp; close-up</div>
+            </div>
+            <div class="guide-technique">
+              <div class="guide-tag">Best Blend</div>
+              <h3>Sharpness-Weighted Blend</h3>
+              <p>Score all images by sharpness and blend the top performers. Great for burst shooting — the AI picks the best frames automatically.</p>
+              <div class="guide-hint-line">📷 2–20+ photos · burst or sequential shots · wildlife, sports &amp; portraits</div>
+            </div>
+            <div class="guide-technique">
+              <div class="guide-tag">Panorama</div>
+              <h3>OpenCV Stitcher</h3>
+              <p>Automatically stitch overlapping horizontal frames into a wide panorama. OpenCV detects feature points and blends the seams.</p>
+              <div class="guide-hint-line">📷 2–20+ frames · 30%+ overlap between shots · wide landscapes &amp; cityscapes</div>
+            </div>
+          </div>
+          <div class="guide-ai-box">
+            <h3>🧠 Not sure which technique to use?</h3>
+            <p>On the Compositing page, hit <strong style="color:#a0b4ff">Ask AI</strong> before you start. Claude analyzes your photo metadata — exposure values, file names, focus distances, timestamps — and recommends the best technique for your set. It's a free second opinion before the job runs.</p>
+          </div>
+        </div>
       </div>
 
     </div><!-- /content -->
@@ -393,6 +481,8 @@ function getUser() {
   try { return JSON.parse(localStorage.getItem('photocraft_user') || 'null'); } catch { return null; }
 }
 function setAuth(token, user) {
+  console.debug('[setAuth] token:', token ? token.substring(0, 25) + '…' : `MISSING(${token})`, '| user:', user?.email);
+  if (!token) { console.error('[setAuth] WARNING: storing null/undefined token!'); }
   localStorage.setItem('photocraft_token', token);
   localStorage.setItem('photocraft_user', JSON.stringify(user));
 }
@@ -404,10 +494,13 @@ function clearAuth() {
 // ── API helpers ───────────────────────────────────────────────────────────────
 
 async function api(method, path, body) {
+  const token = getToken();
+  console.debug('[api]', method, path, '| token:', token ? token.substring(0, 20) + '…' : `NULL(${token})`);
   const opts = {
     method,
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
+    headers: { 'Content-Type': 'application/json' },
   };
+  if (token) opts.headers.Authorization = `Bearer ${token}`;
   if (body) opts.body = JSON.stringify(body);
   const res = await fetch(API_URL + path, opts);
   const data = await res.json().catch(() => ({}));
@@ -570,7 +663,7 @@ async function loadAlbums() {
 function renderAlbums(albums) {
   const el = document.getElementById('albums-list');
   if (!albums.length) {
-    el.innerHTML = '<div class="empty-state"><div class="empty-icon">📁</div><div>No albums yet. Create your first album.</div></div>';
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">📁</div><div style="font-size:1.05rem;font-weight:600;color:#f0f0f0;margin-bottom:0.5rem">No albums yet</div><div style="margin-bottom:1.25rem;font-size:0.875rem">Albums hold your RAW files for compositing. Create one to get started.</div><div class="empty-workflow"><div class="empty-workflow-step">1. Create an album</div><div class="empty-workflow-arrow">→</div><div class="empty-workflow-step">2. Upload RAW photos</div><div class="empty-workflow-arrow">→</div><div class="empty-workflow-step">3. Composite ✨</div></div></div>';
     return;
   }
   el.innerHTML = albums.map(a => `
@@ -842,7 +935,7 @@ async function loadProjects() {
     const projects = data.projects || data;
     const el = document.getElementById('projects-list');
     if (!projects.length) {
-      el.innerHTML = '<div class="empty-state"><div class="empty-icon">✨</div><div>No projects yet.</div></div>';
+      el.innerHTML = '<div class="empty-state"><div class="empty-icon">✨</div><div style="font-size:1.05rem;font-weight:600;color:#f0f0f0;margin-bottom:0.5rem">No composites yet</div><div style="font-size:0.875rem">Go to <span style="color:#a0b4ff;cursor:pointer" onclick="showPage(\'compositing\')">✨ Compositing</span> to start your first project.</div></div>';
       return;
     }
     el.innerHTML = projects.map(p => `
