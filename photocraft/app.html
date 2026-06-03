@@ -488,8 +488,8 @@ async function handleRegister(e) {
       email: document.getElementById('reg-email').value.trim(),
       password: document.getElementById('reg-password').value,
     });
-    showAuthSuccess('Check your email to verify your account.');
     showAuthTab('login');
+    showAuthSuccess('Check your email to verify your account.');
   } catch (err) {
     showAuthError(err.message || 'Registration failed');
   } finally {
