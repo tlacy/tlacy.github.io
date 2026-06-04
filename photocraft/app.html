@@ -709,7 +709,7 @@ async function openAlbum(albumId) {
     const album = data.album || data;
     document.getElementById('album-detail-title').textContent = album.title;
     showPage('album-detail');
-    renderAlbumPhotos(album.photos || []);
+    renderAlbumPhotos(data.photos || []); // photos is top-level in response, not album.photos
   } catch (err) {
     toast('Failed to load album', 'error');
   }
@@ -840,7 +840,8 @@ async function sendInvite() {
 async function loadCompositingAlbumOptions() {
   try {
     const data = await api('GET', '/api/albums');
-    const albums = data.albums || data;
+    // GET /api/albums returns { owned: [...], contributed: [...] } — no .albums field
+    const albums = [...(data.owned || []), ...(data.contributed || [])];
     const sel = document.getElementById('comp-album');
     sel.innerHTML = '<option value="">— select album —</option>' +
       albums.map(a => `<option value="${a.id}">${esc(a.title)}</option>`).join('');
@@ -853,7 +854,7 @@ document.getElementById('comp-album').addEventListener('change', async function 
   try {
     const data = await api('GET', `/api/albums/${albumId}`);
     const album = data.album || data;
-    renderCompPhotos(album.photos || []);
+    renderCompPhotos(data.photos || []); // photos is top-level in response, not album.photos
     document.getElementById('comp-photo-select').style.display = 'block';
   } catch {}
 });
