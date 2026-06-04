@@ -654,7 +654,10 @@ function showPage(name) {
 async function loadAlbums() {
   try {
     const data = await api('GET', '/api/albums');
-    renderAlbums(data.albums || data);
+    // Backend returns { owned: [...], contributed: [...] }
+    const owned = (data.owned || []).map(a => ({ ...a, role: 'owner' }));
+    const contributed = data.contributed || [];
+    renderAlbums([...owned, ...contributed]);
   } catch (err) {
     toast('Failed to load albums', 'error');
   }
