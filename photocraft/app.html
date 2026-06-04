@@ -127,9 +127,9 @@
     td { border-bottom: 1px solid rgba(255,255,255,0.04); }
     tr:last-child td { border-bottom: none; }
     .tag { display: inline-block; padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600; }
-    .tag-active, .tag-approved { background: rgba(82,196,26,0.1); color: #73d13d; }
+    .tag-active { background: rgba(82,196,26,0.1); color: #73d13d; }
     .tag-pending { background: rgba(250,173,20,0.15); color: #ffc53d; }
-    .tag-suspended, .tag-rejected { background: rgba(255,77,79,0.12); color: #ff8a8a; }
+    .tag-suspended { background: rgba(255,77,79,0.12); color: #ff8a8a; }
 
     /* ── Spinner ── */
     .spinner { width: 32px; height: 32px; border: 3px solid rgba(108,140,255,0.15); border-top-color: #6c8cff; border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto; }
@@ -140,28 +140,6 @@
     #toast.show { opacity: 1; transform: translateY(0); }
     #toast.toast-error { border-color: rgba(255,77,79,0.4); color: #ff8a8a; }
     #toast.toast-success { border-color: rgba(82,196,26,0.3); color: #73d13d; }
-
-    /* ── Guide / How it works ── */
-    .guide-section { margin-bottom: 2.5rem; }
-    .guide-section > h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 1.25rem; color: #f0f0f0; }
-    .guide-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-    .guide-step { background: #151515; border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 1.5rem; }
-    .guide-step-num { width: 28px; height: 28px; background: #6c8cff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: #fff; margin-bottom: 1rem; }
-    .guide-step h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .guide-step p { font-size: 0.8rem; color: #888; line-height: 1.55; }
-    .guide-techniques { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
-    .guide-technique { background: #151515; border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 1.5rem; }
-    .guide-tag { display: inline-block; padding: 0.2rem 0.6rem; background: rgba(108,140,255,0.15); color: #a0b4ff; border-radius: 6px; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.75rem; }
-    .guide-technique h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .guide-technique p { font-size: 0.8rem; color: #888; line-height: 1.55; margin-bottom: 0.6rem; }
-    .guide-hint-line { font-size: 0.75rem; color: #555; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.6rem; }
-    .guide-ai-box { background: rgba(108,140,255,0.05); border: 1px solid rgba(108,140,255,0.18); border-radius: 12px; padding: 1.5rem; margin-top: 1.25rem; }
-    .guide-ai-box h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .guide-ai-box p { font-size: 0.8rem; color: #888; line-height: 1.55; }
-    .technique-hint { font-size: 0.7rem; color: #555; margin-top: 0.3rem; line-height: 1.4; }
-    .empty-workflow { display: flex; align-items: center; justify-content: center; gap: 0.6rem; margin-top: 1.25rem; flex-wrap: wrap; }
-    .empty-workflow-step { background: #1a1a1a; border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 0.45rem 0.85rem; font-size: 0.78rem; color: #999; }
-    .empty-workflow-arrow { color: #444; font-size: 0.8rem; }
   </style>
 </head>
 <body>
@@ -224,8 +202,6 @@
       <div class="sidebar-item" onclick="showPage('projects')" id="nav-projects">📊 Projects</div>
       <div class="sidebar-section" id="admin-section" style="display:none">Admin</div>
       <div class="sidebar-item" onclick="showPage('admin')" id="nav-admin" style="display:none">⚙️ Admin</div>
-      <div style="flex:1"></div>
-      <div class="sidebar-item" onclick="showPage('guide')" id="nav-guide">❓ Guide</div>
     </div>
     <div id="content">
 
@@ -287,22 +263,18 @@
               <div class="technique-option selected" onclick="selectTechnique('hdr',this)">
                 <div class="technique-name">HDR</div>
                 <div class="technique-desc">Exposure fusion for bracket sets</div>
-                <div class="technique-hint">3–7 exposures · landscapes &amp; architecture</div>
               </div>
               <div class="technique-option" onclick="selectTechnique('focus_stack',this)">
                 <div class="technique-name">Focus Stack</div>
                 <div class="technique-desc">Combine focus planes</div>
-                <div class="technique-hint">4–20+ shots at different distances · macro</div>
               </div>
               <div class="technique-option" onclick="selectTechnique('best_blend',this)">
                 <div class="technique-name">Best Blend</div>
                 <div class="technique-desc">Sharpest frames blended</div>
-                <div class="technique-hint">Burst or sequential · wildlife &amp; portraits</div>
               </div>
               <div class="technique-option" onclick="selectTechnique('panorama',this)">
                 <div class="technique-name">Panorama</div>
                 <div class="technique-desc">Stitch overlapping frames</div>
-                <div class="technique-hint">2–20+ frames · 30%+ overlap · wide landscapes</div>
               </div>
             </div>
           </div>
@@ -340,66 +312,6 @@
           <thead><tr><th>Email</th><th>Name</th><th>Status</th><th>Photos</th><th>Storage</th><th>Actions</th></tr></thead>
           <tbody id="admin-users-body"></tbody>
         </table>
-      </div>
-
-      <!-- Guide page -->
-      <div id="page-guide" class="page">
-        <div class="page-header">
-          <div class="page-title">How it works</div>
-        </div>
-        <div class="guide-section">
-          <h2>Three steps</h2>
-          <div class="guide-steps">
-            <div class="guide-step">
-              <div class="guide-step-num">1</div>
-              <h3>Create an Album</h3>
-              <p>Albums organize your RAW files by shoot. Create one per project — a landscape bracket set, a macro session, a panorama sequence. Albums are private by default; make one public to share a link with clients.</p>
-            </div>
-            <div class="guide-step">
-              <div class="guide-step-num">2</div>
-              <h3>Upload RAW Photos</h3>
-              <p>Open an album and upload your NEF, DNG, CR3, ARW, TIFF, or JPEG files directly to the cloud. Files go straight to S3 via presigned URLs — no server in the middle, no per-file size limits.</p>
-            </div>
-            <div class="guide-step">
-              <div class="guide-step-num">3</div>
-              <h3>Composite</h3>
-              <p>Go to <strong style="color:#f0f0f0">✨ Compositing</strong>, select your album, choose photos, and pick a technique. Hit <em>Start Compositing</em> — the job runs in a cloud container using rawpy + OpenCV. Check <strong style="color:#f0f0f0">📊 Projects</strong> for your result.</p>
-            </div>
-          </div>
-        </div>
-        <div class="guide-section">
-          <h2>Compositing techniques</h2>
-          <div class="guide-techniques">
-            <div class="guide-technique">
-              <div class="guide-tag">HDR</div>
-              <h3>Exposure Fusion (Mertens)</h3>
-              <p>Bracket 3–7 exposures and merge them into one image with natural tone mapping. AlignMTB handles slight movement between shots — no tripod required, though it helps.</p>
-              <div class="guide-hint-line">📷 3–7 exposures · ±2 stop bracket · landscapes &amp; architecture</div>
-            </div>
-            <div class="guide-technique">
-              <div class="guide-tag">Focus Stack</div>
-              <h3>Laplacian Focus Stacking</h3>
-              <p>Combine images at different focus distances into one fully-sharp result. Each frame contributes its sharpest region using Laplacian-based focus detection.</p>
-              <div class="guide-hint-line">📷 4–20+ photos · step focus through subject · macro &amp; close-up</div>
-            </div>
-            <div class="guide-technique">
-              <div class="guide-tag">Best Blend</div>
-              <h3>Sharpness-Weighted Blend</h3>
-              <p>Score all images by sharpness and blend the top performers. Great for burst shooting — the AI picks the best frames automatically.</p>
-              <div class="guide-hint-line">📷 2–20+ photos · burst or sequential shots · wildlife, sports &amp; portraits</div>
-            </div>
-            <div class="guide-technique">
-              <div class="guide-tag">Panorama</div>
-              <h3>OpenCV Stitcher</h3>
-              <p>Automatically stitch overlapping horizontal frames into a wide panorama. OpenCV detects feature points and blends the seams.</p>
-              <div class="guide-hint-line">📷 2–20+ frames · 30%+ overlap between shots · wide landscapes &amp; cityscapes</div>
-            </div>
-          </div>
-          <div class="guide-ai-box">
-            <h3>🧠 Not sure which technique to use?</h3>
-            <p>On the Compositing page, hit <strong style="color:#a0b4ff">Ask AI</strong> before you start. Claude analyzes your photo metadata — exposure values, file names, focus distances, timestamps — and recommends the best technique for your set. It's a free second opinion before the job runs.</p>
-          </div>
-        </div>
       </div>
 
     </div><!-- /content -->
@@ -473,6 +385,7 @@ let currentAlbumId = null;
 let selectedTechnique = 'hdr';
 let selectedPhotoIds = new Set();
 let projectPollInterval = null;
+let currentCompProjectId = null;
 
 // ── Auth utils ────────────────────────────────────────────────────────────────
 
@@ -481,11 +394,6 @@ function getUser() {
   try { return JSON.parse(localStorage.getItem('photocraft_user') || 'null'); } catch { return null; }
 }
 function setAuth(token, user) {
-  console.debug('[setAuth] token:', token ? token.substring(0, 25) + '…' : `MISSING(${token})`, '| user:', user?.email);
-  if (!token) {
-    console.error('[setAuth] Refusing to store null/undefined token — login may have returned unexpected shape');
-    return;
-  }
   localStorage.setItem('photocraft_token', token);
   localStorage.setItem('photocraft_user', JSON.stringify(user));
 }
@@ -498,7 +406,6 @@ function clearAuth() {
 
 async function api(method, path, body) {
   const token = getToken();
-  console.debug('[api]', method, path, '| token:', token ? token.substring(0, 20) + '…' : `NULL(${token})`);
   const opts = {
     method,
     headers: { 'Content-Type': 'application/json' },
@@ -507,10 +414,6 @@ async function api(method, path, body) {
   if (body) opts.body = JSON.stringify(body);
   const res = await fetch(API_URL + path, opts);
   const data = await res.json().catch(() => ({}));
-  if (res.status === 401) {
-    logout();
-    throw Object.assign(new Error('Session expired. Please sign in again.'), { status: 401 });
-  }
   if (!res.ok) throw Object.assign(new Error(data.error || 'Request failed'), { status: res.status });
   return data;
 }
@@ -661,10 +564,7 @@ function showPage(name) {
 async function loadAlbums() {
   try {
     const data = await api('GET', '/api/albums');
-    // Backend returns { owned: [...], contributed: [...] }
-    const owned = (data.owned || []).map(a => ({ ...a, role: 'owner' }));
-    const contributed = data.contributed || [];
-    renderAlbums([...owned, ...contributed]);
+    renderAlbums(data.albums || data);
   } catch (err) {
     toast('Failed to load albums', 'error');
   }
@@ -673,7 +573,7 @@ async function loadAlbums() {
 function renderAlbums(albums) {
   const el = document.getElementById('albums-list');
   if (!albums.length) {
-    el.innerHTML = '<div class="empty-state"><div class="empty-icon">📁</div><div style="font-size:1.05rem;font-weight:600;color:#f0f0f0;margin-bottom:0.5rem">No albums yet</div><div style="margin-bottom:1.25rem;font-size:0.875rem">Albums hold your RAW files for compositing. Create one to get started.</div><div class="empty-workflow"><div class="empty-workflow-step">1. Create an album</div><div class="empty-workflow-arrow">→</div><div class="empty-workflow-step">2. Upload RAW photos</div><div class="empty-workflow-arrow">→</div><div class="empty-workflow-step">3. Composite ✨</div></div></div>';
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">📁</div><div>No albums yet. Create your first album.</div></div>';
     return;
   }
   el.innerHTML = albums.map(a => `
@@ -709,7 +609,7 @@ async function openAlbum(albumId) {
     const album = data.album || data;
     document.getElementById('album-detail-title').textContent = album.title;
     showPage('album-detail');
-    renderAlbumPhotos(data.photos || []); // photos is top-level in response, not album.photos
+    renderAlbumPhotos(data.photos || []);
   } catch (err) {
     toast('Failed to load album', 'error');
   }
@@ -797,6 +697,7 @@ async function handleFiles(files) {
         albumId: currentAlbumId,
         filename: file.name,
         contentType: file.type || 'application/octet-stream',
+        fileSizeBytes: file.size,
       });
       setStatus('Uploading to S3…', 20);
 
@@ -810,7 +711,7 @@ async function handleFiles(files) {
       setStatus('Confirming…', 80);
 
       // Confirm upload
-      await api('POST', '/api/photos/confirm', { photoId, fileSizeBytes: file.size });
+      await api('POST', '/api/photos/confirm', { photoId });
       setStatus('✅ Uploaded — generating preview…', 100);
     } catch (err) {
       document.getElementById(`${itemId}-status`).textContent = '❌ ' + (err.message || 'Upload failed');
@@ -840,8 +741,7 @@ async function sendInvite() {
 async function loadCompositingAlbumOptions() {
   try {
     const data = await api('GET', '/api/albums');
-    // GET /api/albums returns { owned: [...], contributed: [...] } — no .albums field
-    const albums = [...(data.owned || []), ...(data.contributed || [])];
+    const albums = data.albums || data;
     const sel = document.getElementById('comp-album');
     sel.innerHTML = '<option value="">— select album —</option>' +
       albums.map(a => `<option value="${a.id}">${esc(a.title)}</option>`).join('');
@@ -850,11 +750,11 @@ async function loadCompositingAlbumOptions() {
 
 document.getElementById('comp-album').addEventListener('change', async function () {
   const albumId = this.value;
+  currentCompProjectId = null;
   if (!albumId) { document.getElementById('comp-photo-select').style.display = 'none'; return; }
   try {
     const data = await api('GET', `/api/albums/${albumId}`);
-    const album = data.album || data;
-    renderCompPhotos(data.photos || []); // photos is top-level in response, not album.photos
+    renderCompPhotos(data.photos || []);
     document.getElementById('comp-photo-select').style.display = 'block';
   } catch {}
 });
@@ -890,20 +790,32 @@ function selectTechnique(tech, el) {
 
 async function analyzeWithAI() {
   if (!selectedPhotoIds.size) { toast('Select photos first', 'error'); return; }
+  const albumId = document.getElementById('comp-album').value;
+  if (!albumId) { toast('Select an album first', 'error'); return; }
+  const title = document.getElementById('comp-title').value.trim();
+  if (!title) { toast('Enter a project title to use AI analysis', 'error'); return; }
   const btn = document.getElementById('ai-btn');
-  btn.textContent = '⏳ Analyzing…'; btn.disabled = true;
+  btn.textContent = '⏳ Creating project…'; btn.disabled = true;
   try {
-    const albumId = document.getElementById('comp-album').value;
-    const data = await api('POST', '/api/compositing/analyze', {
-      album_id: albumId,
-      photo_ids: Array.from(selectedPhotoIds),
-      technique: selectedTechnique,
-    });
+    // Analyze endpoint requires a project ID — create project first if not already done
+    if (!currentCompProjectId) {
+      const created = await api('POST', '/api/compositing/', {
+        title,
+        album_id: albumId,
+        technique: selectedTechnique,
+        photo_ids: Array.from(selectedPhotoIds),
+      });
+      currentCompProjectId = created.project?.id;
+    }
+    btn.textContent = '⏳ Analyzing…';
+    const data = await api('POST', `/api/compositing/${currentCompProjectId}/analyze`, {});
+    const plan = data.plan;
     const box = document.getElementById('ai-plan-box');
-    box.textContent = data.plan || data.recommendation || JSON.stringify(data, null, 2);
+    box.textContent = plan ? (typeof plan === 'object' ? JSON.stringify(plan, null, 2) : plan) : 'Analysis complete';
     box.style.display = 'block';
   } catch (err) {
     toast(err.message || 'AI analysis failed', 'error');
+    currentCompProjectId = null;
   } finally {
     btn.textContent = '🧠 Ask AI'; btn.disabled = false;
   }
@@ -919,17 +831,25 @@ async function createProject() {
   const btn = document.getElementById('create-comp-btn');
   btn.textContent = '⏳ Starting…'; btn.disabled = true;
   try {
-    const aiPlan = document.getElementById('ai-plan-box').textContent;
-    const data = await api('POST', '/api/compositing', {
-      title,
-      album_id: albumId,
-      technique: selectedTechnique,
-      photo_ids: Array.from(selectedPhotoIds),
-      ai_plan: aiPlan || null,
-    });
+    let projectId = currentCompProjectId;
+    if (!projectId) {
+      // Create project (no auto-start — must call /start explicitly)
+      const aiPlan = document.getElementById('ai-plan-box').textContent;
+      const data = await api('POST', '/api/compositing/', {
+        title,
+        album_id: albumId,
+        technique: selectedTechnique,
+        photo_ids: Array.from(selectedPhotoIds),
+        ai_plan: aiPlan || null,
+      });
+      projectId = data.project?.id;
+    }
+    // Trigger the Python composite Lambda
+    await api('POST', `/api/compositing/${projectId}/start`, {});
+    currentCompProjectId = null;
     toast('Compositing started!', 'success');
     showPage('projects');
-    openProjectDetail(data.project_id || data.id);
+    openProjectDetail(projectId);
   } catch (err) {
     toast(err.message || 'Failed to create project', 'error');
   } finally {
@@ -945,7 +865,7 @@ async function loadProjects() {
     const projects = data.projects || data;
     const el = document.getElementById('projects-list');
     if (!projects.length) {
-      el.innerHTML = '<div class="empty-state"><div class="empty-icon">✨</div><div style="font-size:1.05rem;font-weight:600;color:#f0f0f0;margin-bottom:0.5rem">No composites yet</div><div style="font-size:0.875rem">Go to <span style="color:#a0b4ff;cursor:pointer" onclick="showPage(\'compositing\')">✨ Compositing</span> to start your first project.</div></div>';
+      el.innerHTML = '<div class="empty-state"><div class="empty-icon">✨</div><div>No projects yet.</div></div>';
       return;
     }
     el.innerHTML = projects.map(p => `
@@ -1018,13 +938,12 @@ async function loadAdmin() {
       api('GET', '/api/admin/users'),
     ]);
     const stats = statsData.stats || statsData;
-    const pendingCount = stats.pendingApprovals || 0;
     document.getElementById('admin-stats').innerHTML = [
-      ['Total Users', stats.totalUsers || 0],
-      ['Pending Approval', pendingCount],
-      ['Photos', stats.totalPhotos || 0],
-      ['Projects', stats.totalProjects || 0],
-    ].map(([label, val], i) => `<div class="stat-card" style="${i===1 && val>0 ? 'border-color:rgba(250,173,20,0.4)' : ''}"><div class="stat-value" style="${i===1 && val>0 ? 'color:#ffc53d' : ''}">${val}</div><div class="stat-label">${label}</div></div>`).join('');
+      ['Total Users', stats.total_users || 0],
+      ['Active', stats.active_users || 0],
+      ['Photos', stats.total_photos || 0],
+      ['Projects', stats.total_projects || 0],
+    ].map(([label, val]) => `<div class="stat-card"><div class="stat-value">${val}</div><div class="stat-label">${label}</div></div>`).join('');
 
     const users = usersData.users || usersData;
     const tbody = document.getElementById('admin-users-body');
@@ -1036,8 +955,8 @@ async function loadAdmin() {
         <td>${u.photo_count || 0}</td>
         <td>${((u.storage_used_bytes || 0) / 1024 / 1024).toFixed(0)} MB</td>
         <td>
-          ${u.status !== 'approved' ? `<button class="btn btn-ghost btn-sm" onclick="setUserStatus('${u.id}','approved')">Approve</button>` : ''}
-          ${u.status !== 'rejected' ? `<button class="btn btn-danger btn-sm" style="margin-left:4px" onclick="setUserStatus('${u.id}','rejected')">Reject</button>` : ''}
+          ${u.status !== 'active' ? `<button class="btn btn-ghost btn-sm" onclick="setUserStatus('${u.id}','active')">Activate</button>` : ''}
+          ${u.status !== 'suspended' ? `<button class="btn btn-danger btn-sm" style="margin-left:4px" onclick="setUserStatus('${u.id}','suspended')">Suspend</button>` : ''}
         </td>
       </tr>
     `).join('');
