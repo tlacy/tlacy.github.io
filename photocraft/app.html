@@ -783,16 +783,15 @@ async function handleFiles(files) {
       };
 
       // Get presigned PUT URL
-      const { upload_url, photo_id } = await api('POST', '/api/photos/upload-url', {
-        album_id: currentAlbumId,
+      const { uploadUrl, photoId } = await api('POST', '/api/photos/upload-url', {
+        albumId: currentAlbumId,
         filename: file.name,
-        content_type: file.type || 'application/octet-stream',
-        file_size_bytes: file.size,
+        contentType: file.type || 'application/octet-stream',
       });
       setStatus('Uploading to S3…', 20);
 
       // PUT directly to S3 (bypasses Lambda 6MB limit)
-      const putRes = await fetch(upload_url, {
+      const putRes = await fetch(uploadUrl, {
         method: 'PUT',
         body: file,
         headers: { 'Content-Type': file.type || 'application/octet-stream' },
@@ -801,7 +800,7 @@ async function handleFiles(files) {
       setStatus('Confirming…', 80);
 
       // Confirm upload
-      await api('POST', '/api/photos/confirm', { photo_id, album_id: currentAlbumId });
+      await api('POST', '/api/photos/confirm', { photoId, fileSizeBytes: file.size });
       setStatus('✅ Uploaded — generating preview…', 100);
     } catch (err) {
       document.getElementById(`${itemId}-status`).textContent = '❌ ' + (err.message || 'Upload failed');
@@ -910,7 +909,7 @@ async function createProject() {
   btn.textContent = '⏳ Starting…'; btn.disabled = true;
   try {
     const aiPlan = document.getElementById('ai-plan-box').textContent;
-    const data = await api('POST', '/api/compositing/projects', {
+    const data = await api('POST', '/api/compositing', {
       title,
       album_id: albumId,
       technique: selectedTechnique,
@@ -931,7 +930,7 @@ async function createProject() {
 
 async function loadProjects() {
   try {
-    const data = await api('GET', '/api/compositing/projects');
+    const data = await api('GET', '/api/compositing');
     const projects = data.projects || data;
     const el = document.getElementById('projects-list');
     if (!projects.length) {
@@ -952,7 +951,7 @@ async function loadProjects() {
 
 async function openProjectDetail(projectId) {
   try {
-    const data = await api('GET', `/api/compositing/projects/${projectId}`);
+    const data = await api('GET', `/api/compositing/${projectId}`);
     const project = data.project || data;
     document.getElementById('project-detail-title').textContent = project.title;
     showPage('project-detail');
@@ -983,7 +982,7 @@ function startProjectPolling(projectId) {
   if (projectPollInterval) clearInterval(projectPollInterval);
   projectPollInterval = setInterval(async () => {
     try {
-      const data = await api('GET', `/api/compositing/projects/${projectId}/status`);
+      const data = await api('GET', `/api/compositing/${projectId}/status`);
       const status = data.status;
       if (status === 'complete' || status === 'failed') {
         clearInterval(projectPollInterval);
