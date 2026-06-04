@@ -482,7 +482,10 @@ function getUser() {
 }
 function setAuth(token, user) {
   console.debug('[setAuth] token:', token ? token.substring(0, 25) + '…' : `MISSING(${token})`, '| user:', user?.email);
-  if (!token) { console.error('[setAuth] WARNING: storing null/undefined token!'); }
+  if (!token) {
+    console.error('[setAuth] Refusing to store null/undefined token — login may have returned unexpected shape');
+    return;
+  }
   localStorage.setItem('photocraft_token', token);
   localStorage.setItem('photocraft_user', JSON.stringify(user));
 }
@@ -504,6 +507,10 @@ async function api(method, path, body) {
   if (body) opts.body = JSON.stringify(body);
   const res = await fetch(API_URL + path, opts);
   const data = await res.json().catch(() => ({}));
+  if (res.status === 401) {
+    logout();
+    throw Object.assign(new Error('Session expired. Please sign in again.'), { status: 401 });
+  }
   if (!res.ok) throw Object.assign(new Error(data.error || 'Request failed'), { status: res.status });
   return data;
 }
