@@ -404,7 +404,7 @@ const API_URL = (window.location.hostname === 'localhost' || window.location.hos
   ? 'http://localhost:3000'
   : 'https://7crb0oaiba.execute-api.us-east-1.amazonaws.com';
 
-const APP_VERSION = '585c7d0 (2026-06-12 12:27)';
+const APP_VERSION = '585c7d0 (2026-06-12 12:34)';
 
 // ── State ────────────────────────────────────────────────────────────────────
 
@@ -1156,7 +1156,7 @@ function esc(str) {
     document.getElementById('auth-page').style.display = 'flex';
     if (window.location.hash === '#register') showAuthTab('register');
   }
-  // Build stamp: deploy-frontend.sh replaces 585c7d0 (2026-06-12 12:27) with "<git-hash> (YYYY-MM-DD HH:MM)".
+  // Build stamp: deploy-frontend.sh replaces 585c7d0 (2026-06-12 12:34) with "<git-hash> (YYYY-MM-DD HH:MM)".
   // If the placeholder is still present, this is an un-built local copy.
   const APP_BUILD = APP_VERSION.includes('%%') ? 'dev (local, unbuilt)' : APP_VERSION;
   console.log(`%cPhotoCraft%c build ${APP_BUILD}`, 'font-weight:bold', 'color:#888');
