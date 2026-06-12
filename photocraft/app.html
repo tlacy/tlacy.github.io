@@ -404,7 +404,7 @@ const API_URL = (window.location.hostname === 'localhost' || window.location.hos
   ? 'http://localhost:3000'
   : 'https://7crb0oaiba.execute-api.us-east-1.amazonaws.com';
 
-const APP_VERSION = '010688f (2026-06-12 11:51)';
+const APP_VERSION = '585c7d0 (2026-06-12 12:27)';
 
 // ── State ────────────────────────────────────────────────────────────────────
 
@@ -1064,7 +1064,22 @@ function renderProjectDetail(project) {
 
 function startProjectPolling(projectId) {
   if (projectPollInterval) clearInterval(projectPollInterval);
+  // Cap polling so a stuck backend can't poll forever. Composite Lambda times
+  // out at 900s; cap at 120 polls × 5s = 10 min, then surface a timeout.
+  const MAX_POLLS = 120;
+  let polls = 0;
   projectPollInterval = setInterval(async () => {
+    polls++;
+    if (polls > MAX_POLLS) {
+      clearInterval(projectPollInterval);
+      projectPollInterval = null;
+      const body = document.getElementById('project-detail-body');
+      if (body) {
+        body.innerHTML = `<div class="empty-state"><div class="empty-icon">⏱️</div><div>Still working… this is taking longer than expected. <button class="btn btn-ghost btn-sm" onclick="openProjectDetail('${projectId}')">Check again</button></div></div>`;
+      }
+      toast('Compositing is taking longer than expected — check back shortly', 'error');
+      return;
+    }
     try {
       const data = await api('GET', `/api/compositing/${projectId}/status`);
       const status = data.status;
@@ -1141,7 +1156,7 @@ function esc(str) {
     document.getElementById('auth-page').style.display = 'flex';
     if (window.location.hash === '#register') showAuthTab('register');
   }
-  // Build stamp: deploy-frontend.sh replaces 010688f (2026-06-12 11:51) with "<git-hash> (YYYY-MM-DD HH:MM)".
+  // Build stamp: deploy-frontend.sh replaces 585c7d0 (2026-06-12 12:27) with "<git-hash> (YYYY-MM-DD HH:MM)".
   // If the placeholder is still present, this is an un-built local copy.
   const APP_BUILD = APP_VERSION.includes('%%') ? 'dev (local, unbuilt)' : APP_VERSION;
   console.log(`%cPhotoCraft%c build ${APP_BUILD}`, 'font-weight:bold', 'color:#888');
