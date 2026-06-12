@@ -83,6 +83,11 @@
     .photo-thumb-info { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 0.5rem; }
     .photo-thumb-name { font-size: 0.7rem; color: #ddd; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .photo-status-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+    .photo-thumb-actions { position: absolute; top: 0.4rem; right: 0.4rem; display: flex; gap: 0.3rem; opacity: 0; transition: opacity 0.15s; }
+    .photo-thumb:hover .photo-thumb-actions, .photo-thumb:focus-within .photo-thumb-actions { opacity: 1; }
+    .photo-action-btn { width: 28px; height: 28px; border: none; border-radius: 6px; background: rgba(0,0,0,0.65); color: #fff; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .photo-action-btn:hover { background: rgba(0,0,0,0.9); }
+    @media (max-width: 768px) { .photo-thumb-actions { opacity: 1; } }
     .dot-ready { background: #73d13d; }
     .dot-pending { background: #ffc53d; }
     .dot-failed { background: #ff4d4f; }
@@ -222,6 +227,8 @@
             <div class="page-title" id="album-detail-title"></div>
           </div>
           <div style="display:flex;gap:0.5rem">
+            <button class="btn btn-ghost btn-sm" id="album-edit-btn" onclick="openEditAlbum()" style="display:none">Edit</button>
+            <button class="btn btn-ghost btn-sm" id="album-delete-btn" onclick="deleteAlbumConfirm()" style="display:none">Delete</button>
             <button class="btn btn-ghost btn-sm" onclick="openInviteModal()">Invite</button>
             <button class="btn btn-primary btn-sm" onclick="openUploadModal()">Upload Photos</button>
           </div>
@@ -339,6 +346,27 @@
   </div>
 </div>
 
+<!-- Edit Album Modal -->
+<div id="modal-album-edit" class="modal-overlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-album-edit')">✕</button>
+    <div class="modal-title">Edit Album</div>
+    <div class="form-group"><label>Title</label><input type="text" id="album-edit-title" /></div>
+    <div class="form-group"><label>Description (optional)</label><input type="text" id="album-edit-desc" /></div>
+    <div class="form-group">
+      <label>Visibility</label>
+      <select id="album-edit-visibility" style="width:100%;padding:0.7rem;background:#1e1e1e;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#f0f0f0">
+        <option value="private">Private</option>
+        <option value="public">Public (shareable link)</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-album-edit')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveAlbumEdit()">Save</button>
+    </div>
+  </div>
+</div>
+
 <!-- Invite Modal -->
 <div id="modal-invite" class="modal-overlay">
   <div class="modal">
@@ -376,12 +404,14 @@ const API_URL = (window.location.hostname === 'localhost' || window.location.hos
   ? 'http://localhost:3000'
   : 'https://7crb0oaiba.execute-api.us-east-1.amazonaws.com';
 
-const APP_VERSION = '37263d1 (2026-06-12 08:50)';
+const APP_VERSION = '010688f (2026-06-12 11:51)';
 
 // ── State ────────────────────────────────────────────────────────────────────
 
 let currentUser = null;
 let currentAlbumId = null;
+let currentAlbum = null;
+let currentAlbumIsOwner = false;
 let selectedTechnique = 'hdr';
 let selectedPhotoIds = new Set();
 let projectPollInterval = null;
@@ -414,7 +444,15 @@ async function api(method, path, body) {
   if (body) opts.body = JSON.stringify(body);
   const res = await fetch(API_URL + path, opts);
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw Object.assign(new Error(data.error || 'Request failed'), { status: res.status });
+  if (!res.ok) {
+    // Session expired / not authenticated: clear stale session and return to login
+    // so an expired token never silently shows stale data then 401s on the next click.
+    // Skip auth endpoints (a 401 there is a normal "wrong credentials" response).
+    if (res.status === 401 && !path.startsWith('/api/auth/')) {
+      handleSessionExpired();
+    }
+    throw Object.assign(new Error(data.error || 'Request failed'), { status: res.status });
+  }
   return data;
 }
 
@@ -522,6 +560,24 @@ function logout() {
   showAuthTab('login');
 }
 
+// Called by api() when a request returns 401. Clears the stale session and
+// returns the user to the login screen so an expired token can't masquerade
+// as a broken feature (e.g. album list renders, then clicking 401s).
+let sessionExpiredHandled = false;
+function handleSessionExpired() {
+  if (sessionExpiredHandled) return; // avoid double toast on parallel calls
+  sessionExpiredHandled = true;
+  clearAuth();
+  if (projectPollInterval) clearInterval(projectPollInterval);
+  const app = document.getElementById('app');
+  const authPage = document.getElementById('auth-page');
+  if (app) app.style.display = 'none';
+  if (authPage) authPage.style.display = 'flex';
+  showAuthTab('login');
+  toast('Your session expired. Please log in again.', 'error');
+  setTimeout(() => { sessionExpiredHandled = false; }, 1000);
+}
+
 // ── App bootstrap ─────────────────────────────────────────────────────────────
 
 function showApp() {
@@ -617,11 +673,57 @@ async function openAlbum(albumId) {
   try {
     const data = await api('GET', `/api/albums/${albumId}`);
     const album = data.album || data;
+    currentAlbum = album;
+    currentAlbumIsOwner = data.isOwner === true;
     document.getElementById('album-detail-title').textContent = album.title;
+    // Owner-only management controls
+    document.getElementById('album-edit-btn').style.display = currentAlbumIsOwner ? '' : 'none';
+    document.getElementById('album-delete-btn').style.display = currentAlbumIsOwner ? '' : 'none';
     showPage('album-detail');
     renderAlbumPhotos(data.photos || []);
   } catch (err) {
     toast('Failed to load album', 'error');
+  }
+}
+
+// ── Album management (rename / edit / delete) ───────────────────────────────────
+
+function openEditAlbum() {
+  if (!currentAlbum) return;
+  document.getElementById('album-edit-title').value = currentAlbum.title || '';
+  document.getElementById('album-edit-desc').value = currentAlbum.description || '';
+  document.getElementById('album-edit-visibility').value = currentAlbum.visibility || 'private';
+  openModal('modal-album-edit');
+}
+
+async function saveAlbumEdit() {
+  try {
+    const data = await api('PUT', `/api/albums/${currentAlbumId}`, {
+      title: document.getElementById('album-edit-title').value.trim(),
+      description: document.getElementById('album-edit-desc').value.trim(),
+      visibility: document.getElementById('album-edit-visibility').value,
+    });
+    currentAlbum = data.album || currentAlbum;
+    document.getElementById('album-detail-title').textContent = currentAlbum.title;
+    closeModal('modal-album-edit');
+    toast('Album updated', 'success');
+  } catch (err) {
+    toast(err.message || 'Failed to update album', 'error');
+  }
+}
+
+async function deleteAlbumConfirm() {
+  if (!currentAlbumId) return;
+  if (!confirm('Delete this album? Photos will be kept but removed from the album.')) return;
+  try {
+    await api('DELETE', `/api/albums/${currentAlbumId}`);
+    toast('Album deleted', 'success');
+    currentAlbumId = null;
+    currentAlbum = null;
+    showPage('albums');
+    loadAlbums();
+  } catch (err) {
+    toast(err.message || 'Failed to delete album', 'error');
   }
 }
 
@@ -640,13 +742,54 @@ function photoThumbHtml(photo) {
   const statusDot = photo.preview_status === 'ready' ? 'dot-ready'
     : photo.preview_status === 'failed' ? 'dot-failed' : 'dot-pending';
   const imgSrc = photo.preview_url || '';
+  const name = photo.original_filename || photo.filename || 'photo';
+  // encodeURIComponent does NOT escape single quotes, which would break the
+  // single-quoted onclick attribute (see elawnaustin pitfall #47) — escape them too.
+  const encName = encodeURIComponent(photo.title || name).replace(/'/g, '%27');
   return `<div class="photo-thumb">
     ${imgSrc ? `<img src="${esc(imgSrc)}" loading="lazy" />` : '<div style="width:100%;height:100%;background:#1a1a1a"></div>'}
+    <div class="photo-thumb-actions">
+      <button class="photo-action-btn" title="Rename" onclick="renamePhotoPrompt('${photo.id}', '${encName}')">✎</button>
+      <button class="photo-action-btn" title="Delete" onclick="deletePhotoConfirm('${photo.id}')">🗑</button>
+    </div>
     <div class="photo-thumb-info">
       <span class="photo-status-dot ${statusDot}"></span>
-      <span class="photo-thumb-name">${esc(photo.original_filename || photo.filename || 'photo')}</span>
+      <span class="photo-thumb-name">${esc(photo.title || name)}</span>
     </div>
   </div>`;
+}
+
+async function renamePhotoPrompt(photoId, encodedCurrent) {
+  const current = decodeURIComponent(encodedCurrent || '');
+  const next = prompt('Rename photo:', current);
+  if (next === null) return; // cancelled
+  try {
+    await api('PUT', `/api/photos/${photoId}`, { title: next.trim() });
+    toast('Photo renamed', 'success');
+    refreshCurrentPhotoView();
+  } catch (err) {
+    toast(err.message || 'Failed to rename photo', 'error');
+  }
+}
+
+async function deletePhotoConfirm(photoId) {
+  if (!confirm('Delete this photo permanently?')) return;
+  try {
+    await api('DELETE', `/api/photos/${photoId}`);
+    toast('Photo deleted', 'success');
+    refreshCurrentPhotoView();
+  } catch (err) {
+    toast(err.message || 'Failed to delete photo', 'error');
+  }
+}
+
+// Re-render whichever photo view is currently showing.
+function refreshCurrentPhotoView() {
+  if (currentAlbumId && document.getElementById('page-album-detail').classList.contains('active')) {
+    openAlbum(currentAlbumId);
+  } else {
+    loadAllPhotos();
+  }
 }
 
 async function loadAllPhotos() {
@@ -998,7 +1141,7 @@ function esc(str) {
     document.getElementById('auth-page').style.display = 'flex';
     if (window.location.hash === '#register') showAuthTab('register');
   }
-  // Build stamp: deploy-frontend.sh replaces 37263d1 (2026-06-12 08:50) with "<git-hash> (YYYY-MM-DD HH:MM)".
+  // Build stamp: deploy-frontend.sh replaces 010688f (2026-06-12 11:51) with "<git-hash> (YYYY-MM-DD HH:MM)".
   // If the placeholder is still present, this is an un-built local copy.
   const APP_BUILD = APP_VERSION.includes('%%') ? 'dev (local, unbuilt)' : APP_VERSION;
   console.log(`%cPhotoCraft%c build ${APP_BUILD}`, 'font-weight:bold', 'color:#888');
