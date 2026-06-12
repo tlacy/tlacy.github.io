@@ -376,7 +376,7 @@ const API_URL = (window.location.hostname === 'localhost' || window.location.hos
   ? 'http://localhost:3000'
   : 'https://7crb0oaiba.execute-api.us-east-1.amazonaws.com';
 
-const APP_VERSION = '%%APP_VERSION%%';
+const APP_VERSION = '37263d1 (2026-06-12 08:50)';
 
 // ── State ────────────────────────────────────────────────────────────────────
 
@@ -564,10 +564,20 @@ function showPage(name) {
 async function loadAlbums() {
   try {
     const data = await api('GET', '/api/albums');
-    renderAlbums(data.albums || data);
+    renderAlbums(albumsFromResponse(data));
   } catch (err) {
     toast('Failed to load albums', 'error');
   }
+}
+
+// Backend GET /api/albums returns { owned, contributed }. Flatten to a single
+// array (owned albums default role 'owner'). Tolerates legacy array/`albums` shapes.
+function albumsFromResponse(data) {
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data.albums)) return data.albums;
+  const owned = (data.owned || []).map(a => ({ ...a, role: a.role || 'owner' }));
+  const contributed = data.contributed || [];
+  return [...owned, ...contributed];
 }
 
 function renderAlbums(albums) {
@@ -741,7 +751,7 @@ async function sendInvite() {
 async function loadCompositingAlbumOptions() {
   try {
     const data = await api('GET', '/api/albums');
-    const albums = data.albums || data;
+    const albums = albumsFromResponse(data);
     const sel = document.getElementById('comp-album');
     sel.innerHTML = '<option value="">— select album —</option>' +
       albums.map(a => `<option value="${a.id}">${esc(a.title)}</option>`).join('');
@@ -988,7 +998,10 @@ function esc(str) {
     document.getElementById('auth-page').style.display = 'flex';
     if (window.location.hash === '#register') showAuthTab('register');
   }
-  console.log('PhotoCraft', APP_VERSION);
+  // Build stamp: deploy-frontend.sh replaces 37263d1 (2026-06-12 08:50) with "<git-hash> (YYYY-MM-DD HH:MM)".
+  // If the placeholder is still present, this is an un-built local copy.
+  const APP_BUILD = APP_VERSION.includes('%%') ? 'dev (local, unbuilt)' : APP_VERSION;
+  console.log(`%cPhotoCraft%c build ${APP_BUILD}`, 'font-weight:bold', 'color:#888');
 })();
 </script>
 </body>
