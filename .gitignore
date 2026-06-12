@@ -5,3 +5,7 @@ tools/extractors/amazon-photos-extractor/node_modules
 # SECURITY: manage.html contains hardcoded password and should NEVER be deployed to production
 # Keep this file local-only for development purposes
 manage.html
+
+# Personal interview-prep files (not website content)
+novi-labs-interview-prep.mp3
+generate_audio_prep.py
