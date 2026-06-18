@@ -117,6 +117,62 @@
             </ul>
           </div>
 
+          <div class="ai-card project-card">
+            <h3>🍽️ weeklymealsai.com</h3>
+            <p class="project-status live">● Live at <a href="https://www.weeklymealsai.com" target="_blank" rel="noopener noreferrer">www.weeklymealsai.com</a></p>
+            <p>
+              AI weekly meal planner. Set your household size, diet, and budget&mdash;Claude
+              generates a full week of meals plus a consolidated grocery list.
+            </p>
+            <ul>
+              <li>Claude generates structured meal plans from natural-language preferences</li>
+              <li>Auto-built grocery lists with reliable recipe search links</li>
+              <li>Same serverless stack: Lambda + Aurora DSQL + API Gateway + CloudFront</li>
+            </ul>
+          </div>
+
+          <div class="ai-card project-card">
+            <h3>🌱 elawnaustin.com</h3>
+            <p class="project-status live">● Live at <a href="https://www.elawnaustin.com" target="_blank" rel="noopener noreferrer">www.elawnaustin.com</a></p>
+            <p>
+              Multi-tenant field-service invoicing SaaS. eLawn Austin is tenant #1; the platform
+              is built from day one to support any field-service contractor (lawn, sprinkler, HVAC, pool).
+            </p>
+            <ul>
+              <li>Strict multi-tenant data isolation&mdash;every query scoped by provider, cross-tenant tests required</li>
+              <li>Customer request → appointment → invoice → payment lifecycle</li>
+              <li>Reliability and security as the product&mdash;no AI, just rock-solid UX</li>
+            </ul>
+          </div>
+
+          <div class="ai-card project-card">
+            <h3>📷 PhotoCraft</h3>
+            <p class="project-status live">● Live at <a href="https://tomlacy.net/photocraft/" target="_blank" rel="noopener noreferrer">tomlacy.net/photocraft</a></p>
+            <p>
+              RAW photo compositing platform. Upload NEF/DNG/CR3/ARW files and build HDR,
+              focus-stack, best-blend, and panorama composites in the cloud.
+            </p>
+            <ul>
+              <li>Python Lambda containers running <strong>rawpy</strong> + <strong>OpenCV</strong> for real image science</li>
+              <li>Direct-to-S3 presigned uploads; async compositing with job-status polling</li>
+              <li>Solved real production hard problems: memory caps, linear-vs-sRGB gamma, OOM stale-job reapers</li>
+            </ul>
+          </div>
+
+          <div class="ai-card project-card">
+            <h3>🚀 AI Zero to One</h3>
+            <p class="project-status live">● Live at <a href="https://www.aizero2one.com" target="_blank" rel="noopener noreferrer">www.aizero2one.com</a></p>
+            <p>
+              The productized engine behind these apps: a production-grade AWS serverless SaaS
+              starter that takes you from idea to deployed product, with the agent guardrails baked in.
+            </p>
+            <ul>
+              <li>One-command provisioning of the full stack (Lambda, DSQL, API Gateway, S3/CloudFront, SES)</li>
+              <li>Tests, schema contracts, staging gate, and 100+ documented agent pitfalls included</li>
+              <li>Refined across six shipped products&mdash;every hard-won lesson rolled back into the template</li>
+            </ul>
+          </div>
+
         </div>
       </div>
     </section>
@@ -141,7 +197,7 @@
               <li>Agent writes tests first, catches its own errors, iterates without prompting</li>
               <li>Full-stack apps (DB schema → API → frontend → CI/CD) in days, not weeks</li>
               <li>Deep familiarity with where agents excel and where human judgment is irreplaceable</li>
-              <li>Documenting pitfalls and patterns in <a href="https://github.com/tlacy/diycarai/blob/main/.github/copilot-instructions.md" target="_blank" rel="noopener noreferrer">111+ agent instructions</a></li>
+              <li>Documenting pitfalls and patterns in <a href="https://github.com/tlacy/diycarai/blob/main/.github/copilot-instructions.md" target="_blank" rel="noopener noreferrer">100+ documented agent instructions</a> per project&mdash;a living playbook that gets tighter every session</li>
             </ul>
           </div>
 
@@ -198,12 +254,36 @@
             <li><strong>Security first:</strong> Zero-trust, defense in depth, OWASP compliance by default—not afterthought</li>
           </ul>
         </div>
+
+        <div class="tech-principles">
+          <h3>Lessons Learned Building Six Products with AI</h3>
+          <ul>
+            <li><strong>The model is the easy part:</strong> the hard part is the infrastructure, security, and test discipline around it</li>
+            <li><strong>Capture every pitfall:</strong> a documented mistake becomes a guardrail&mdash;the agent instruction files now prevent classes of bugs across every new project</li>
+            <li><strong>Test before browser:</strong> a 0.2s unit test beats a 10-minute deploy-and-check loop every time</li>
+            <li><strong>Own the mistake, fix it, write it down:</strong> the Responsibility Process applies to humans and agents alike</li>
+            <li><strong>Reuse the engine:</strong> each product feeds lessons back into a shared starter, so the next build starts further ahead</li>
+          </ul>
+        </div>
+
+        <div class="tech-principles">
+          <h3>Influences &amp; Staying Current</h3>
+          <p>
+            I keep this practice sharp by learning from the people pushing AI-augmented leadership
+            and engineering forward:
+          </p>
+          <ul>
+            <li><strong>Geoff Woods</strong> &mdash; <em>The AI-Driven Leader</em> (and his <a href="https://www.geoffwoods.com/" target="_blank" rel="noopener noreferrer">work on AI leadership</a>): using AI as a thought partner for better executive decisions, not just a productivity tool</li>
+            <li><strong>Jin Kim</strong> &mdash; <em>Vibe Coding</em>: building software through intent and conversation with AI rather than line-by-line authoring</li>
+            <li>Plus the daily feed above&mdash;I read the news, but I learn by shipping</li>
+          </ul>
+        </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>&copy; 2025 Tom Lacy. All rights reserved.</p>
+    <p>&copy; 2026 Tom Lacy. All rights reserved.</p>
   </footer>
 
   <!-- Load DOMPurify for sanitization -->
