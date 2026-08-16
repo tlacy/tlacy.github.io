@@ -20,7 +20,8 @@ const state = {
   geometry: [],
   idsFindings: [],
   realityFindings: [],
-  issues: []
+  issues: [],
+  viewerReady: false
 };
 
 const $ = (id) => document.getElementById(id);
@@ -73,16 +74,28 @@ async function loadModelFromBytes(bytes, name) {
     <table><thead><tr><th>Element type</th><th>Count</th></tr></thead><tbody>${rows}</tbody></table>`;
   $("btnIds").disabled = false;
 
-  // 3D viewer (additive; guarded so it can never break the core loop)
+  // 3D viewer (additive; guarded so it can never break the core loop).
+  // If WebGL is unavailable (e.g. an embedded/sandboxed browser with hardware
+  // acceleration off), show a visible, actionable message instead of an empty box.
   try {
     const v = await ensureViewer();
     if (v && state.geometry.length) {
-      show($("viewer")); show($("viewerCap"));
-      v.initViewer($("viewer"));
+      v.initViewer($("viewer"));      // throws if a WebGL context can't be created
       v.loadModel(state.geometry);
       v.onPick(onModelPick);
+      show($("viewer")); show($("viewerCap"));
+      state.viewerReady = true;
     }
-  } catch (e) { console.warn("[app] viewer init skipped:", e); }
+  } catch (e) {
+    console.warn("[app] viewer init skipped:", e);
+    state.viewerReady = false;
+    $("viewer").classList.add("hide");
+    const cap = $("viewerCap");
+    if (cap) {
+      cap.classList.remove("hide");
+      cap.innerHTML = `<span class="pill warn">3D preview unavailable</span> This browser has WebGL / hardware acceleration disabled (common in embedded browsers). Open this page in <strong>Chrome or Firefox</strong> with hardware acceleration on to see the model. IDS, reality, AI, and the BCF export all work without it.`;
+    }
+  }
 }
 
 $("btnSample").addEventListener("click", async () => {
@@ -113,7 +126,7 @@ $("btnIds").addEventListener("click", async () => {
     .join("");
 
   $("idsOut").innerHTML = `
-    <p>${passes}/${findings.length} checks passing. <span class="muted">Failing elements are red in the 3D view — click a row to fly to it.</span></p>
+    <p>${passes}/${findings.length} checks passing. <span class="muted">${state.viewerReady ? "Failing elements are red in the 3D view — click a row to fly to it." : "Enable WebGL (Chrome/Firefox) to see failing elements highlighted in 3D."}</span></p>
     <table><thead><tr><th></th><th>Requirement</th><th>Element</th><th>Needs</th><th>Observed</th></tr></thead>
     <tbody>${rows}</tbody></table>`;
   show($("idsOut"));
