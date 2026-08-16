@@ -106,10 +106,9 @@
     <!-- STEP 4: INTELLIGENCE -->
     <section class="step">
       <h2>4 · Intelligence — summarize &amp; propose issues</h2>
-      <p class="sub">The intelligence layer turns grounded findings into proposed issues. <strong>Provider-swappable</strong> (one env var): a deterministic local summary, real <strong>Claude via AWS Bedrock</strong>, or the DataGrid <code>/converse</code> agent in production.</p>
+      <p class="sub">The intelligence layer turns grounded findings into proposed issues. Runs the real <strong>Claude via AWS Bedrock</strong> agent by default — <strong>provider-swappable</strong> with one env var (Bedrock / DataGrid <code>/converse</code> / local). Falls back to a deterministic summary if the AI proxy isn't running.</p>
       <div class="row">
         <button id="btnAi" disabled>Run analysis</button>
-        <label class="muted"><input type="checkbox" id="useDatagrid" /> Use real AI (Claude via Bedrock — local proxy)</label>
       </div>
       <div id="aiOut" class="hide"></div>
     </section>

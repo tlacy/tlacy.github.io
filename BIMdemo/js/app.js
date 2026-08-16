@@ -122,28 +122,33 @@ $("btnReality").addEventListener("click", async () => {
 // ---- STEP 4: INTELLIGENCE ----
 $("btnAi").addEventListener("click", async () => {
   $("btnAi").disabled = true;
-  $("aiOut").innerHTML = `<p class="muted">Analyzing…</p>`;
+  $("aiOut").innerHTML = `<p class="muted"><span class="spinner"></span>Analyzing…</p>`;
   show($("aiOut"));
 
-  const useRemote = $("useDatagrid").checked;
   const payload = {
     model: state.model,
     idsFindings: state.idsFindings,
     realityFindings: state.realityFindings
   };
 
+  let result, label;
   try {
-    if (useRemote && !AI_ENDPOINT) {
-      throw new Error("Real AI runs via the local proxy. Start it: cd bimdemo/proxy && npm install && node server.mjs — then open the demo on localhost.");
+    if (AI_ENDPOINT) {
+      // Default to real AI via the local proxy; fall back to the grounded local
+      // summary if the proxy isn't running (e.g., on the hosted static site).
+      try {
+        result = await summarizeFindings(payload, { mode: "datagrid", endpoint: AI_ENDPOINT });
+        label = `Real AI${result.provider ? " — " + result.provider : ""}`;
+      } catch {
+        result = await summarizeFindings(payload, { mode: "local" });
+        label = "Local grounded summary (real-AI proxy not running)";
+      }
+    } else {
+      result = await summarizeFindings(payload, { mode: "local" });
+      label = "Local grounded summary";
     }
-    const opts = useRemote ? { mode: "datagrid", endpoint: AI_ENDPOINT } : { mode: "local" };
-    const result = await summarizeFindings(payload, opts);
     const { summary, issues } = result;
     state.issues = issues;
-
-    const label = useRemote
-      ? `Real AI${result.provider ? " — " + result.provider : ""}`
-      : "Local grounded summary";
     $("aiOut").innerHTML = `
       <p class="muted">${label}:</p>
       <pre>${summary.replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]))}</pre>`;
