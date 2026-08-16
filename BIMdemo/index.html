@@ -45,6 +45,13 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     .status { font-size:13px; color: var(--muted); margin-top:10px; }
     .stub { border-left: 3px solid var(--warn); padding-left: 10px; }
+    .scenario { border-left: 3px solid var(--accent); }
+    .result { border-left: 3px solid var(--ok); }
+    .scenario p, .result p { margin: 7px 0; }
+    .tag { display:inline-block; font-size:11px; font-weight:700; letter-spacing:.5px;
+           text-transform:uppercase; padding:2px 8px; border-radius:999px; margin-bottom:6px; }
+    .tag.problem { background: rgba(76,141,255,.15); color: var(--accent); }
+    .tag.result { background: rgba(55,200,139,.15); color: var(--ok); }
     .issue { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin: 8px 0; background: var(--panel2); }
     .issue label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
     .issue .t { font-weight: 600; }
@@ -61,6 +68,13 @@
   </header>
 
   <main>
+    <!-- SCENARIO: PROBLEM -->
+    <section class="step scenario">
+      <span class="tag problem">The problem</span>
+      <p>A project engineer is prepping a building for a design-coordination milestone. The architect just issued an updated IFC model, and two questions must be answered before the review: <strong>is the model data-complete</strong> enough for downstream use (fire ratings, structural flags, energy values), and <strong>does what's built on site match the plan?</strong> Done by hand — opening the model element by element, then walking the site against drawings — it's a multi-day pass that still misses things.</p>
+      <p class="muted">Below is what this app + AI do about it — in about a minute. Start with <em>Load sample model</em>.</p>
+    </section>
+
     <!-- STEP 1: PLAN -->
     <section class="step">
       <h2>1 · Plan — load an OpenBIM model</h2>
@@ -92,10 +106,10 @@
     <!-- STEP 4: INTELLIGENCE -->
     <section class="step">
       <h2>4 · Intelligence — summarize &amp; propose issues</h2>
-      <p class="sub">The intelligence layer turns grounded findings into proposed issues. Pluggable: a deterministic local summary, or the real DataGrid <code>/converse</code> agent via a backend proxy.</p>
+      <p class="sub">The intelligence layer turns grounded findings into proposed issues. <strong>Provider-swappable</strong> (one env var): a deterministic local summary, real <strong>Claude via AWS Bedrock</strong>, or the DataGrid <code>/converse</code> agent in production.</p>
       <div class="row">
         <button id="btnAi" disabled>Run analysis</button>
-        <label class="muted"><input type="checkbox" id="useDatagrid" /> Use real DataGrid agent (needs backend)</label>
+        <label class="muted"><input type="checkbox" id="useDatagrid" /> Use real AI (Claude via Bedrock — local proxy)</label>
       </div>
       <div id="aiOut" class="hide"></div>
     </section>
@@ -110,6 +124,12 @@
         <button id="btnWriteback" class="secondary" disabled>Write back to Procore/DataGrid <span class="pill warn">stub</span></button>
       </div>
       <div id="bcfOut" class="muted" style="margin-top:8px"></div>
+    </section>
+
+    <!-- RESULT -->
+    <section class="step result hide" id="resultCard">
+      <span class="tag result">The result</span>
+      <div id="resultOut"></div>
     </section>
 
     <p class="foot">

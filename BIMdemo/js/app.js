@@ -5,9 +5,12 @@ import { loadReality, computeRealityDelta } from "./reality.js";
 import { summarizeFindings } from "./ai.js";
 import { buildBcfBlob, downloadBlob } from "./bcf.js";
 
-// Backend proxy endpoint for the real DataGrid /converse call (only used if the
-// "Use real DataGrid agent" box is checked). Left blank in the static build.
-const DATAGRID_ENDPOINT = ""; // e.g. "https://<api>/api/datagrid/analyze"
+// Local AI proxy endpoint (provider-swappable: Bedrock / DataGrid / local — chosen server-side).
+// Only used when the "Use real AI" box is checked AND the demo runs on localhost.
+const AI_ENDPOINT =
+  (location.hostname === "localhost" || location.hostname === "127.0.0.1")
+    ? "http://localhost:8790/api/analyze"
+    : "";
 
 const SAMPLE_URL = "./sample/IfcOpenHouse.ifc";
 
@@ -122,7 +125,7 @@ $("btnAi").addEventListener("click", async () => {
   $("aiOut").innerHTML = `<p class="muted">Analyzing…</p>`;
   show($("aiOut"));
 
-  const useDg = $("useDatagrid").checked;
+  const useRemote = $("useDatagrid").checked;
   const payload = {
     model: state.model,
     idsFindings: state.idsFindings,
@@ -130,15 +133,19 @@ $("btnAi").addEventListener("click", async () => {
   };
 
   try {
-    const opts = useDg ? { mode: "datagrid", endpoint: DATAGRID_ENDPOINT } : { mode: "local" };
-    if (useDg && !DATAGRID_ENDPOINT) {
-      throw new Error("No backend endpoint configured — uncheck to use the local summary.");
+    if (useRemote && !AI_ENDPOINT) {
+      throw new Error("Real AI runs via the local proxy. Start it: cd bimdemo/proxy && npm install && node server.mjs — then open the demo on localhost.");
     }
-    const { summary, issues } = await summarizeFindings(payload, opts);
+    const opts = useRemote ? { mode: "datagrid", endpoint: AI_ENDPOINT } : { mode: "local" };
+    const result = await summarizeFindings(payload, opts);
+    const { summary, issues } = result;
     state.issues = issues;
 
+    const label = useRemote
+      ? `Real AI${result.provider ? " — " + result.provider : ""}`
+      : "Local grounded summary";
     $("aiOut").innerHTML = `
-      <p class="muted">${useDg ? "DataGrid agent" : "Local grounded summary"}:</p>
+      <p class="muted">${label}:</p>
       <pre>${summary.replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]))}</pre>`;
     renderIssues(issues);
     $("btnBcf").disabled = false;
@@ -180,6 +187,17 @@ $("btnBcf").addEventListener("click", async () => {
   const blob = await buildBcfBlob(approved);
   downloadBlob(blob, "bim-ai-demo-issues.bcf");
   $("bcfOut").innerHTML = `Exported <strong>${approved.length}</strong> issue(s) as an open BCF 2.1 file — importable into Procore, ACC, or Solibri.`;
+
+  const high = approved.filter((i) => i.priority === "High").length;
+  $("resultOut").innerHTML = `
+    <p><strong>${approved.length} prioritized, cited issue(s)</strong>${high ? ` (${high} high-priority)` : ""}
+       surfaced and exported as an open BCF 2.1 file — a multi-day manual model review + site walk
+       compressed into a single pass of about a minute.</p>
+    <p>Every finding is <strong>grounded</strong> in the model and reality-capture data (nothing invented),
+       and a <strong>human approved</strong> each one before it became an action. Import the BCF into
+       Procore / ACC to open the RFIs — the model, the connectors, and the human stay in control;
+       the AI model behind it is swappable.</p>`;
+  $("resultCard").classList.remove("hide");
 });
 
 $("btnWriteback").addEventListener("click", () => {
