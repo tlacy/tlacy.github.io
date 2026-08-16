@@ -1,5 +1,5 @@
 // app.js — orchestrates the Plan -> Reality -> Intelligence loop.
-import { parseIfc } from "./ifc.js";
+import { parseIfc, warmEngine } from "./ifc.js";
 import { runIdsChecks } from "./ids.js";
 import { loadReality, computeRealityDelta } from "./reality.js";
 import { summarizeFindings } from "./ai.js";
@@ -29,7 +29,7 @@ function pill(status) {
 
 // ---- STEP 1: PLAN ----
 async function loadModelFromBytes(bytes, name) {
-  $("modelOut").innerHTML = `<p class="muted">Parsing ${name}…</p>`;
+  $("modelOut").innerHTML = `<p class="muted"><span class="spinner"></span>Parsing ${name}…</p>`;
   show($("modelOut"));
   const { elements, summary } = await parseIfc(bytes, name);
   state.elements = elements;
@@ -52,6 +52,7 @@ async function loadModelFromBytes(bytes, name) {
 $("btnSample").addEventListener("click", async () => {
   try {
     $("btnSample").disabled = true;
+    $("btnSample").textContent = "Loading…";
     const res = await fetch(SAMPLE_URL);
     const buf = new Uint8Array(await res.arrayBuffer());
     await loadModelFromBytes(buf, "IfcOpenHouse (IFC4)");
@@ -59,6 +60,7 @@ $("btnSample").addEventListener("click", async () => {
     $("modelOut").innerHTML = `<p class="pill fail">Failed to load sample: ${e.message}</p>`;
   } finally {
     $("btnSample").disabled = false;
+    $("btnSample").textContent = "Load sample model";
   }
 });
 
@@ -184,3 +186,15 @@ $("btnWriteback").addEventListener("click", () => {
   const approved = approvedIssues();
   $("bcfOut").innerHTML = `<span class="stub muted">STUB: would write ${approved.length} issue(s) back to Procore RFIs / DataGrid via the connector seam, under this same human approval. No autonomous writes.</span>`;
 });
+
+// ---- Preload the web-ifc WASM engine on page load so the first parse is fast ----
+(async () => {
+  const s = $("engineStatus");
+  s.innerHTML = `<span class="spinner"></span>Loading BIM engine (web-ifc WASM)…`;
+  try {
+    await warmEngine();
+    s.innerHTML = `<span class="pill ok">engine ready</span> Load the sample model or choose an .ifc file.`;
+  } catch (e) {
+    s.innerHTML = `<span class="pill fail">engine failed to load</span> ${e.message}`;
+  }
+})();

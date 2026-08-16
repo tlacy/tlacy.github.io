@@ -39,6 +39,11 @@
     pre { background: var(--panel2); border: 1px solid var(--line); border-radius: 8px; padding: 12px;
           white-space: pre-wrap; font-size: 13px; color: var(--ink); }
     .muted { color: var(--muted); }
+    .spinner { display:inline-block; width:14px; height:14px; border:2px solid var(--line);
+               border-top-color: var(--accent); border-radius:50%; animation: spin .8s linear infinite;
+               vertical-align:-2px; margin-right:7px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .status { font-size:13px; color: var(--muted); margin-top:10px; }
     .stub { border-left: 3px solid var(--warn); padding-left: 10px; }
     .issue { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin: 8px 0; background: var(--panel2); }
     .issue label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
@@ -64,6 +69,7 @@
         <button id="btnSample">Load sample model</button>
         <input type="file" id="fileInput" accept=".ifc" />
       </div>
+      <div id="engineStatus" class="status"></div>
       <div id="modelOut" class="hide"></div>
     </section>
 

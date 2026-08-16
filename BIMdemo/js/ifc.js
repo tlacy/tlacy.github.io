@@ -12,6 +12,11 @@ async function getApi() {
   return _api;
 }
 
+// Warm the WASM engine ahead of first use so the first parse feels instant.
+export async function warmEngine() {
+  await getApi();
+}
+
 // Element types we surface for IDS checks (present in typical architectural models).
 const TYPES = [
   "IFCDOOR", "IFCWINDOW", "IFCWALLSTANDARDCASE", "IFCWALL",
