@@ -53,7 +53,10 @@ export function buildIssues(idsFindings, realityFindings) {
       title: `${f.elementType} "${f.name}": missing ${f.requirement}`,
       priority: /FIRE|SAFETY/.test(f.ruleId) ? "High" : "Normal",
       description: `${f.ruleTitle}. ${f.rationale} Element GlobalId ${f.globalId} does not satisfy required ${f.requirement}.`,
-      source: `IDS check ${f.ruleId}`
+      source: `IDS check ${f.ruleId}`,
+      // Element link (for BCF viewpoints): lets the export frame + select the exact element.
+      expressID: f.expressID,
+      globalId: f.globalId
     });
   }
   for (const r of realityFindings) {
@@ -61,7 +64,9 @@ export function buildIssues(idsFindings, realityFindings) {
       title: `Reality gap: ${r.area} behind plan (−${r.gap}%)`,
       priority: r.gap >= 50 ? "High" : "Normal",
       description: `${r.area} as-built ${Math.round(r.asBuilt * 100)}% vs planned ${Math.round(r.planned * 100)}%. ${r.note} (DroneDeploy reality capture, aligned via IfcMapConversion / IfcProjectedCRS.)`,
-      source: "DroneDeploy reality delta"
+      source: "DroneDeploy reality delta",
+      expressID: null,
+      globalId: null
     });
   }
   return issues;

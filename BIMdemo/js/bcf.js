@@ -18,8 +18,30 @@ function guid() {
   });
 }
 
-// buildBcfBlob(issues) -> Blob (a .bcf zip). Uses the global JSZip.
-export async function buildBcfBlob(issues) {
+// A BCF 2.1 viewpoint (VisualizationInfo): camera in IFC world coords + optional element selection.
+function buildBcfv(vp, vpGuid) {
+  const c = vp.camera;
+  const sel = vp.ifcGuid && vp.ifcGuid !== "(none)"
+    ? `\n    <Selection>\n      <Component IfcGuid="${esc(vp.ifcGuid)}" />\n    </Selection>`
+    : "";
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<VisualizationInfo Guid="${vpGuid}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Components>${sel}
+    <Visibility DefaultVisibility="true" />
+  </Components>
+  <PerspectiveCamera>
+    <CameraViewPoint><X>${c.pos.x}</X><Y>${c.pos.y}</Y><Z>${c.pos.z}</Z></CameraViewPoint>
+    <CameraDirection><X>${c.dir.x}</X><Y>${c.dir.y}</Y><Z>${c.dir.z}</Z></CameraDirection>
+    <CameraUpVector><X>${c.up.x}</X><Y>${c.up.y}</Y><Z>${c.up.z}</Z></CameraUpVector>
+    <FieldOfView>${c.fov}</FieldOfView>
+  </PerspectiveCamera>
+</VisualizationInfo>`;
+}
+
+// buildBcfBlob(issues, viewpoints?) -> Blob (a .bcf zip). Uses the global JSZip.
+// viewpoints (optional) is an array parallel to issues; each entry (or null) is the result of
+// viewer.captureViewpoint(...) — when present, the issue gets a camera + snapshot in the export.
+export async function buildBcfBlob(issues, viewpoints = null) {
   const JSZip = window.JSZip;
   if (!JSZip) throw new Error("JSZip not loaded");
   const zip = new JSZip();
@@ -33,8 +55,14 @@ export async function buildBcfBlob(issues) {
   );
 
   const now = new Date().toISOString();
-  for (const issue of issues) {
+  for (let idx = 0; idx < issues.length; idx++) {
+    const issue = issues[idx];
     const g = guid();
+    const vp = viewpoints && viewpoints[idx];
+    const vpGuid = vp ? guid() : null;
+    const viewpointsXml = vp
+      ? `\n  <Viewpoints Guid="${vpGuid}">\n    <Viewpoint>viewpoint.bcfv</Viewpoint>\n    <Snapshot>snapshot.png</Snapshot>\n  </Viewpoints>`
+      : "";
     const markup = `<?xml version="1.0" encoding="UTF-8"?>
 <Markup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Topic Guid="${g}" TopicType="Issue" TopicStatus="Open">
@@ -43,9 +71,15 @@ export async function buildBcfBlob(issues) {
     <CreationDate>${now}</CreationDate>
     <CreationAuthor>bim-ai-demo</CreationAuthor>
     <Description>${esc(issue.description || "")}</Description>
-  </Topic>
+  </Topic>${viewpointsXml}
 </Markup>`;
-    zip.folder(g).file("markup.bcf", markup);
+    const folder = zip.folder(g);
+    folder.file("markup.bcf", markup);
+    if (vp) {
+      folder.file("viewpoint.bcfv", buildBcfv(vp, vpGuid));
+      const b64 = vp.snapshot && vp.snapshot.split(",")[1];
+      if (b64) folder.file("snapshot.png", b64, { base64: true });
+    }
   }
 
   return zip.generateAsync({ type: "blob" });

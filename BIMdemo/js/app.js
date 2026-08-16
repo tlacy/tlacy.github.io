@@ -219,6 +219,30 @@ function approvedIssues() {
   return checks.filter((c) => c.checked).map((c) => state.issues[Number(c.dataset.i)]);
 }
 
+// Resolve an approved issue to the model element it concerns (for the BCF viewpoint).
+// Local-mode issues carry expressID/globalId directly; real-AI issues are matched back to a
+// failing IDS finding by ruleId / GlobalId / element name appearing in the issue text.
+function resolveTarget(iss) {
+  if (iss.expressID !== undefined && iss.expressID !== null) {
+    return { expressID: iss.expressID, globalId: iss.globalId };
+  }
+  const hay = `${iss.title} ${iss.description} ${iss.source}`.toLowerCase();
+  const fails = state.idsFindings.filter((x) => x.status === "fail");
+  // Prefer an exact GlobalId match (unique per element) so duplicate-rule issues (e.g. 5 windows,
+  // all ENERGY_WINDOW_UVALUE) each map to THEIR element; then fall back to ruleId / element name.
+  for (const f of fails) {
+    if (f.globalId && f.globalId !== "(none)" && hay.includes(String(f.globalId).toLowerCase())) {
+      return { expressID: f.expressID, globalId: f.globalId };
+    }
+  }
+  for (const f of fails) {
+    const hitRule = f.ruleId && hay.includes(f.ruleId.toLowerCase());
+    const hitName = f.name && f.name !== "(unnamed)" && hay.includes(String(f.name).toLowerCase());
+    if (hitRule || hitName) return { expressID: f.expressID, globalId: f.globalId };
+  }
+  return { expressID: undefined, globalId: undefined };
+}
+
 // ---- STEP 5: ACTION ----
 $("btnBcf").addEventListener("click", async () => {
   const approved = approvedIssues();
@@ -226,14 +250,31 @@ $("btnBcf").addEventListener("click", async () => {
     $("bcfOut").innerHTML = `<span class="pill warn">No issues selected.</span>`;
     return;
   }
-  const blob = await buildBcfBlob(approved);
+
+  // Capture a BCF viewpoint (camera + snapshot, element selected) per issue — guarded so a
+  // viewer failure just yields a viewpoint-less BCF instead of breaking the export.
+  let viewpoints = null;
+  try {
+    const v = await ensureViewer();
+    if (v && v.captureViewpoint && state.geometry.length) {
+      viewpoints = approved.map((iss) => {
+        const t = resolveTarget(iss);
+        const vp = v.captureViewpoint(t.expressID);
+        if (vp) vp.ifcGuid = t.globalId;
+        return vp;
+      });
+    }
+  } catch (e) { console.warn("[app] viewpoint capture skipped:", e); viewpoints = null; }
+
+  const withVp = viewpoints ? viewpoints.filter(Boolean).length : 0;
+  const blob = await buildBcfBlob(approved, viewpoints);
   downloadBlob(blob, "bim-ai-demo-issues.bcf");
-  $("bcfOut").innerHTML = `Exported <strong>${approved.length}</strong> issue(s) as an open BCF 2.1 file — importable into Procore, ACC, or Solibri.`;
+  $("bcfOut").innerHTML = `Exported <strong>${approved.length}</strong> issue(s) as an open BCF 2.1 file${withVp ? ` — ${withVp} with a 3D viewpoint (camera + snapshot + selected element)` : ""} — importable into Procore, ACC, or Solibri.`;
 
   const high = approved.filter((i) => i.priority === "High").length;
   $("resultOut").innerHTML = `
     <p><strong>${approved.length} prioritized, cited issue(s)</strong>${high ? ` (${high} high-priority)` : ""}
-       surfaced and exported as an open BCF 2.1 file — a multi-day manual model review + site walk
+       surfaced and exported as an open BCF 2.1 file${withVp ? `, ${withVp} carrying a <strong>3D viewpoint</strong> that flies a reviewer to the exact element` : ""} — a multi-day manual model review + site walk
        compressed into a single pass of about a minute.</p>
     <p>Every finding is <strong>grounded</strong> in the model and reality-capture data (nothing invented),
        and a <strong>human approved</strong> each one before it became an action. Import the BCF into

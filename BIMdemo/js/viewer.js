@@ -22,7 +22,8 @@ export function initViewer(el) {
   camera = new THREE.PerspectiveCamera(55, w / h, 0.01, 100000);
   camera.position.set(10, 10, 10);
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  // preserveDrawingBuffer so we can grab PNG snapshots for BCF viewpoints at export time.
+  renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
   renderer.setSize(w, h);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   container.innerHTML = "";
@@ -149,6 +150,61 @@ export function focusElement(expressID) {
   controls.update();
   meshes.forEach((m) => m.material.emissive.set(0x3399ff));
   setTimeout(() => meshes.forEach((m) => m.material.emissive.set(0x000000)), 1000);
+}
+
+// captureViewpoint(expressID?) -> { camera:{pos,dir,up,fov}, snapshot(dataURL) } | null
+// Frames the element (or the whole model if no id), renders one frame, grabs a PNG, and returns
+// the camera expressed in IFC world coordinates (undoing the root's IFC->Three rotation) so the
+// viewpoint drops the reviewer onto the exact spot in any BCF-compatible tool. Restores the view.
+export function captureViewpoint(expressID) {
+  if (!renderer || !camera || !scene || !controls) return null;
+  try {
+    const savedPos = camera.position.clone();
+    const savedTarget = controls.target.clone();
+
+    if (expressID !== undefined && expressID !== null && meshesById.has(expressID)) {
+      const box = new THREE.Box3();
+      meshesById.get(expressID).forEach((m) => box.expandByObject(m));
+      if (!box.isEmpty()) {
+        const c = box.getCenter(new THREE.Vector3());
+        const s = box.getSize(new THREE.Vector3());
+        const maxDim = Math.max(s.x, s.y, s.z, 1);
+        const dir = new THREE.Vector3(1, 0.85, 1).normalize();
+        controls.target.copy(c);
+        camera.position.copy(c).addScaledVector(dir, maxDim * 3 + 2);
+      }
+    } // else: keep the current (overview) framing
+
+    camera.lookAt(controls.target);
+    camera.updateMatrixWorld(true);
+    renderer.render(scene, camera);
+    const snapshot = renderer.domElement.toDataURL("image/png");
+
+    // Undo root.rotation.x = -PI/2 (IFC Z-up -> Three Y-up) to report the camera in IFC space.
+    const toIfc = new THREE.Matrix4().makeRotationX(Math.PI / 2);
+    const posIfc = camera.position.clone().applyMatrix4(toIfc);
+    const dirIfc = controls.target.clone().sub(camera.position).transformDirection(toIfc);
+    const upIfc = camera.up.clone().transformDirection(toIfc);
+
+    // Restore the user's view.
+    camera.position.copy(savedPos);
+    controls.target.copy(savedTarget);
+    camera.lookAt(savedTarget);
+    controls.update();
+
+    return {
+      camera: {
+        pos: { x: posIfc.x, y: posIfc.y, z: posIfc.z },
+        dir: { x: dirIfc.x, y: dirIfc.y, z: dirIfc.z },
+        up: { x: upIfc.x, y: upIfc.y, z: upIfc.z },
+        fov: camera.fov
+      },
+      snapshot
+    };
+  } catch (e) {
+    console.warn("[viewer] captureViewpoint failed:", e);
+    return null;
+  }
 }
 
 export function onPick(cb) { onPickCb = cb; }
