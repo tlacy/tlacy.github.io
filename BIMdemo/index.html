@@ -6,7 +6,7 @@
   <title>BIM · AI Demo — Plan → Reality → Intelligence</title>
   <meta name="description" content="An OpenBIM + AI demo: parse an IFC model, run IDS checks, reconcile against DroneDeploy reality capture, and emit governed BCF issues under human approval." />
   <meta name="robots" content="noindex, nofollow" />
-  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="./vendor/jszip.min.js"></script>
   <style>
     :root {
       --bg: #0f1420; --panel: #171d2b; --panel2: #1e2536; --line: #2a3346;
@@ -83,8 +83,6 @@
         <button id="btnSample">Load sample model</button>
       </div>
       <div id="engineStatus" class="status"></div>
-      <p class="status" style="margin-top:12px">Or analyze your own model:
-        <input type="file" id="fileInput" accept=".ifc" /></p>
       <div id="modelOut" class="hide"></div>
     </section>
 

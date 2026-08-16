@@ -1,13 +1,13 @@
 // ifc.js — parse an IFC (OpenBIM, ISO 16739) model entirely in the browser with web-ifc (WASM).
 // No server needed: the semantic model is read client-side, which is the whole point of the
 // "reason over the model, not the document" thesis.
-import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.68/web-ifc-api.js";
+import * as WebIFC from "../vendor/web-ifc/web-ifc-api.js";
 
 let _api = null;
 async function getApi() {
   if (_api) return _api;
   _api = new WebIFC.IfcAPI();
-  _api.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.68/");
+  _api.SetWasmPath("./vendor/web-ifc/");
   await _api.Init();
   return _api;
 }

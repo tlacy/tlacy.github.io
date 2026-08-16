@@ -67,13 +67,6 @@ $("btnSample").addEventListener("click", async () => {
   }
 });
 
-$("fileInput").addEventListener("change", async (ev) => {
-  const file = ev.target.files[0];
-  if (!file) return;
-  const buf = new Uint8Array(await file.arrayBuffer());
-  await loadModelFromBytes(buf, file.name);
-});
-
 // ---- STEP 2: IDS ----
 $("btnIds").addEventListener("click", () => {
   const findings = runIdsChecks(state.elements);
@@ -216,7 +209,7 @@ $("btnWriteback").addEventListener("click", () => {
   s.innerHTML = `<span class="spinner"></span>Loading BIM engine (web-ifc WASM)…`;
   try {
     await warmEngine();
-    s.innerHTML = `<span class="pill ok">engine ready</span> Load the sample model or choose an .ifc file.`;
+    s.innerHTML = `<span class="pill ok">engine ready</span> Click “Load sample model” to begin.`;
   } catch (e) {
     s.innerHTML = `<span class="pill fail">engine failed to load</span> ${e.message}`;
   }
