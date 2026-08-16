@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BIM · AI Demo — Plan → Reality → Intelligence</title>
+  <meta name="description" content="An OpenBIM + AI demo: parse an IFC model, run IDS checks, reconcile against DroneDeploy reality capture, and emit governed BCF issues under human approval." />
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <style>
+    :root {
+      --bg: #0f1420; --panel: #171d2b; --panel2: #1e2536; --line: #2a3346;
+      --ink: #e7ecf5; --muted: #9aa7bd; --accent: #4c8dff; --ok: #37c88b; --fail: #ff6b6b; --warn: #ffb454;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+           background: var(--bg); color: var(--ink); }
+    header { padding: 28px 20px 8px; max-width: 960px; margin: 0 auto; }
+    header h1 { margin: 0 0 4px; font-size: 22px; }
+    header p { margin: 0; color: var(--muted); }
+    .loop { color: var(--accent); font-weight: 600; }
+    main { max-width: 960px; margin: 0 auto; padding: 12px 20px 60px; }
+    .step { background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+            padding: 16px 18px; margin: 14px 0; }
+    .step h2 { margin: 0 0 4px; font-size: 15px; letter-spacing: .3px; text-transform: uppercase; color: var(--muted); }
+    .step .sub { color: var(--muted); font-size: 13px; margin: 0 0 12px; }
+    button { background: var(--accent); color: #fff; border: 0; border-radius: 8px; padding: 9px 14px;
+             font-size: 14px; font-weight: 600; cursor: pointer; min-height: 40px; }
+    button.secondary { background: var(--panel2); color: var(--ink); border: 1px solid var(--line); }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+    .pill.ok { background: rgba(55,200,139,.15); color: var(--ok); }
+    .pill.fail { background: rgba(255,107,107,.15); color: var(--fail); }
+    .pill.warn { background: rgba(255,180,84,.15); color: var(--warn); }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+    th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); font-weight: 600; }
+    pre { background: var(--panel2); border: 1px solid var(--line); border-radius: 8px; padding: 12px;
+          white-space: pre-wrap; font-size: 13px; color: var(--ink); }
+    .muted { color: var(--muted); }
+    .stub { border-left: 3px solid var(--warn); padding-left: 10px; }
+    .issue { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin: 8px 0; background: var(--panel2); }
+    .issue label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+    .issue .t { font-weight: 600; }
+    .hide { display: none; }
+    a { color: var(--accent); }
+    .foot { color: var(--muted); font-size: 12px; margin-top: 24px; }
+    input[type=file] { color: var(--muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>BIM · AI Demo</h1>
+    <p>The <span class="loop">Plan → Reality → Intelligence</span> loop on an OpenBIM backbone — grounded, governed, human-approved.</p>
+  </header>
+
+  <main>
+    <!-- STEP 1: PLAN -->
+    <section class="step">
+      <h2>1 · Plan — load an OpenBIM model</h2>
+      <p class="sub">Parse an IFC file (ISO 16739) in the browser with web-ifc. The AI reasons over the semantic model — objects, properties, relationships — not a flattened PDF.</p>
+      <div class="row">
+        <button id="btnSample">Load sample model</button>
+        <input type="file" id="fileInput" accept=".ifc" />
+      </div>
+      <div id="modelOut" class="hide"></div>
+    </section>
+
+    <!-- STEP 2: IDS -->
+    <section class="step">
+      <h2>2 · Validate — run IDS checks</h2>
+      <p class="sub">IDS (Information Delivery Specification) = machine-readable requirements. Pass/fail is computed from the real model — the grounding the AI reasons over.</p>
+      <button id="btnIds" disabled>Run IDS checks</button>
+      <div id="idsOut" class="hide"></div>
+    </section>
+
+    <!-- STEP 3: REALITY -->
+    <section class="step">
+      <h2>3 · Reality — DroneDeploy delta <span class="pill warn">stub</span></h2>
+      <p class="sub stub">Simulated reality capture. This is the connector seam where the DroneDeploy API returns georeferenced as-built progress, aligned to the model CRS via IfcMapConversion / IfcProjectedCRS (ISO 19650).</p>
+      <button id="btnReality" disabled>Compute plan vs. as-built</button>
+      <div id="realityOut" class="hide"></div>
+    </section>
+
+    <!-- STEP 4: INTELLIGENCE -->
+    <section class="step">
+      <h2>4 · Intelligence — summarize &amp; propose issues</h2>
+      <p class="sub">The intelligence layer turns grounded findings into proposed issues. Pluggable: a deterministic local summary, or the real DataGrid <code>/converse</code> agent via a backend proxy.</p>
+      <div class="row">
+        <button id="btnAi" disabled>Run analysis</button>
+        <label class="muted"><input type="checkbox" id="useDatagrid" /> Use real DataGrid agent (needs backend)</label>
+      </div>
+      <div id="aiOut" class="hide"></div>
+    </section>
+
+    <!-- STEP 5: ACTION -->
+    <section class="step">
+      <h2>5 · Action — approve &amp; emit BCF <span class="pill warn">human-in-the-loop</span></h2>
+      <p class="sub">Nothing writes back autonomously. You approve the issues, then export an open-standard BCF 2.1 file that any tool (Procore, ACC, Solibri) can import. Write-back to Procore/DataGrid is the connector seam.</p>
+      <div id="issuesOut" class="hide"></div>
+      <div class="row" style="margin-top:10px">
+        <button id="btnBcf" disabled>Approve &amp; download BCF</button>
+        <button id="btnWriteback" class="secondary" disabled>Write back to Procore/DataGrid <span class="pill warn">stub</span></button>
+      </div>
+      <div id="bcfOut" class="muted" style="margin-top:8px"></div>
+    </section>
+
+    <p class="foot">
+      Open standards: IFC (ISO 16739) · IDS · BCF · ISO 19650. Parsing by web-ifc (WASM).
+      DroneDeploy &amp; DataGrid integrations are labeled connector stubs in this build.
+      Source: <a href="https://github.com/tlacy/BIM-AI-Demo">github.com/tlacy/BIM-AI-Demo</a>.
+    </p>
+  </main>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

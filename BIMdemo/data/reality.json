@@ -1,0 +1,11 @@
+{
+  "source": "DroneDeploy (simulated reality capture)",
+  "capturedAt": "2026-08-14",
+  "note": "STUB DATA — this is where the DroneDeploy API would return georeferenced as-built progress. In production it is aligned to the model's coordinate reference system via IfcMapConversion / IfcProjectedCRS under ISO 19650, so 'plan vs. as-built' becomes a computable delta rather than a visual overlay.",
+  "observations": [
+    { "area": "Roof covering", "planned": 1.0, "asBuilt": 0.6, "note": "West bay roof covering incomplete per 08-14 flight." },
+    { "area": "Ground floor slab", "planned": 1.0, "asBuilt": 1.0, "note": "Poured and cured; matches plan." },
+    { "area": "Exterior walls", "planned": 1.0, "asBuilt": 0.85, "note": "South wall opening not yet framed." },
+    { "area": "Entrance door", "planned": 1.0, "asBuilt": 0.0, "note": "Door not yet installed; opening present." }
+  ]
+}
