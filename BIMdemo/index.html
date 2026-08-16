@@ -8,6 +8,9 @@
   <meta name="description" content="An OpenBIM + AI demo: parse an IFC model, run IDS checks, reconcile against DroneDeploy reality capture, and emit governed BCF issues under human approval." />
   <meta name="robots" content="noindex, nofollow" />
   <script src="./vendor/jszip.min.js"></script>
+  <script type="importmap">
+  { "imports": { "three": "./vendor/three/three.module.js" } }
+  </script>
   <style>
     :root {
       --bg: #0f1420; --panel: #171d2b; --panel2: #1e2536; --line: #2a3346;
@@ -46,6 +49,10 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     .status { font-size:13px; color: var(--muted); margin-top:10px; }
     .stub { border-left: 3px solid var(--warn); padding-left: 10px; }
+    .viewer { height: 440px; border: 1px solid var(--line); border-radius: 8px;
+              margin-top: 12px; overflow: hidden; background: #0f1420; }
+    .viewer canvas { display: block; }
+    .viewer-cap { font-size: 12px; color: var(--muted); margin-top: 8px; }
     .scenario { border-left: 3px solid var(--accent); }
     .result { border-left: 3px solid var(--ok); }
     .scenario p, .result p { margin: 7px 0; }
@@ -85,6 +92,8 @@
       </div>
       <div id="engineStatus" class="status"></div>
       <div id="modelOut" class="hide"></div>
+      <div id="viewer" class="viewer hide"></div>
+      <p id="viewerCap" class="viewer-cap hide">3D model — failing elements turn <span style="color:#ff5252;font-weight:700">red</span> after you run IDS checks. Drag to orbit · scroll to zoom · click an element to jump to its issues.</p>
     </section>
 
     <!-- STEP 2: IDS -->

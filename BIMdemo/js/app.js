@@ -17,6 +17,7 @@ const SAMPLE_URL = "./sample/IfcOpenHouse.ifc";
 const state = {
   model: null,
   elements: [],
+  geometry: [],
   idsFindings: [],
   realityFindings: [],
   issues: []
@@ -30,13 +31,34 @@ function pill(status) {
   return `<span class="pill ${cls}">${status}</span>`;
 }
 
+// ---- 3D viewer (dynamic import so a Three.js failure never breaks the core loop) ----
+let _viewer = null;
+let _viewerTried = false;
+async function ensureViewer() {
+  if (_viewer || _viewerTried) return _viewer;
+  _viewerTried = true;
+  try { _viewer = await import("./viewer.js"); }
+  catch (e) { console.warn("[app] 3D viewer unavailable:", e); _viewer = null; }
+  return _viewer;
+}
+
+function onModelPick(eid) {
+  const fs = state.idsFindings.filter((f) => f.expressID === eid);
+  const fails = fs.filter((f) => f.status === "fail");
+  const name = (fs[0] && fs[0].name) || "element";
+  $("viewerCap").innerHTML = fails.length
+    ? `Selected <strong>${name}</strong> — ${fails.length} failing check(s): ${fails.map((f) => f.ruleTitle.split("—")[0].trim()).join(", ")}.`
+    : `Selected <strong>${name}</strong>.`;
+}
+
 // ---- STEP 1: PLAN ----
 async function loadModelFromBytes(bytes, name) {
   $("modelOut").innerHTML = `<p class="muted"><span class="spinner"></span>Parsing ${name}…</p>`;
   show($("modelOut"));
-  const { elements, summary } = await parseIfc(bytes, name);
+  const { elements, summary, geometry } = await parseIfc(bytes, name);
   state.elements = elements;
   state.model = summary;
+  state.geometry = geometry || [];
 
   const byType = {};
   for (const e of elements) byType[e.type] = (byType[e.type] || 0) + 1;
@@ -50,6 +72,17 @@ async function loadModelFromBytes(bytes, name) {
        ${summary.typeCount} types · ${summary.propertySetCount} property set(s).</p>
     <table><thead><tr><th>Element type</th><th>Count</th></tr></thead><tbody>${rows}</tbody></table>`;
   $("btnIds").disabled = false;
+
+  // 3D viewer (additive; guarded so it can never break the core loop)
+  try {
+    const v = await ensureViewer();
+    if (v && state.geometry.length) {
+      show($("viewer")); show($("viewerCap"));
+      v.initViewer($("viewer"));
+      v.loadModel(state.geometry);
+      v.onPick(onModelPick);
+    }
+  } catch (e) { console.warn("[app] viewer init skipped:", e); }
 }
 
 $("btnSample").addEventListener("click", async () => {
@@ -68,23 +101,34 @@ $("btnSample").addEventListener("click", async () => {
 });
 
 // ---- STEP 2: IDS ----
-$("btnIds").addEventListener("click", () => {
+$("btnIds").addEventListener("click", async () => {
   const findings = runIdsChecks(state.elements);
   state.idsFindings = findings;
 
   const passes = findings.filter((f) => f.status === "pass").length;
   const rows = findings
-    .map((f) => `<tr><td>${pill(f.status)}</td><td>${f.ruleTitle}</td><td>${f.name}</td>
+    .map((f) => `<tr class="idsrow" data-eid="${f.expressID}" style="cursor:pointer"><td>${pill(f.status)}</td><td>${f.ruleTitle}</td><td>${f.name}</td>
                  <td class="muted">${f.requirement}</td>
                  <td class="muted">${f.observed ?? "—"}</td></tr>`)
     .join("");
 
   $("idsOut").innerHTML = `
-    <p>${passes}/${findings.length} checks passing.</p>
+    <p>${passes}/${findings.length} checks passing. <span class="muted">Failing elements are red in the 3D view — click a row to fly to it.</span></p>
     <table><thead><tr><th></th><th>Requirement</th><th>Element</th><th>Needs</th><th>Observed</th></tr></thead>
     <tbody>${rows}</tbody></table>`;
   show($("idsOut"));
   $("btnReality").disabled = false;
+
+  // Highlight failing elements in 3D + wire row-click -> fly-to.
+  const failEIDs = findings.filter((f) => f.status === "fail").map((f) => f.expressID).filter((x) => x !== undefined);
+  try {
+    const v = await ensureViewer();
+    if (v) {
+      v.highlightFailing(failEIDs);
+      document.querySelectorAll(".idsrow").forEach((row) =>
+        row.addEventListener("click", () => v.focusElement(Number(row.dataset.eid))));
+    }
+  } catch (e) { console.warn("[app] highlight skipped:", e); }
 });
 
 // ---- STEP 3: REALITY ----

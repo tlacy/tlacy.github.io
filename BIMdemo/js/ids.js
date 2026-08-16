@@ -65,6 +65,7 @@ export function runIdsChecks(elements) {
         ruleTitle: rule.title,
         rationale: rule.rationale,
         elementType: rule.applies,
+        expressID: el.expressID,
         globalId: el.globalId || "(none)",
         name: el.name || "(unnamed)",
         requirement: rule.kind === "property" ? `property "${rule.property}"` : `attribute "${rule.attribute}"`,

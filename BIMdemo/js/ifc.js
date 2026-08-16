@@ -98,6 +98,41 @@ export async function parseIfc(uint8, modelName = "model.ifc") {
     propertySetCount: Object.keys(psetMap).length
   };
 
+  // Extract render geometry (guarded — a geometry failure must not break the core loop).
+  let geometry = [];
+  try {
+    geometry = loadGeometry(api, modelID);
+  } catch (e) {
+    console.warn("[ifc] geometry extraction failed (viewer will be skipped):", e);
+    geometry = [];
+  }
+
   api.CloseModel(modelID);
-  return { elements, summary };
+  return { elements, summary, geometry };
+}
+
+// Extract flat mesh geometry for rendering: array of
+// { expressID, vertexData(Float32 interleaved pos+normal), indexData(Uint32), matrix[16], color }
+function loadGeometry(api, modelID) {
+  const meshes = [];
+  api.StreamAllMeshes(modelID, (flatMesh) => {
+    const expressID = flatMesh.expressID;
+    const placed = flatMesh.geometries;
+    for (let i = 0; i < placed.size(); i++) {
+      const pg = placed.get(i);
+      const geom = api.GetGeometry(modelID, pg.geometryExpressID);
+      const verts = api.GetVertexArray(geom.GetVertexData(), geom.GetVertexDataSize());
+      const indices = api.GetIndexArray(geom.GetIndexData(), geom.GetIndexDataSize());
+      // Copy out of WASM memory (the views are reused/freed).
+      meshes.push({
+        expressID,
+        vertexData: new Float32Array(verts),
+        indexData: new Uint32Array(indices),
+        matrix: Array.from(pg.flatTransformation),
+        color: { x: pg.color.x, y: pg.color.y, z: pg.color.z, w: pg.color.w }
+      });
+      geom.delete();
+    }
+  });
+  return meshes;
 }
