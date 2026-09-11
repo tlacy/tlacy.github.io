@@ -36,6 +36,35 @@ I initialized a local git repository, committed the site files, and pushed them 
 
 If you want automatic CI/CD instead of manual pushes, I can add a GitHub Actions workflow that builds and deploys to Pages on each push to `main`.
 
+## Custom domain & HTTPS (DNS)
+
+The site serves at `www.tomlacy.net` (see `CNAME`). DNS is managed at **Squarespace**
+(domains.squarespace.com → `tomlacy.net` → DNS), NOT Google — the `ns-cloud-*.googledomains.com`
+nameservers are Squarespace's after they acquired Google Domains.
+
+**Required records:**
+
+| Type | Name | Value |
+|---|---|---|
+| A | `@` | `185.199.108.153` |
+| A | `@` | `185.199.109.153` |
+| A | `@` | `185.199.110.153` |
+| A | `@` | `185.199.111.153` |
+| CNAME | `www` | `tlacy.github.io` |
+
+⚠️ **The apex (`@`) A records MUST be the four `185.199.108–111.153` IPs.** If they ever point
+to the legacy GitHub IPs `192.30.252.153` / `192.30.252.154`, `https://tomlacy.net` (apex, no
+`www`) fails with a TLS/"not secure — does not support HTTPS" error while `www` keeps working —
+because GitHub can't provision an apex certificate for those dead IPs. Fixed 2026-09-11 by
+swapping the apex A records. After a DNS change, GitHub re-issues the cert automatically (minutes
+to ~24h); re-saving the custom domain in Settings → Pages and enabling **Enforce HTTPS** speeds it up.
+
+Verify:
+```bash
+dig +short tomlacy.net A          # expect the four 185.199.x IPs
+curl -sI https://tomlacy.net | head -1
+```
+
 ## Notes & next steps
 
 If you'd like, I can add a small GitHub Actions workflow to automatically publish the site or run HTML checks on PRs.
