@@ -1,9 +1,32 @@
+# Dependency-CVE monitoring. Version bumps AND security fixes are grouped per
+# ecosystem (weekly) to keep PR/email volume low.
 version: 2
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     open-pull-requests-limit: 5
-    # Keep an eye on new major versions for actions used in workflows
-    # Dependabot will propose updates to action versions (tags/sha) as PRs.
+    groups:
+      github-actions:
+        applies-to: version-updates
+        patterns: ["*"]
+      github-actions-security:
+        applies-to: security-updates
+        patterns: ["*"]
+    labels: ["dependencies"]
+  - package-ecosystem: "npm"
+    directories:
+      - "/mcp-server"
+      - "/tools/extractors/amazon-photos-extractor"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    groups:
+      npm-dependencies:
+        applies-to: version-updates
+        patterns: ["*"]
+      npm-security:
+        applies-to: security-updates
+        patterns: ["*"]
+    labels: ["dependencies"]
