@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout
         # pinned to actions/checkout@v4 for reproducible runs
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Start static server
         run: |
