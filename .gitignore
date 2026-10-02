@@ -9,3 +9,11 @@ manage.html
 # Personal interview-prep files (not website content)
 novi-labs-interview-prep.mp3
 generate_audio_prep.py
+
+# Local extractor tool deps (not part of the Pages site)
+tools/extractors/amazon-photos-extractor/node_modules/
+tools/extractors/amazon-photos-extractor/package-lock.json
+
+# Local extractor tool deps (not part of the Pages site)
+tools/extractors/amazon-photos-extractor/node_modules/
+tools/extractors/amazon-photos-extractor/package-lock.json
